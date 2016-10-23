@@ -1,28 +1,39 @@
 ##Length data plot and data prep
 rm(list = ls())
-library(dplyr)
-library(readr)
-library(ggplot2)
-sapply(list.files(pattern="[.]R$", path="Sept_2016/Functions", full.names=TRUE), source)
+
+pkgs <- c('dplyr','readr', 'ggplot2','tidyr')
+
+#This will install necessary packages on local machine
+load.packages = function(a){
+  if(!require(a, character.only = TRUE)){
+    install.packages(a)
+    library(a, character.only = TRUE)
+  }
+}
+
+lapply(pkgs, load.packages)
+ 
+
+sapply(list.files(pattern="[.]R$", path="./Length_Assessment/Functions", full.names=TRUE), source)
 #source("SubFunctions.R") 
 #Data Summary Length Data
 
-data <- read.csv("Sept_2016/Data/Montserrat_Species_Length_Composition_Data_July_2016_AS.csv")
+data <- read.csv("./Length_Assessment/all_length.csv")
 names(data)
-days <- length(unique(data$Date))
-boats <- length(unique(data$Vessel.ID..Length))
-area <- length(unique(data$Area.fished))
-#unique(df[c("data$Date","data$Vessel.ID..Length")])
-trips <- data.frame(data$Date,data$Vessel.ID..Length)
-unique_trips <- unique(trips)
-nrow(unique_trips)
-nrow(trips)
 gears<-unique(data$Gear.Type)
-species_CN <- unique(lapply(data$COMMON_NAME, tolower))
+#days <- length(unique(data$Date))
+#boats <- length(unique(data$Vessel.ID..Length))
+#area <- length(unique(data$Area.fished))
+#unique(df[c("data$Date","data$Vessel.ID..Length")])
+#trips <- data.frame(data$Date,data$Vessel.ID..Length)
+#unique_trips <- unique(trips)
+#nrow(unique_trips)
+#nrow(trips)
+# species_CN <- unique(lapply(data$COMMON_NAME, tolower))
 
 levels(gears)
-data[data=="POT/LINE"]<-"pots"
-data[data=="lines"]<-"line"
+#data[data=="POT/LINE"]<-"pots"
+#data[data=="lines"]<-"line"
 sp_id<-c("ACANCH","ACANCO","BALIVE","HOLOAD","LUTJMA","LUTJSY","LUTJVI","SCARVI","SERRGU")
 
 common<-c(
@@ -33,27 +44,28 @@ common<-c(
   LUTJMA="Mahogany snapper",
   LUTJSY="Lane snapper",
   LUTJVI="Silk snapper",
-  SCARCH="Spotlight parrotfish",
+  SCARCH="Spotlight parrotfish", # this should be Redtail Parrotfish?
   SERRGU="Red hind")
 
-
-SA<-read.csv("Sept_2016/Data/SA_individ_lengths.csv")%>%
-  mutate(Gear.Type="SA")
-nrow(SA)
-SA<-SA[!(SA$Length<3),] ## remove observations that are <3 cm
-i=8
-for (i in 1:length(sp_id)){
-  l<-data%>%
-    filter(Species.ID == sp_id[i])%>%
-    select(Species.ID,Length,Gear.Type)
-     
-  s<-SA%>%
-    filter(Species.ID == sp_id[i])%>%
-    select(Species.ID,Length,Gear.Type)
-    t<-rbind(s,l)%>%
-    mutate(Data.Type=ifelse(Gear.Type=="SA","Survey","Fishery"))%>%
-    write.csv(paste("Sept_2016/Data/",sp_id[i],"_length.csv",sep=""))
-}
+# SA data has already been merged in 'all_length.csv'
+# 
+# SA<-read.csv("Sept_2016/Data/SA_individ_lengths.csv")%>%
+#   mutate(Gear.Type="SA")
+# nrow(SA)
+# SA<-SA[!(SA$Length<3),] ## remove observations that are <3 cm
+# i=8
+# for (i in 1:length(sp_id)){
+#   l<-data%>%
+#     filter(Species.ID == sp_id[i])%>%
+#     select(Species.ID,Length,Gear.Type)
+#      
+#   s<-SA%>%
+#     filter(Species.ID == sp_id[i])%>%
+#     select(Species.ID,Length,Gear.Type)
+#     t<-rbind(s,l)%>%
+#     mutate(Data.Type=ifelse(Gear.Type=="SA","Survey","Fishery"))%>%
+#     write.csv(paste("Sept_2016/Data/",sp_id[i],"_length.csv",sep=""))
+# }
 
 
 
@@ -65,21 +77,23 @@ PlotFontSize <- 11
 Surveycolor<-"red"
 Fisherycolor <- "lightseagreen"
 
-Directory<-("Data")
-Files <- list.files(Directory)
+# Directory<-("Data")
+# Files <- list.files(Directory)
 
 for (i in 1:length(sp_id)){
 
-LengthData <-read.csv(paste("Sept_2016/Data/",sp_id[i],"_length.csv",sep=""))
+LengthData <-data
 
-Fish<-read.csv("Sept_2016/Data/life.csv")%>%
-  filter(species==sp_id[i])
+Fish<-read.csv("./Length_Assessment/MNI_LH_FINAL.csv")%>%
+  filter(Species==sp_id[i]) %>%
+  select(-Reference) %>%
+  spread(Parameter, Value)
 
 #source(paste(sp_id[i],"_ControlFile.R",sep=""))
 Fish$Mat50<-Fish$m95
-Fish$Linf<-Fish$Linf
+#Fish$Linf<-Fish$Linf
 
-FigureFolder<- paste("Sept_2016/plots/")
+FigureFolder<- paste("./Length_Assessment/plots/")
 name="Data Type"
 
 Theme<- theme(plot.background=element_rect(color='white'),
