@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 Parameter,Species,Value,Reference
 Linf,ACANCO,23.1,Mutz 2006
 K,ACANCO,0.49,Mutz 2007
@@ -90,7 +89,7 @@ Wa,SERRGU,0.01338,Sadovy et al. 1997
 Wb,SERRGU,3.0412,Sadovy et al. 1998
 m50,SERRGU,30.9,Calculated
 m95,SERRGU,35.22,Calculated
-=======
+=======,,,
 Parameter,Species,Value,Reference
 Linf,ACANCO,23.1,Mutz 2006
 K,ACANCO,0.49,Mutz 2007
@@ -182,4 +181,4 @@ Wa,SERRGU,0.01338,Sadovy et al. 1997
 Wb,SERRGU,3.0412,Sadovy et al. 1998
 m50,SERRGU,30.9,Calculated
 m95,SERRGU,35.22,Calculated
->>>>>>> 9975109f05214f3755ce44002984e7914e985c93
+>>>>>>> 9975109f05214f3755ce44002984e7914e985c93,,,
