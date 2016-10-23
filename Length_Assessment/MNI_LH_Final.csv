@@ -1,0 +1,91 @@
+Parameter,Species,Value,Reference
+Linf,ACANCO,23.1,Mutz 2006
+K,ACANCO,0.49,Mutz 2007
+t0,ACANCO,-0.25,Mutz 2008
+tmax,ACANCO,16,Mutz 2009
+M,ACANCO,0.19,Calculated
+Wa,ACANCO,0.22185,
+Wb,ACANCO,2.464933,
+m50,ACANCO,14,Calculated
+m95,ACANCO,15.96,Calculated
+Linf,BALIVE,41.59,Manooch and Drennon 1987
+K,BALIVE,0.3,Manooch and Drennon 1988
+t0,BALIVE,-0.6,Manooch and Drennon 1989
+tmax,BALIVE,7,Manooch and Drennon 1990
+M,BALIVE,0.43,Calculated
+Wa,BALIVE,0.000101,
+Wb,BALIVE,2.75,
+m50,BALIVE,23.69,Calculated
+m95,BALIVE,27.01,Calculated
+Linf,ACANCH,36.69,Kishore and Chin 2001
+K,ACANCH,0.08,Kishore and Chin 2002
+t0,ACANCH,-4.31,Kishore and Chin 2003
+tmax,ACANCH,27,Kishore and Chin 2004
+M,ACANCH,0.11,Calculated
+Wa,ACANCH,0.0040602,
+Wb,ACANCH,3.533,
+m50,ACANCH,21.21,Calculated
+m95,ACANCH,24.18,Calculated
+Linf,HOLOAD,52.2314,Fishbase
+K,HOLOAD,0.34,Fishbase
+t0,HOLOAD,-0.4,Fishbase
+tmax,HOLOAD,8.4,Fishbase
+M,HOLOAD,0.356635,Fishbase
+Wa,HOLOAD,0.242209,Fishbase
+Wb,HOLOAD,2.36457,Fishbase
+m50,HOLOAD,29.12936,Fishbase
+m95,HOLOAD,33.20747,Fishbase
+Linf,LUTJMA,58.89,Ault et al. 1998
+K,LUTJMA,0.097,Ault et al. 1999
+t0,LUTJMA,-1.728,Ault et al. 2000
+tmax,LUTJMA,10,Ault et al. 2001
+M,LUTJMA,0.299573,calculated
+Wa,LUTJMA,0.0428,
+Wb,LUTJMA,2.719,
+m50,LUTJMA,32.44294809,calculated
+m95,LUTJMA,36.98496082,calculated
+Linf,LUTJVI,74.07,SEDAR26 Base
+K,LUTJVI,0.1,SEDAR26 Base
+t0,LUTJVI,-1.87,SEDAR26 Base
+tmax,LUTJVI,9,SEDAR26 Base
+M,LUTJVI,0.332859142,calculated
+Wa,LUTJVI,0.0373,
+Wb,LUTJVI,2.7812,
+m50,LUTJVI,32.78846154,SEDAR26 Base
+m95,LUTJVI,37.37884615,SEDAR26 Base
+Linf,LUTJSY,45.49,Martinez-Andrade 2003
+K,LUTJSY,0.27,Martinez-Andrade 2003
+t0,LUTJSY,-0.815,Martinez-Andrade 2003
+tmax,LUTJSY,12.2,Martinez-Andrade 2003
+M,LUTJSY,0.245551826,calculated
+Wa,LUTJSY,0.0202,
+Wb,LUTJSY,3,
+m50,LUTJSY,28.48924179,calculated
+m95,LUTJSY,32.47773565,Calculated
+Linf,SCARCH,23.7,SEDAR26 Base
+K,SCARCH,0.71,SEDAR26 Base
+t0,SCARCH,-0.05,SEDAR26 Base
+tmax,SCARCH,7,SEDAR26 Base
+M,SCARCH,0.427961753,Estimated from SEDAR26 tmax
+Wa,SCARCH,0.02,
+Wb,SCARCH,3,
+m50,SCARCH,21.97539,SEDAR26 Base
+m95,SCARCH,25.0519446,SEDAR26 Base
+Linf,SERRFU,37.7,Burton et al 2015
+K,SERRFU,0.2,Burton et al 2015
+t0,SERRFU,-3.53,Burton et al 2015
+tmax,SERRFU,19,Burton et al 2015
+M,SERRFU,0.22,Burton et al 2015 (Hewitt&Hoenig method)
+Wa,SERRFU,0.0174,
+Wb,SERRFU,3,
+m50,SERRFU,24.06772662,
+m95,SERRFU,27.43720835,
+Linf,SERRGU,55.78,Sadovy et al. 1992
+K,SERRGU,0.09,Sadovy et al. 1993
+t0,SERRGU,-3.82,Sadovy et al. 1994
+tmax,SERRGU,17.5,Sadovy et al. 1995
+M,SERRGU,0.43,Calculated
+Wa,SERRGU,0.01338,Sadovy et al. 1997
+Wb,SERRGU,3.0412,Sadovy et al. 1998
+m50,SERRGU,30.9,Calculated
+m95,SERRGU,35.22,Calculated
