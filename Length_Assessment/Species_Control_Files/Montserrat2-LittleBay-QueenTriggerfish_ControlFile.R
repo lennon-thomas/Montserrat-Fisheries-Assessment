@@ -29,7 +29,7 @@ AvailableData<- c("LengthData","CatchData")
  
  Fish$WeightB<- 2.75
  
- 
+ Fish$AgeSD <- NA
  
  
  Fish$M<-    0.42796

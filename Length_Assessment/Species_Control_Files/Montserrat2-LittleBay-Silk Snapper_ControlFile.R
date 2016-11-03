@@ -29,6 +29,7 @@ AvailableData<- c("LengthData")
  
  Fish$WeightB<- 2.7812
 
+ Fish$AgeSD <- NA
  
  
  Fish$MaxAge<- 9
