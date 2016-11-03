@@ -34,6 +34,7 @@ Assessments <- c('LBAR')
 
 Counter<- 0
 
+#Sites to assess
 Sites<- c('All')
 
 AssessmentResults<- list()
@@ -42,7 +43,7 @@ MonteResults<- list()
 
 dir.create(Assessment)
 
-NumIterations <- 100
+NumIterations <- 1000
 
 RunAssessments <- TRUE 
 
@@ -53,7 +54,7 @@ ReserveYear <- NA
 MinSampleSize <- 110
 
 ############################Load and summarize length data######################
- LengthDataAll <- read.csv("./Length_Assessment/all_length.csv", stringsAsFactors = FALSE, strip.white = TRUE)
+ LengthDataAll <- read.csv("./Length_Assessment/all_length_dates.csv", stringsAsFactors = FALSE, strip.white = TRUE)
 
 #Filter out Species with a FISHERY DEPENDENT sample size < MinSampleSize 
 
@@ -81,7 +82,7 @@ common<-c(
   LUTJMA="Mahogany snapper",
   LUTJSY="Lane snapper",
   LUTJVI="Silk snapper",
-  SCARCH="Redtail parrotfish", 
+  SCARVI="Redtail parrotfish", 
   SERRGU="Red hind")
 
 #Create Empty dataframes
@@ -97,7 +98,7 @@ LengthData<-filter(LengthDataFiltered, Species.ID==LBar_sp[i])
 
 #######################Life History#############################################
 
- Fish<-read.csv("./Length_Assessment/MNI_LH_spread.csv", stringsAsFactors = FALSE, strip.white = TRUE)%>%
+ Fish<-read.csv("./Length_Assessment/MNI_LH_spread.csv", stringsAsFactors = FALSE, strip.white = TRUE) %>%
    filter(sp_id==LBar_sp[i]) 
 
 
@@ -155,7 +156,7 @@ SampleCheck<- CheckLengthSampleSize(LengthData)
 #           {
 
 
-Temp[i,]<- LBAR(SampleCheck$ParedData,LagLength=1,Weight=1,IncludeMPA=0,ReserveYr=NA,OutsideBoundYr=NA,Iterations=100,
+Temp[i,]<- LBAR(SampleCheck$ParedData,LagLength=1,Weight=1,IncludeMPA=0,ReserveYr=NA,OutsideBoundYr=NA,Iterations=1000,
             BootStrap=1,LifeError=0,Lc=Lc)$Output		
 
 StoreAssess[i,]<- data.frame(Fishes,Sites[s],Assessments[a],Temp[i,],stringsAsFactors=F) 
@@ -169,7 +170,7 @@ colnames(StoreAssess) <- c("Species", "Site",	"Assessment","	Year",	"Method",	"S
 write.csv(file=paste('Length_Assessment/Results/',Assessments,'_Results.csv',sep=''),StoreAssess)
 
 
-#######################Plots#############################################
+#######################Plot Length Distributions#############################################
 
 #Font <- 'Helvetica'
 FontColor <- 'Black'
