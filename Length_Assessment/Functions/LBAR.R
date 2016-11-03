@@ -316,13 +316,15 @@ LBAR<-function(LengthDat,LagLength,Weight,IncludeMPA,ReserveYr,OutsideBoundYr,It
           MCDetails$Lbar_Inside[c]<- LbarIn
           
           MCDetails$Lbar_Outside[c]<- LbarOut
-          print(c("LbarOut =", LbarOut))
+          
+          if ((i/10%%1==0)){ print(c("LbarOut =", LbarOut))}
+          
           MCDetails$Llam_Inside[c]<- LlamIn
           
           MCDetails$Llam_Outside[c]<- LlamOut
           
           MCDetails$Lc[c]<- Lc
-          print(c("Lc =",Lc))
+          if ((i/10%%1==0)){print(c("Lc =",Lc))}
           MCDetails$Iteration[c]<- i
           
           MCDetails$Year[c]<- Years[y]
