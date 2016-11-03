@@ -1,0 +1,7 @@
+sp_id,SciName,CommName,LHITol,vbk,LengthError,Linf,t0,WeightA,WeightB,AgeSD,M,MvK,MaxAge,MortalityError,Mat50,Mat95,PLD,VBSD,VBErrorSlope,res
+ACANCH,A chirurgus,Doctorfish,0.1,0.08,0.05,36.69,-4.307,0.00406,3.533,27,0.111,0.5,1.357,0.1,21.21,24.18,NA,0.05,0.1,Low
+ACANCO,A coeruleus,Blue tang,0.1,0.49,0.05,23.1,-0.251,0.221853,2.464933,0.5,0.1872,0.382,16,0.1,14,15.96,NA,0.05,0.1,Medium
+BALIVE,B. vetula,Queen triggerfish,0.1,0.3,0.05,41.5,-0.6,0.05679647,2.75,0.42796,1.426533,7,0.1,23.69438,27.0116,NA,0.05,0.1,Medium,B. vetula
+HOLOAD,H. adscensionis,Squirrelfish,0.1,0.34,0.05,52.23,-0.4,0.242209,2.365,8.4,0.5,0.356634794,1.048926,0.1,29.12935582,33.20746564,NA,0.05,0.1,Medium
+LUTJVI,L. vivanus,silk Snapper,0.1,0.09,0.05,78.1,-2.309,0.0373,2.7812,9,0.23,2.56,0.1,41.8,41.8,NA,0.05,0.1,Low,L. vivanus
+SERRGU,E. guttas,Red hind,0.1,0.0859,0.05,55.78,-3.817,0.01338,3.0402,0.5,0.171185,1.992841,17.5,0.1,30.9,35.22,NA,0.05,0.1,Medium
