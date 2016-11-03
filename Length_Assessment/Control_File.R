@@ -6,8 +6,9 @@
 
 rm(list = ls())
 
+
 if (basename(getwd())!='Montserrat-Fisheries-Assessment'){
-  print("Set working directory to home folder")
+  print("Set working directory to home folder: Montserrat-Fisheries-Assessment")
 }
 
 pkgs <- c('plyr','readr', 'ggplot2','tidyr', 'R2admb', 'dplyr', 'animation')
@@ -28,7 +29,7 @@ source("./Length_Assessment/Functions/SubFunctions.R") #Pull in helper functions
 
 ############High Level Assessment Controls############
 
-#Assessments to run with control file
+#Assessments to run with this control file
 Assessments <- c('LBAR')
 
 Counter<- 0
@@ -39,15 +40,9 @@ AssessmentResults<- list()
 
 MonteResults<- list()
 
-Assessment <- 'Doctorfish'
-
 dir.create(Assessment)
 
 NumIterations <- 100
-
-SPRRef <- 0.4
-
-CPUERef <- 0.4
 
 RunAssessments <- TRUE 
 
@@ -55,17 +50,26 @@ NumberOfSpecies <- 1
 
 ReserveYear <- NA
 
-MinSampleSize <- 180
+MinSampleSize <- 110
 
 ############################Load and summarize length data######################
-LengthData <- read.csv("./Length_Assessment/all_length_dates.csv") %>%
-  filter(Species.ID == "ACANCH")
+ LengthDataAll <- read.csv("./Length_Assessment/all_length.csv", stringsAsFactors = FALSE, strip.white = TRUE)
 
-names(LengthData)
-gears<-unique(LengthData$Gear.Type)
-levels(gears)
+#Filter out Species with a FISHERY DEPENDENT sample size < MinSampleSize 
+
+LengthDataFiltered<- SelectForLengthSampleSize(LengthDataAll)
+
+names(LengthDataFiltered)
+
+#Prints Species to be included in the analysis (those with sufficient sample size)
+LBar_sp<- unique(LengthDataFiltered$Species.ID)
+print(LBar_sp)
+
+#Prints gears represented in the selected sample
+print(unique(LengthDataFiltered$Gear.Type))
 
 
+#All species IDs
 sp_id<-c("ACANCH","ACANCO","BALIVE","HOLOAD","LUTJMA","LUTJSY","LUTJVI","SCARVI","SERRGU")
 
 #Generates named vector to link sp_id with common name
@@ -77,111 +81,57 @@ common<-c(
   LUTJMA="Mahogany snapper",
   LUTJSY="Lane snapper",
   LUTJVI="Silk snapper",
-  SCARCH="Redtail parrotfish", # this should be Redtail Parrotfish?
+  SCARCH="Redtail parrotfish", 
   SERRGU="Red hind")
+
+#Create Empty dataframes
+
+Temp <- as.data.frame(matrix(NA,nrow=length(LBar_sp),ncol=9))
+
+StoreAssess <- as.data.frame(matrix(NA,nrow=length(LBar_sp),ncol=12))
+
+#Start for loop-----
+for (i in 1:length(LBar_sp)){
+LengthData<-filter(LengthDataFiltered, Species.ID==LBar_sp[i]) 
 
 
 #######################Life History#############################################
 
-# Fish<-read.csv("./Length_Assessment/MNI_LH_FINAL.csv")%>%
-#   filter(Species==sp_id[1]) %>%
-#   select(-Reference) %>%
-#   spread(Parameter, Value)
-# 
-# Fish$AgeMat50<- NA
-# 
-# Fish$AgeMatSource<- NA
-# 
-# Fish$MaxAge <- ceiling(-log(0.05)/Fish$M)
-
-#######################Species LH Control File#############################################
-source(paste('./Length_Assessment/Species_Control_Files/Montserrat2-LittleBay-Doctorfish_ControlFile.R'))
-
-##Lennon commented these out
-# LifeHistory<-read.csv(paste(Assessment,'/',Files[grepl('_LifeHistory',Files)],sep=''), stringsAsFactors = F)
-#
-
-LifeHistory<-melt(Fish,na.rm=T)
-LifeHistory<-as.matrix(LifeHistory)
-LifeHistory<-t(LifeHistory)
-colnames(LifeHistory)<-LifeHistory[2,]
-LifeHistory<-LifeHistory[1,]
-LifeHistory<-t(LifeHistory)
-LifeHistory<-LifeHistory[-2,]
-LifeHistory<-as.data.frame(LifeHistory,stringsAsFactors =FALSE)
+ Fish<-read.csv("./Length_Assessment/MNI_LH_spread.csv", stringsAsFactors = FALSE, strip.white = TRUE)%>%
+   filter(sp_id==LBar_sp[i]) 
 
 
-LifeHistory<-data.frame(t(LifeHistory),stringsAsFactors = FALSE)
+ Fish$AgeMat50<- NA
+ Fish$AgeMatSource<- NA
 
-Fishes <- unique(Fish$CommName)
+ Fish$MaxAge <- ceiling(-log(0.05)/Fish$M)
 
+ Fishes <- unique(Fish$CommName)
 
-LifeData<- colnames(LifeHistory)[5:dim(LifeHistory)[2]]
-
-Fish$AgeMat50<- NA
-
-Fish$AgeMatSource<- NA
-
-
-Sites<- c('All')
-
-AssessmentResults<- list()
-
-MonteResults<- list()
-
-
+ #Sets the mode length from FISHERY DEPENDENT sample as Length at first capture (Lc)
+ uniqv <- unique(round(LengthData$Length[LengthData$FisheryDependent==1], digits = 1))
+ Lc <- uniqv[which.max(tabulate(match(LengthData$Length[LengthData$FisheryDependent==1], uniqv)))]
+ 
 
 # Run Assessments ---------------------------------------------------------
 s=1
 
-# if (RunAssessments==T)
-# {
-#   
 #   for (s in 1:length(Sites))    
 #   {
 
 show(Sites[s])
 
-f=1
+show(Fishes)
 
+##########Creates Folders for Output########## 
 
-show(Fishes[f])
+Directory<- paste(Assessments, "/", Sites[s],'/',Fishes,'/',sep='')
 
-Species<- Fishes[f]
+FigureFolder<- paste('Length_Assessment/Figures/',Directory,sep='')
 
+ResultFolder<- paste('Length_Assessment/Results/',sep='')
 
-AssessmentName <- paste(Assessment,Sites[s],Fishes[f],sep='_')
-
-Directory<- paste(Assessment, "/", Sites[s],'/',Fishes[f],'/',sep='')
-
-if (file.exists(Directory)==F)
-{
-  dir.create(paste(Assessment, "/", Sites[s],sep=''))
-  dir.create( paste(Assessment, "/", Sites[s],'/',Fishes[f],'/',sep=''))
-}
-
-# Prepare Fish Object -------------------------------------------------------------
-s=1
-SpeciesLifeHistory<- LifeHistory[LifeHistory$CommName == Species[s],colnames(LifeHistory) %in% LifeData]
-SpeciesLifeHistory<-LifeHistory
-
-SpeciesLifeHistory[,3:18] <- as.numeric(SpeciesLifeHistory[,3:18])
-
-sTaxa<-"Surgeonfish"
-HasLifeHistory<- SpeciesLifeHistory[which(is.na(SpeciesLifeHistory)==F)]
-
-HasLife<- colnames(HasLifeHistory)
-
-Fish$CommName <- Species[s]
-
-
-
-##########CREATES FOLDERS##########     
-FigureFolder<- paste(Directory,'Figures/',sep='')
-
-ResultFolder<- paste(Directory,'Results/',sep='')
-
-if (file.exists(FigureFolder)==F)
+if (!file.exists(FigureFolder))
 {
   dir.create(FigureFolder,recursive=T)
   
@@ -196,28 +146,29 @@ Fish$LHITol<- 0.99
 #       for (a in 1:length(Assessments)) #Loop over possible assessments, store in Assessment results. Many assessments have more detailed outputs than can also be accessed 
 #       {
 
-Counter<- Counter+1
-#         if (Assessments[a]=='LBAR') #Run LBAR assessment
-#         {
-#           
+Counter<- Counter+i
+ 
+#Checks for sufficient sample size with Years of species       
 SampleCheck<- CheckLengthSampleSize(LengthData)        
 #           
 #           if (SampleCheck$YearsWithEnoughData>0)
 #           {
 
 
-Temp<- LBAR(SampleCheck$ParedData,LagLength=1,Weight=1,IncludeMPA=0,ReserveYr=NA,OutsideBoundYr=NA,Iterations=1000,
-            BootStrap=1,LifeError=0,Lc=18)$Output		
+Temp[i,]<- LBAR(SampleCheck$ParedData,LagLength=1,Weight=1,IncludeMPA=0,ReserveYr=NA,OutsideBoundYr=NA,Iterations=100,
+            BootStrap=1,LifeError=0,Lc=Lc)$Output		
 
-StoreAssess<- data.frame(Species,Sites[s],Assessments[a],Temp,stringsAsFactors=F) %>%
-  rename(Site=Sites.s.,Assessment=Assessments.a.)
+StoreAssess[i,]<- data.frame(Fishes,Sites[s],Assessments[a],Temp[i,],stringsAsFactors=F) 
+}
 
-AssessmentResults[[Counter]]<-StoreAssess
+colnames(StoreAssess) <- c("Species", "Site",	"Assessment","	Year",	"Method",	"SampleSize",	"Value",	"LowerCI","UpperCI",	"SD",	"Metric",	"Flag")
+
 #######################Save Results#############################################
 
-CurrentResults<- ldply(AssessmentResults) %>% subset(Species==Fishes[f] & Site==Sites[s])
 
-write.csv(file=paste(ResultFolder,AssessmentName,'_Results.csv',sep=''),CurrentResults)
+write.csv(file=paste('Length_Assessment/Results/',Assessments,'_Results.csv',sep=''),StoreAssess)
+
+
 #######################Plots#############################################
 
 #Font <- 'Helvetica'
@@ -227,11 +178,12 @@ Surveycolor<-"red"
 Fisherycolor <- "lightseagreen"
 
 
-for (i in 1:length(sp_id)){
+
+for (j in 1:length(sp_id)){
   
 #Life History Parameters for species[i]  
-  Fish<-read.csv("./Length_Assessment/MNI_LH_FINAL.csv")%>%
-    filter(Species==sp_id[i]) %>%
+  Fish<-read.csv("./Length_Assessment/Full_Data_Sets/MNI_LH_FINAL.csv")%>%
+    filter(Species==sp_id[j]) %>%
     select(-Reference) %>%
     spread(Parameter, Value)
   
@@ -242,7 +194,7 @@ for (i in 1:length(sp_id)){
   
   
 #Specifies where to save plots
-  FigureFolder<- paste("./Length_Assessment/plots/")
+  FigureFolder<- paste("./Length_Assessment/Figures/")
   name="Data Type"
   
   Theme<- theme(plot.background=element_rect(color='white'),
@@ -256,9 +208,10 @@ for (i in 1:length(sp_id)){
                 axis.line.x = element_line(color="black", size = 0.6),
                 axis.line.y = element_line(color="black", size = 0.6))
  
-  Species=common[i]
+  Species=common[j]
 
+  LengthDataPlot<-filter(LengthDataAll, Species.ID==sp_id[j])
   
-  PlotLengthData(LengthData,FigureFolder,Fish,Species,Theme)
+  PlotLengthData(LengthDataPlot,FigureFolder,Fish,Species,Theme)
 }
 
