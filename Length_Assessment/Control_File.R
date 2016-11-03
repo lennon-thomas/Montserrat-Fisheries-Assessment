@@ -1,8 +1,11 @@
 #Final Control File 
 #MNI Length Assessment - All Species 
 #
+#Runs an LBAR assessment for each species in the data set
+#Require data frame of length and data frame of life history paramters
+#
 
-##Set Up
+##Set Up----
 
 rm(list = ls())
 
@@ -132,12 +135,12 @@ FigureFolder<- paste('Length_Assessment/Figures/',Directory,sep='')
 
 ResultFolder<- paste('Length_Assessment/Results/',sep='')
 
-if (!file.exists(FigureFolder))
-{
-  dir.create(FigureFolder,recursive=T)
-  
-  dir.create(ResultFolder,recursive=T)
-}
+  if (!file.exists(FigureFolder))
+  {
+    dir.create(FigureFolder,recursive=T)
+    
+    dir.create(ResultFolder,recursive=T)
+  }
 
 
 
@@ -160,6 +163,7 @@ Temp[i,]<- LBAR(SampleCheck$ParedData,LagLength=1,Weight=1,IncludeMPA=0,ReserveY
             BootStrap=1,LifeError=0,Lc=Lc)$Output		
 
 StoreAssess[i,]<- data.frame(Fishes,Sites[s],Assessments[a],Temp[i,],stringsAsFactors=F) 
+
 }
 
 colnames(StoreAssess) <- c("Species", "Site",	"Assessment","	Year",	"Method",	"SampleSize",	"Value",	"LowerCI","UpperCI",	"SD",	"Metric",	"Flag")
@@ -178,8 +182,6 @@ PlotFontSize <- 11
 Surveycolor<-"red"
 Fisherycolor <- "lightseagreen"
 
-
-
 for (j in 1:length(sp_id)){
   
 #Life History Parameters for species[i]  
@@ -188,12 +190,9 @@ for (j in 1:length(sp_id)){
     select(-Reference) %>%
     spread(Parameter, Value)
   
-
   Fish$Mat50 <- Fish$m95
 
- 
-  
-  
+
 #Specifies where to save plots
   FigureFolder<- paste("./Length_Assessment/Figures/")
   name="Data Type"
