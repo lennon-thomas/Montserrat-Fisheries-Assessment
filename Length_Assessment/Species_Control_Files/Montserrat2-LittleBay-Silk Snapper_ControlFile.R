@@ -10,7 +10,7 @@ AvailableData<- c("LengthData")
  
  Fish$SciName<- 'L. vivanus'
  
- Fish$CommName<- 'silk Snapper'
+ Fish$CommName<- 'Silk Snapper'
 ### Life History ###
  
  DefaultSD<- 0.05
