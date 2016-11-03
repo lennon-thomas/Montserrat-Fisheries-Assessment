@@ -1,6 +1,6 @@
 PlotLengthData<- function(LengthDat,FigureFolder,Fish,Species,Theme)
 {
-  LengthDat<- LengthData
+  LengthDat<- LengthDat
   
   #LengthDat<- subset(LengthDat,is.na(Length)==F & Length>0)
   
