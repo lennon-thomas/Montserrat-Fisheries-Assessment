@@ -1,4 +1,4 @@
-CatchMSY<- function(CatchDat,n,ProcessError,Smooth,Display,CatchJitters,CatchError,CatchBias,InterpCatch,StartYear,StartBio,MidYear,MidBio,FinalBio)
+CatchMSY<- function(CatchDat,n,ProcessError,Smooth,Display,CatchJitters,CatchError,CatchBias,InterpCatch,StartYear,StartBio,MidYear,MidBio,FinalBio,resil,species)
 {
   ### Run CatchMSY, adapted form Martell & Froese 2012
   # CatchDat=CatchData
@@ -50,10 +50,10 @@ CatchMSY<- function(CatchDat,n,ProcessError,Smooth,Display,CatchJitters,CatchErr
   # outfile  <- "CatchMSY_Output.csv"
   # outfile2  <- "Clean_CatchMSY_Output.csv"
   
-   FigureFolder<- 'Figures/'
+   FigureFolder<- paste(species,'/Figures/',sep ="")
    dir.create(FigureFolder)
    
-   ResultFolder<-'Results/'
+   ResultFolder<-paste(species,'/Results/',sep = "")
    dir.create(ResultFolder)
   # cdat <- read.csv2(filename, header=T, dec=".")
   # cat("\n", "File", filename, "read successfully","\n")
@@ -79,7 +79,7 @@ CatchMSY<- function(CatchDat,n,ProcessError,Smooth,Display,CatchJitters,CatchErr
     
     if(Smooth==1){ct<- runmed(ct,3)}
     
-    res  <- as.character(params$res)
+    res  <- resil
     
     nyr  <- length(yr)    ## number of years in the time series
     

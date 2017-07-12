@@ -58,6 +58,7 @@ OAHarvestRate=function(u){
 }
 
 
+
 OAHarvestRate2=function(u){
   u1=u[1]
   pop=initPop
