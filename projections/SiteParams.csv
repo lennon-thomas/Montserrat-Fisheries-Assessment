@@ -1,0 +1,12 @@
+Country,Site,MunicipalArea_sqkm,TotalMunicipalNTZ_sqkm,NTZ_sqkm,TURF_sqkm,YearNTZEstablish,YearNTZFunctioning,NTZInside,distanceOffshore_km
+Indonesia,Alor,NA,NA,29.95,295.92,NA,NA,1,1.67
+Indonesia,Karimunjawa,NA,NA,58.46078,1130.38174,2005,2012,1,2
+Indonesia,Teluk Myalibit,NA,NA,106,280,2005,2011,1,3.7
+Philippines,Cantilan,NA,NA,0.425,10,2005,2013,1,0.34
+Philippines,Cortes,NA,NA,0.34,10.8,2007,2009,1,0.44
+Philippines,Inabanga,NA,NA,0.1425,4.65,2000,2006,1,0.61
+Philippines,Tinambac,NA,NA,0.712,20,2006,2011,1,0.67
+Philippines-Municipal,Cantilan,NA,NA,1.395,418.3,NA,NA,NA,0.34
+Philippines-Municipal,Cortes,NA,NA,3.89,560,NA,NA,NA,0.44
+Philippines-Municipal,Inabanga,NA,NA,0.2835,150,NA,NA,NA,0.61
+Philippines-Municipal,Tinambac,NA,NA,0.712,882.6,NA,NA,NA,0.67
