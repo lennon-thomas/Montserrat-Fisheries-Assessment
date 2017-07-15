@@ -86,7 +86,7 @@ NTZarea<-paramsSite$NTZ_sqkm   #NTZ area in square km
 #Set up parameters and run Catch-MSY#
 ######################################
 #for (i in 1:length(species)) {
-i=1
+i=4
 sp<-species[i]
 
 CatchData<-read.csv(paste(species[i],"/",species[i],"_CatchData.csv",sep = ""))
@@ -140,13 +140,13 @@ R0 = 1000
 
 P = 60            #number homogenous patches, differ only in fishing pressure
 
-TRfraction = 1/2        #fraction of TR system to be compared to larger community, no matter how large or small TR system, we look at 2* for relative impact
+TRfraction = 1/3       #fraction of TR system to be compared to larger community, no matter how large or small TR system, we look at 2* for relative impact
 
 yearsOA = 100        #years of oopen access
 
 yearsTR = 30         #years of Turf Reserve
 
-OAfrac = 0.1#msy_results$end_b_K_ratio #open access equilibrium B/B0. This value is read in from the b/k output for 2014 from Catch MSY results
+OAfrac = msy_results$end_b_K_ratio #open access equilibrium B/B0. This value is read in from the b/k output for 2014 from Catch MSY results
 
 
 #######################
@@ -190,8 +190,8 @@ loc = 1
 #####################################
 #Start simulations over species
 ###################################
-
-  for(ss in 1:numSpecies){
+ss=4
+#  for(ss in 1:numSpecies){
               sp = species_pointer[ss]  #find the location value for each species
                    
                 ages<-NA                         #reset all values so nothing caries over from previous species
@@ -249,10 +249,10 @@ sigmaL<-2                     #Larval dispersal distance parameter, sd on standa
 # Assign selectivity by age
 ###########################
 
-v1 = c(rep(0,3),rep(1,max_age[sp]-2))  #vector of selectivity ASSUMING fishing all fish age 1 and up, regardless of size   
+v1 = c(0,rep(1,max_age[sp]))  #vector of selectivity ASSUMING fishing all fish age 1 and up, regardless of size   
        
 
-v2 = c(rep(0,mat_age[sp]+1),rep(1,max_age[sp]-mat_age[sp]))           #this allows each species to reach maturity (add +1 to wait 1 year). Use this to set minimum size (age)
+v2 = c(rep(0,mat_age[sp]),rep(1,max_age[sp]-mat_age[sp]+1))           #this allows each species to reach maturity (add +1 to wait 1 year). Use this to set minimum size (age)
                    
 ##################################
 #Movement
@@ -401,7 +401,7 @@ OArate2<-findOA$minimum
 ############################
 #Scenario Simulation
 ###########################           
-
+OArate1=.5
 
 setupA = rep(1,P*TRfraction)      #status quo, no NTZ
 
@@ -409,7 +409,7 @@ setupA = rep(1,P*TRfraction)      #status quo, no NTZ
 
 setupC=c(rep(1,(numMA-0.2*numMA)/2),rep(0,0.2*numMA),rep(1,(numMA-0.2*numMA)/2))   #20% NTZ 
                
-setupD=c(rep(1,0.34*numMA),rep(0, (0.34*numMA)),rep(1,0.34*numMA)) ##30%
+setupD=c(rep(1,0.34*numMA),rep(0, (0.38*numMA)),rep(1,0.35*numMA)) ##30%
 
 scenarios = 5
 
@@ -428,9 +428,9 @@ scens[2,]=c(rep(OArate1,(P-P*TRfraction)/2),OArate1*setupC,rep(OArate1,(P-P*TRfr
 
 scens[3,]=c(rep(OArate1,(P-P*TRfraction)/2),OArate1*setupD,rep(OArate1,(P-P*TRfraction)/2)) # 30% of total area take
 
-scens[4,]=c(rep(OArate2,(P-P*TRfraction)/2),OArate2*setupA,rep(OArate2,(P-P*TRfraction)/2)) #minimum size only
+scens[4,]=c(rep(OArate1,(P-P*TRfraction)/2),OArate1*setupA,rep(OArate1,(P-P*TRfraction)/2)) #minimum size only
 
-scens[5,]=c(rep(OArate2,(P-P*TRfraction)/2),OArate2*setupC,rep(OArate2,(P-P*TRfraction)/2)) # minimum size and 20% no take 
+scens[5,]=c(rep(OArate1,(P-P*TRfraction)/2),OArate1*setupD,rep(OArate1,(P-P*TRfraction)/2)) # minimum size and 20% no take 
  
 
          
@@ -441,8 +441,6 @@ sel2=cbind(sa,sb,sa)
 
 #sb=matrix(v2,nrow=(max_age[sp]+1),ncol=numMA,byrow=F) 
 
-sel2=cbind(sa,sb,sa)
-# sel2=sb
                     
 PopBiomass = matrix(NA,nrow=scenarios,ncol=years)
 
