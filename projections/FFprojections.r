@@ -1,8 +1,8 @@
 #rough draft of FF projections 
 
 rm(list = ls())
-params<-read.csv("LHparams.csv",header=T)
-paramsSite<-read.csv("SiteParams.csv",header=T)      
+params<-read.csv("projections/LifeParms_MNI.csv",header=T)
+paramsSite<-read.csv("projections/SiteParams_MNI.csv",header=T)      
       
  
  #################################################
@@ -163,7 +163,7 @@ colvec=c(1,"darkred","gold",3,"turquoise3")
       ##START SIMS OVER SITES##
       ###########################
 
-      for(loc in 1:length(paramsSite)){
+      for(loc in 1:nrow(paramsSite)){
            
            numNTZ=round((NTZarea[loc]/(TURFarea[loc]+NTZarea[loc]))*numMA)         #number of NTZ areas within the managed areas
            if((numNTZ%%2)==0){                                      #this sets up structure of area with 1 as managed and 0 as NTZ, with NTZ placed in cemter of managed

@@ -8,6 +8,9 @@ library(ggplot2)
 library(dplyr)
 library(tidyr)
 library(zoo)
+library(cowplot)
+library(gridExtra)
+library(grid)
 
 setwd("/Users/lennonthomas/Desktop/Montserrat-Fisheries-Assessment/projections")
 
@@ -21,7 +24,7 @@ lapply(paste("functions/",files,sep=""),source)
 
 #source(paste("functions/",files,sep=""))
 
-params<-read.csv("LifeParms_MNI.csv",header=T,stringsAsFactors = FALSE)
+params<-read.csv("LifeParms_MNI .csv",header=T,stringsAsFactors = FALSE)
 
 paramsSite<-read.csv("SiteParams_MNI.csv",header=T)   
 
@@ -32,6 +35,8 @@ paramsSite<-read.csv("SiteParams_MNI.csv",header=T)
 #Life history parameters
 
 species<-as.vector(params$Common)              #list of species
+
+scientific<-as.vector(params$Scientific)
 
 species_site<-params$Site           #list of sites per species
 
@@ -68,9 +73,13 @@ moveRange<-as.vector(params$Range)             #maximum distance of range in lin
 
 moveRange=as.vector(moveRange/1000)            #convert to km
 
-f<-rep(1,length(species))	          #PLACEHOLDER for vector of fecundity at age
+f<-as.vector(params$FecundEggs)        #PLACEHOLDER for vector of fecundity at age
 
 steep<-as.vector(params$Steepness )            #parameter for recruitment
+
+lc<-as.vector(params$lc)
+
+of<-as.vector(params$overfishing)
 
 #Site information
 
@@ -86,52 +95,52 @@ NTZarea<-paramsSite$NTZ_sqkm   #NTZ area in square km
 #Set up parameters and run Catch-MSY#
 ######################################
 #for (i in 1:length(species)) {
-i=4
-sp<-species[i]
-
-CatchData<-read.csv(paste(species[i],"/",species[i],"_CatchData.csv",sep = ""))
-
-ggplot(CatchData,aes(x=Year,y=Catch))+
-  geom_line()+
-  theme_bw()+
-  ggtitle(species[i])
-
-st_yr<-CatchData$Year[1]
-
-max_catch<-max(CatchData$Catch)
-
-st_bio<-CatchData$Catch[1]/max_catch
-
-start1<-ifelse (st_bio < 0.5,0.5,
-                0.3)
-
-start2<-ifelse(st_bio <0.5, 0.9,
-               0.6)
-  
-st_bio<- as.vector(cbind(start1,start2))
-
-end_bio<-CatchData$Catch[length(CatchData$Catch)]/max_catch
-
-end1<-ifelse(end_bio > 0.5, 0.3, 
-             0.01)
-
-end2<- ifelse(end_bio > 0.5, 0.7, 
-              0.4)
-
-end_bio<-as.vector(cbind(end1,end2))
-
-# Run Catch MSY function and read in results
-
-res<-params$res[i]
-
-Temp<- CatchMSY(CatchData,1000,0.05,0,1,1,0,0,0,CatchData[1,1],st_bio,NA,NA,end_bio,res,sp)
-
-write.csv(Temp,paste(species[i],"/Results/CatchMSY.csv",sep = ""))
-
-msy_results<-read.csv(paste(species[i],"/Results/Raw_CatchMSY.csv",sep = ""))
- 
-print (species[i])
-#}
+# i=4
+# sp<-species[i]
+# 
+# CatchData<-read.csv(paste(species[i],"/",species[i],"_CatchData.csv",sep = ""))
+# 
+# ggplot(CatchData,aes(x=Year,y=Catch))+
+#   geom_line()+
+#   theme_bw()+
+#   ggtitle(species[i])
+# 
+# st_yr<-CatchData$Year[1]
+# 
+# max_catch<-max(CatchData$Catch)
+# 
+# st_bio<-CatchData$Catch[1]/max_catch
+# 
+# start1<-ifelse (st_bio < 0.5,0.5,
+#                 0.3)
+# 
+# start2<-ifelse(st_bio <0.5, 0.9,
+#                0.6)
+#   
+# st_bio<- as.vector(cbind(start1,start2))
+# 
+# end_bio<-CatchData$Catch[length(CatchData$Catch)]/max_catch
+# 
+# end1<-ifelse(end_bio > 0.5, 0.3, 
+#              0.01)
+# 
+# end2<- ifelse(end_bio > 0.5, 0.7, 
+#               0.4)
+# 
+# end_bio<-as.vector(cbind(end1,end2))
+# 
+# # Run Catch MSY function and read in results
+# 
+# res<-params$res[i]
+# 
+# Temp<- CatchMSY(CatchData,1000,0.05,0,1,1,0,0,0,CatchData[1,1],st_bio,NA,NA,end_bio,res,sp)
+# 
+# write.csv(Temp,paste(species[i],"/Results/CatchMSY.csv",sep = ""))
+# 
+# msy_results<-read.csv(paste(species[i],"/Results/Raw_CatchMSY.csv",sep = ""))
+#  
+# print (species[i])
+# #}
 #################################################
  #Control parameters                           
 ################################################
@@ -140,13 +149,13 @@ R0 = 1000
 
 P = 60            #number homogenous patches, differ only in fishing pressure
 
-TRfraction = 1/3       #fraction of TR system to be compared to larger community, no matter how large or small TR system, we look at 2* for relative impact
+TRfraction = 1       #fraction of TR system to be compared to larger community, no matter how large or small TR system, we look at 2* for relative impact
 
 yearsOA = 100        #years of oopen access
 
 yearsTR = 30         #years of Turf Reserve
 
-OAfrac = msy_results$end_b_K_ratio #open access equilibrium B/B0. This value is read in from the b/k output for 2014 from Catch MSY results
+ #open access equilibrium B/B0. This value is read in from the b/k output for 2014 from Catch MSY results
 
 
 #######################
@@ -191,7 +200,7 @@ loc = 1
 #Start simulations over species
 ###################################
 ss=4
-#  for(ss in 1:numSpecies){
+ # for(ss in 1:numSpecies){
               sp = species_pointer[ss]  #find the location value for each species
                    
                 ages<-NA                         #reset all values so nothing caries over from previous species
@@ -209,16 +218,17 @@ ss=4
  ages<-seq(0,max_age[sp],1)                                 #vector of ages considered
                 
  len<-Linf[sp]*(1-exp(-kpar[sp]*(ages-t0par[sp])))          #vector of lengths
-                
+   
+         
 # Check plot of species age at length
 
 agelength<-as.data.frame(cbind(ages,len))
                 
-ggplot(agelength,aes(x = ages,y = len))+
-  geom_line() +
-  theme_bw() +
-  ylab ("Length") +
-  xlab ("Age")
+# ggplot(agelength,aes(x = ages,y = len))+
+#   geom_line() +
+#   theme_bw() +
+#   ylab ("Length") +
+#   xlab ("Age")
 
 # Convert length units to match units for wt relationship
     if(Linf_units[sp]!= wtunit1[sp]){
@@ -234,25 +244,39 @@ if(wtunit2[sp] =="g") wt = wt/1000                               #convert to kg
               
 mat<-c(rep(0,mat_age[sp]),rep(1,max_age[sp]+1-mat_age[sp]))     #vector of to flag mature fish, assuming knife edge maturity
                                                                           #NOTE: this rounds mat age from a conversion from mat length, best to change this to mat length somehow?
-fec<-c(rep(1,max_age[sp]+1))
+fec<-c(rep(f[sp],max_age[sp]+1))
 #fec<-c(rep(1,max_age[sp]+1))
 surv<-c(1,rep(1-mort[sp],max_age[sp]))
                 
 standardDist<-moveRange[sp]/areaSize                  #Standardized movement range in #patches from center of patch
 
 sigmaA<-min(standardDist/1.65,20) #Adult movement parameter, sd on standard normal gaussian, limit sigma to 20 for matrix setup 
-                #placeholder for PLD to area size equation...
-sigmaL<-2                     #Larval dispersal distance parameter, sd on standard normal gaussian
- 
 
+LstandDist<-pld[sp]/areaSize *10         #placeholder for PLD to area size equation...
+sigmaL<-min(LstandDist/1.65,20)                   #Larval dispersal distance parameter, sd on standard normal gaussian
+ 
+## Bring in equilibrium biomass
+
+msy_results<-read.csv(paste(species[ss],"/Results/Raw_CatchMSY.csv",sep = ""))
+
+OAfrac =0.1#msy_results$end_b_K_ratio#0.1     
 ###########################
 # Assign selectivity by age
 ###########################
 
-v1 = c(0,rep(1,max_age[sp]))  #vector of selectivity ASSUMING fishing all fish age 1 and up, regardless of size   
-       
+Lc<-lc[sp] #Average length at capture in Montserrat
 
-v2 = c(rep(0,mat_age[sp]),rep(1,max_age[sp]-mat_age[sp]+1))           #this allows each species to reach maturity (add +1 to wait 1 year). Use this to set minimum size (age)
+lc_age<-round(t0par[sp]+(1/kpar[sp]*(log(Linf[sp]/(Linf[sp]-(Lc))))))
+
+#v1 = c(rep(0,lc_age),rep(1,max_age[sp]-lc_age+1))  #vector of selectivity ASSUMING fishing all fish age 1 and up, regardless of size   
+
+v1 = c(rep(0,1),rep(1,max_age[sp]))
+ if(lc_age > mat_age[sp]){
+  v2 = c(rep(0,lc_age+1),rep(1,max_age[sp]-lc_age))
+} else {         
+           v2 =c(rep(0,mat_age[sp]),rep(1,max_age[sp]-mat_age[sp]+1)) 
+}
+#this allows each species to reach maturity (add +1 to wait 1 year). Use this to set minimum size (age)
                    
 ##################################
 #Movement
@@ -388,7 +412,7 @@ u2_opt<-min(findopt$minimum,0.99)
 
 #now also find an open access that makes sense, such that B/B0 is approximately 0.1, specifically OAfrac from control panel
 
-findOA<-optimize(OAHarvestRate,c(0,1))
+findOA<-optimize(OAHarvestRate,c(0,1),tol=0.00001)
 
 OArate1<-findOA$minimum
 
@@ -401,7 +425,7 @@ OArate2<-findOA$minimum
 ############################
 #Scenario Simulation
 ###########################           
-OArate1=.5
+
 
 setupA = rep(1,P*TRfraction)      #status quo, no NTZ
 
@@ -409,36 +433,41 @@ setupA = rep(1,P*TRfraction)      #status quo, no NTZ
 
 setupC=c(rep(1,(numMA-0.2*numMA)/2),rep(0,0.2*numMA),rep(1,(numMA-0.2*numMA)/2))   #20% NTZ 
                
-setupD=c(rep(1,0.34*numMA),rep(0, (0.38*numMA)),rep(1,0.35*numMA)) ##30%
+setupD=c(rep(1,0.34*numMA),rep(0, (0.34*numMA)),rep(1,0.34*numMA)) ##30%
 
-scenarios = 5
+scenarios = 6
 
 scens=matrix(NA,nrow=scenarios,ncol=P)
+#OArate1=0.28 #for red hind
+#OArate1= 0.01 #for doctorfish
+catch_lim<-OArate1+(OArate1*.1)
+catch_lim2<-OArate2+(OArate2*.1)
 
-catch_lim<-OArate1-(OArate1*.20)
+harvest<-0.16
+  #ifelse(of[sp]==TRUE,catch_lim,OArate1)
 
 #scens[1,]=c(rep(current_u,(P-P*TRfraction)/2),current_u*setupA,rep(current_u,(P-P*TRfraction)/2))#open access at current harvesst rate
 #scens[1,]=c(rep(OArate1,(P-P*TRfraction)/2),OArate1*setupA,rep(OArate1,(P-P*TRfraction)/2)) #Assume a Catch Limit that is set to maintain current biomass level
-
-scens[1,]=c(rep(OArate1,(P-P*TRfraction)/2),OArate1*setupA,rep(OArate1,(P-P*TRfraction)/2)) # Assume current fishing pressure continues
-
+scens[1,]=harvest*setupA
+#scens[1,]=c(rep(OArate1,(P-P*TRfraction)/2),OArate1*setupA,rep(OArate1,(P-P*TRfraction)/2)) # Assume current fishing pressure continues
+scens[2,]=harvest*setupA
 #scens[2,]=c(rep(catch_lim,(P-P*TRfraction)/2),catch_lim*setupA,rep(catch_lim,(P-P*TRfraction)/2)) #  Catch limit # Reduce harvest by 20%
 
-scens[2,]=c(rep(OArate1,(P-P*TRfraction)/2),OArate1*setupC,rep(OArate1,(P-P*TRfraction)/2)) # 20% of total are no take
-
-scens[3,]=c(rep(OArate1,(P-P*TRfraction)/2),OArate1*setupD,rep(OArate1,(P-P*TRfraction)/2)) # 30% of total area take
-
-scens[4,]=c(rep(OArate1,(P-P*TRfraction)/2),OArate1*setupA,rep(OArate1,(P-P*TRfraction)/2)) #minimum size only
-
-scens[5,]=c(rep(OArate1,(P-P*TRfraction)/2),OArate1*setupD,rep(OArate1,(P-P*TRfraction)/2)) # minimum size and 20% no take 
- 
+#scens[2,]=c(rep(OArate1,(P-P*TRfraction)/2),OArate1*setupC,rep(OArate1,(P-P*TRfraction)/2)) # 20% of total are no take
+scens[3,]=harvest*setupC
+#scens[3,]=c(rep(OArate1,(P-P*TRfraction)/2),OArate1*setupD,rep(OArate1,(P-P*TRfraction)/2)) # 30% of total area take
+scens[4,]=harvest*setupD
+#scens[4,]=c(rep(OArate1,(P-P*TRfraction)/2),OArate1*setupA,rep(OArate1,(P-P*TRfraction)/2)) #minimum size only
+scens[5,]=harvest*setupA
+#scens[5,]=c(rep(OArate1,(P-P*TRfraction)/2),scens[5,],rep(OArate1,(P-P*TRfraction)/2)) # minimum size and 20% no take 
+scens[6,] =harvest*setupD
 
          
 sel1=matrix(v1,nrow=(max_age[sp]+1),ncol=P,byrow=F)          #build matrix of selectivity by age by area, all fully selected 
-sa=matrix(v1,nrow=(max_age[sp]+1),ncol=(P-P*TRfraction)/2,byrow=F)                                                             #build matrix of selectivity by age by area, managed area with size liimits
+#sa=matrix(v1,nrow=(max_age[sp]+1),ncol=(P-P*TRfraction)/2,byrow=F)                                                             #build matrix of selectivity by age by area, managed area with size liimits
 sb=matrix(v2,nrow=(max_age[sp]+1),ncol=numMA,byrow=F) 
-sel2=cbind(sa,sb,sa)
-
+#sel2=cbind(sa,sb,sa)
+sel2=matrix(v2,nrow=(max_age[sp]+1),ncol=P,byrow=F) 
 #sb=matrix(v2,nrow=(max_age[sp]+1),ncol=numMA,byrow=F) 
 
                     
@@ -464,7 +493,7 @@ for(scen in 1:scenarios){
                             
          uvec = scens[scen,]
                             
-         if(scen < 4) age_v = sel1 else age_v = sel2            #adjust based on scenarios and selectivity per scenario
+         if(scen < 5) age_v = sel1 else age_v = sel2            #adjust based on scenarios and selectivity per scenario
                            
           }
                           
@@ -497,62 +526,93 @@ for(scen in 1:scenarios){
                       
                        
                     }#end scenarios
-                    
+ 
+####################                   
+# Tidy results #                     
+###################
+        
+colnames(PopBiomass)<-as.numeric(c(1:130))
+
+rownames(PopBiomass)<-c("","scen1","scen2","scen3","scen4","scen5")
+
+section<-as.character(c(100:130))
+
+PopBiomass_tidy<-PopBiomass %>%
+   as_tibble() %>%
+   mutate("scenarios"=rownames(PopBiomass))%>%
+   gather(Year,Biomass,(1:130),)%>%
+   mutate("relative" = Biomass/(B0_area*numMA))%>%
+   arrange(Year)%>%
+   filter(Year %in% section) 
+ 
+PopBiomass_tidy$Year<-as.numeric(PopBiomass_tidy$Year)
+
+colnames(YieldBiomass)<-c(1:130)
+
+rownames(YieldBiomass)<-c('scen',"scen1","scen2","scen3","scen4","scen5")
+
+YieldBiomass_tidy<-YieldBiomass %>%
+  as.data.frame() %>%
+  mutate("scenarios"=rownames(PopBiomass))%>%
+  gather(Year,Yield,1:130)%>%
+  arrange(scenarios) %>%
+  mutate("relative"=Yield/max(YieldBiomass[,90:years])) %>%
+  filter(Year %in% section) 
+
+
+YieldBiomass_tidy$Year<-as.numeric(YieldBiomass_tidy$Year) 
+
 ####################                   
 # Plot results #                     
 ###################
-png(file=paste(species[sp],"/Figures/projections.png",sep=""))
 
-par( mfrow = c( 1, 2 ), oma = c( 0, 0, 2, 0 ))
+colvec=c("white" , "black","gold","red","turquoise3","purple")           
 
-colvec=c(1,"darkred","gold","red","turquoise3","purple","orange") 
+PB<-ggplot(PopBiomass_tidy,aes(x=Year,y=relative, color= scenarios,linetype = scenarios)) +
+  geom_line(lwd = 1.2) +
+   scale_x_continuous(expand = c(0,0),breaks=c(100,105,110,115,120,125,130),labels= c("0","5","10","15","20","25","30")) +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+        panel.background = element_blank(), axis.line = element_line(colour = "black"),legend.key = element_blank()) +
+  ylab("Relative Biomass") +
+  xlab("Year") 
+ 
+PB<-PB + scale_color_manual(values = colvec, name = "Management Scenarios", labels= c("","Current Status","Scenario 1: BAU", "Scenario 2: 20% No take reserve",
+                                                                               "Scenario 3: 30% No take reserve", "Scenario 4: Size Limit", 
+                                                                               "Scenario 5: Size limit and 30% no take reserve"),guide = FALSE) 
 
-tstart=100 #start graph at year 40 after most of OA access burn in
-                  
-matplot(t(PopBiomass[,100:years]/(B0_area*numMA)),main=levels(species)[which(levels(species)==species[sp])],xlab="Years",ylab="Relative Population Biomass",ylim=c(0,1),type="l",col=colvec,lty=1,lwd=2)
-                   
-matplot(t(YieldBiomass[,100:years]/max(YieldBiomass[,tstart:years])),ylab="Relative Fisheries Yield",xlab="Years",ylim=c(0,1),type="l",col=colvec,lty=1,lwd=2)
-              
-title(paste("Projection Results:",species[sp], "u=",OArate1))
-dev.off   ()               
-          
-                    
-    
+PB<- PB + scale_linetype_manual("",values=c("dashed","solid","solid","solid","solid","solid"),guide=FALSE)
+  
+            
+
+YB<-ggplot(YieldBiomass_tidy,aes(x=Year,y=relative, color= scenarios,linetype = scenarios)) +
+    geom_line(lwd = 1.2) +
+    scale_x_continuous(expand = c(0,0),breaks=c(100,105,110,115,120,125,130),labels= c("0","5","10","15","20","25","30")) +
+    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+          panel.background = element_blank(), axis.line = element_line(colour = "black"),legend.key = element_blank()) +
+    ylab("Relative Yield") +
+    xlab("Year") 
+  
+YB<-YB + scale_color_manual(values = colvec, name = "Management Scenarios", labels= c("","Scenario 1: BAU", "Scenario 2: 20% No take reserve",
+                                                                                        "Scenario 3: 30% No take reserve", "Scenario 4: Size Limit", 
+                                                                                        "Scenario 5: Size limit and 30% no take reserve")) 
+  
+YB<- YB + scale_linetype_manual("",values=c("dashed","solid","solid","solid","solid","solid"),guide=FALSE)
+  
+legend<-get_legend(YB) 
+
+lay=rbind(c(1,2),c(3,3))
+ 
+title1=textGrob(species[sp], gp=gpar(fontface="bold",fontsize=16))
+ 
+
+pdf(file=paste(species[sp],"/Figures/final_projections_u_01.pdf",sep=""),width = 12, height = 6)
+
+grid.arrange(PB,YB+theme(legend.position = "none"),legend,top = title1,ncol=2,nrow = 2,
+             widths=c(5,5),heights=c(1,0.5),layout_matrix=lay)         
+  
+dev.off()
+  
+
      }#end loop over species  
                       
-#################
-#Plot Legend#
-################
-       
-                     legendtext=NA
-                     for(leg in 1:numSpecies)  {
-                      if(leg==1)legendtext=levels(species)[which(levels(species)==species[species_pointer[leg]])]
-                      else  legendtext=c(legendtext,levels(species)[which(levels(species)==species[species_pointer[leg]])]      )
-                      }
-
-                      
-                     
-                     
-#                      windows()
-#                      par(mfrow=c(1,1) )
-#                       matplot(t(scen3CompareYield[,tstart:years]),main=paste(levels(country)[which(levels(country)==country[loc])],", ",levels(site)[which(levels(site)==site[loc])],", Local dispersal"),ylab="Scaled Scenario 3 Yield",xaxt="n",ylim=c(0,0.6),type="l",col=rainbow(numSpecies),lty=1,lwd=2)
-#                      axis(1, at=seq(1,(years-tstart+1),5),labels=seq((tstart-yearsOA),yearsTR,5),las=0)
-#                      mtext(side=1,"Years",line=2)
-#                      legend("topright",legend=legendtext,col=rainbow(numSpecies),cex=0.8,bty="n",lwd=1.5)
-                      
-                          
-                          
-                          
-                          
-   # }  #end loop over sites 
-  
-
-  
-      
-par(mfrow=c(1,1))
-#  windows()
-  plot(1, type="n", axes=F, xlab="", ylab="")
-  legend("topleft",legend=c("Scenario 1: No management intervention","Scenario2: 20% MR","Scenario 3: 30% MR ","Scenario 4: Size Limit","Scenario 5: Size limit+ 30% MR"),lty=1,col=colvec,cex=1.3,bty="n",lwd=3)  
-  
-#dev.off()
 
