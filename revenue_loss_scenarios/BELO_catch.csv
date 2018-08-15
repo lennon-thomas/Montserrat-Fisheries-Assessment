@@ -1,45 +1,45 @@
-Year,Catch,SciName,IdOrig,SpeciesCat,SpeciesCatName,CommName
-1994,2958.823068,"""Lutjanus synagris""",LUT,33,Miscellaneous coastal fishes,Lane snapper
-1995,9274.710405,"""Lutjanus synagris""",LUT,33,Miscellaneous coastal fishes,Lane snapper
-1996,9402.154149,"""Lutjanus synagris""",LUT,33,Miscellaneous coastal fishes,Lane snapper
-1997,15174.85957,"""Lutjanus synagris""",LUT,33,Miscellaneous coastal fishes,Lane snapper
-1998,11245.36145,"""Lutjanus synagris""",LUT,33,Miscellaneous coastal fishes,Lane snapper
-1999,6649.964667,Lutjanus synagris,LUT,33,Miscellaneous coastal fishes,Lane snapper
-2000,8461.848034,Lutjanus synagris,LUT,33,Miscellaneous coastal fishes,Lane snapper
-2001,12503.38593,Lutjanus synagris,LUT,33,Miscellaneous coastal fishes,Lane snapper
-2002,11872.8892,Lutjanus synagris,LUT,33,Miscellaneous coastal fishes,Lane snapper
-2003,11562.18882,Lutjanus synagris,LUT,33,Miscellaneous coastal fishes,Lane snapper
-2004,9092.801769,Lutjanus synagris,LUT,33,Miscellaneous coastal fishes,Lane snapper
-2005,9730.329491,Lutjanus synagris,LUT,33,Miscellaneous coastal fishes,Lane snapper
-2006,14664.7806,Lutjanus synagris,LUT,33,Miscellaneous coastal fishes,Lane snapper
-2007,7550.111862,Lutjanus synagris,LUT,33,Miscellaneous coastal fishes,Lane snapper
-2008,6771.741423,Lutjanus synagris,LUT,33,Miscellaneous coastal fishes,Lane snapper
-2009,6534.510899,Lutjanus synagris,LUT,33,Miscellaneous coastal fishes,Lane snapper
-2010,7804.128353,Lutjanus synagris,LUT,33,Miscellaneous coastal fishes,Lane snapper
-2011,5098.879777,Lutjanus synagris,LUT,33,Miscellaneous coastal fishes,Lane snapper
-2012,8236.399486,Lutjanus synagris,LUT,33,Miscellaneous coastal fishes,Lane snapper
-2013,8005.8988,Lutjanus synagris,LUT,33,Miscellaneous coastal fishes,Lane snapper
-2014,10880.3113,Lutjanus synagris,LUT,33,Miscellaneous coastal fishes,Lane snapper
-2015,8226.798104,Lutjanus synagris,LUT,33,Miscellaneous coastal fishes,Lane snapper
-1994,2958.823068,Belone Belone,BELO,37,Miscellaneous coastal fishes,gar
-1995,9274.710405,Belone Belone,BELO,37,Miscellaneous coastal fishes,gar
-1996,9402.154149,Belone Belone,BELO,37,Miscellaneous coastal fishes,gar
-1997,15174.85957,Belone Belone,BELO,37,Miscellaneous coastal fishes,gar
-1998,11245.36145,Belone Belone,BELO,37,Miscellaneous coastal fishes,gar
-1999,6649.964667,Belone Belone,BELO,37,Miscellaneous coastal fishes,gar
-2000,8461.848034,Belone Belone,BELO,37,Miscellaneous coastal fishes,gar
-2001,12503.38593,Belone Belone,BELO,37,Miscellaneous coastal fishes,gar
-2002,11872.8892,Belone Belone,BELO,37,Miscellaneous coastal fishes,gar
-2003,11562.18882,Belone Belone,BELO,37,Miscellaneous coastal fishes,gar
-2004,9092.801769,Belone Belone,BELO,37,Miscellaneous coastal fishes,gar
-2005,9730.329491,Belone Belone,BELO,37,Miscellaneous coastal fishes,gar
-2006,14664.7806,Belone Belone,BELO,37,Miscellaneous coastal fishes,gar
-2007,7550.111862,Belone Belone,BELO,37,Miscellaneous coastal fishes,gar
-2008,6771.741423,Belone Belone,BELO,37,Miscellaneous coastal fishes,gar
-2009,6534.510899,Belone Belone,BELO,37,Miscellaneous coastal fishes,gar
-2010,7804.128353,Belone Belone,BELO,37,Miscellaneous coastal fishes,gar
-2011,5098.879777,Belone Belone,BELO,37,Miscellaneous coastal fishes,gar
-2012,8236.399486,Belone Belone,BELO,37,Miscellaneous coastal fishes,gar
-2013,8005.8988,Belone Belone,BELO,37,Miscellaneous coastal fishes,gar
-2014,10880.3113,Belone Belone,BELO,37,Miscellaneous coastal fishes,gar
-2015,8226.798104,Belone Belone,BELO,37,Miscellaneous coastal fishes,gar
+Year,Catch,SciName,IdOrig,SpeciesCat,SpeciesCatName
+1994,2958.823068,"""Lutjanus synagris""",LUT,37,Miscellaneous coastal fishes
+1995,9274.710405,"""Lutjanus synagris""",LUT,37,Miscellaneous coastal fishes
+1996,9402.154149,"""Lutjanus synagris""",LUT,37,Miscellaneous coastal fishes
+1997,15174.85957,"""Lutjanus synagris""",LUT,37,Miscellaneous coastal fishes
+1998,11245.36145,"""Lutjanus synagris""",LUT,37,Miscellaneous coastal fishes
+1999,6649.964667,Lutjanus synagris,LUT,37,Miscellaneous coastal fishes
+2000,8461.848034,Lutjanus synagris,LUT,37,Miscellaneous coastal fishes
+2001,12503.38593,Lutjanus synagris,LUT,37,Miscellaneous coastal fishes
+2002,11872.8892,Lutjanus synagris,LUT,37,Miscellaneous coastal fishes
+2003,11562.18882,Lutjanus synagris,LUT,37,Miscellaneous coastal fishes
+2004,9092.801769,Lutjanus synagris,LUT,37,Miscellaneous coastal fishes
+2005,9730.329491,Lutjanus synagris,LUT,37,Miscellaneous coastal fishes
+2006,14664.7806,Lutjanus synagris,LUT,37,Miscellaneous coastal fishes
+2007,7550.111862,Lutjanus synagris,LUT,37,Miscellaneous coastal fishes
+2008,6771.741423,Lutjanus synagris,LUT,37,Miscellaneous coastal fishes
+2009,6534.510899,Lutjanus synagris,LUT,37,Miscellaneous coastal fishes
+2010,7804.128353,Lutjanus synagris,LUT,37,Miscellaneous coastal fishes
+2011,5098.879777,Lutjanus synagris,LUT,37,Miscellaneous coastal fishes
+2012,8236.399486,Lutjanus synagris,LUT,37,Miscellaneous coastal fishes
+2013,8005.8988,Lutjanus synagris,LUT,37,Miscellaneous coastal fishes
+2014,10880.3113,Lutjanus synagris,LUT,37,Miscellaneous coastal fishes
+2015,8226.798104,Lutjanus synagris,LUT,37,Miscellaneous coastal fishes
+1994,2958.823068,Belone Belone,BELO,33,Miscellaneous coastal fishes
+1995,9274.710405,Belone Belone,BELO,33,Miscellaneous coastal fishes
+1996,9402.154149,Belone Belone,BELO,33,Miscellaneous coastal fishes
+1997,15174.85957,Belone Belone,BELO,33,Miscellaneous coastal fishes
+1998,11245.36145,Belone Belone,BELO,33,Miscellaneous coastal fishes
+1999,6649.964667,Belone Belone,BELO,33,Miscellaneous coastal fishes
+2000,8461.848034,Belone Belone,BELO,33,Miscellaneous coastal fishes
+2001,12503.38593,Belone Belone,BELO,33,Miscellaneous coastal fishes
+2002,11872.8892,Belone Belone,BELO,33,Miscellaneous coastal fishes
+2003,11562.18882,Belone Belone,BELO,33,Miscellaneous coastal fishes
+2004,9092.801769,Belone Belone,BELO,33,Miscellaneous coastal fishes
+2005,9730.329491,Belone Belone,BELO,33,Miscellaneous coastal fishes
+2006,14664.7806,Belone Belone,BELO,33,Miscellaneous coastal fishes
+2007,7550.111862,Belone Belone,BELO,33,Miscellaneous coastal fishes
+2008,6771.741423,Belone Belone,BELO,33,Miscellaneous coastal fishes
+2009,6534.510899,Belone Belone,BELO,33,Miscellaneous coastal fishes
+2010,7804.128353,Belone Belone,BELO,33,Miscellaneous coastal fishes
+2011,5098.879777,Belone Belone,BELO,33,Miscellaneous coastal fishes
+2012,8236.399486,Belone Belone,BELO,33,Miscellaneous coastal fishes
+2013,8005.8988,Belone Belone,BELO,33,Miscellaneous coastal fishes
+2014,10880.3113,Belone Belone,BELO,33,Miscellaneous coastal fishes
+2015,8226.798104,Belone Belone,BELO,33,Miscellaneous coastal fishes

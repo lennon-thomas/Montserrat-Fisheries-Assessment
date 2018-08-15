@@ -1,0 +1,321 @@
+,common_name,id10,scientific_name,new_id
+,queen triggerfish,ABALIVE,Balistes vetula,BALIVE
+3,ocean surgeon,ACANBA,Acanthurus bahianus,ACANBA
+7,doctorfish,ACANCH,Acanthurus chirurgus,ACANCH
+11,blue tang,ACANCO,Acanthurus coeruleus,ACANCO
+,doctorfish,ACNACH,Acanthurus chirurgus,ACANCH
+15,bonefishe,ALBU,Albulidae,ALBU
+16,ten pounder,ALBUUU,Albula vulpes,ALBUVU
+17,bonefish,ALBUVU,Albula vulpes,ALBUVU
+20,doctorfish,ANANCH,Acanthurus chirurgus,ACANCH
+21,catfishes,ARIIA,Aridae (g:  arius),ARIIA
+22,silversides,ATHE,Atherinidae,ATHE
+23,trumpetfishes,AULO,Aulostomidae,AULO
+24,triggerfishes,BALI,Balistidae,BALI
+25,gray trigger,BALICA,Balistes capriscus,BALICA
+27,black durgan,BALIIU,Melichthys niger,BALINI
+28,black durgan,BALINE,Melichthys niger,BALINI
+29,black durgan,BALINI,Melichthys niger,BALINI
+34,ocean triggerfish,BALIPU,Canthidermis sufflamen,BALIPU
+37,queen triggerfish,BALIVE,Balistes vetula,BALIVE
+39,gar,BELO,Belone belone,BELO
+44,Keeltail needlefish,BELOAR,Platybelone argalus argalus,BELOAR
+45,g:tylososurus needlefish,BELOT,Tylosurus crocodilus,BELOT
+46,queen triggerfish,BLAIVE,Balistes vetula,BALIVE
+47,tilefishes,BRAN,Branchiostegidae,BRAN
+126,unicorn tilefish,BRAN,Branchiostegidae,BRAN
+48,jacks,CARA,Carangidae,CARA
+49,yellow jack,CARABA,Carangoides bartholomaei,CARABA
+52,rainbow runner,CARABI,Elagatis bipinnulata,CARABI
+53,african pompano,CARACI,Alectis ciliaris,CARACI
+54,african pompano,CARACI,Alectis ciliaris,CARACI
+55,big eye scad,CARACR,Selar crumenophthalmus,CARACR
+58,blue runner,CARACY,Caranx crysos,CARACY
+59,amber jack,CARADU,Seriola dumerili,CARADU
+61,permit,CARAFA,Trachinotus falcatus,CARAFA
+62,comad,CARAFI,Seriola rivoliana,CARARI
+63,crevalle jack,CARAFU,Caranx hippos,CARAHI
+64,palometa,CARAGO,Trachinotus goodei,CARAGO
+65,crevalle jack,CARAH,Caranx hippos,CARAHI
+65,crevalle jack,CARAHI,Caranx hippos,CARAHI
+71,horse eye jack,CARALA,Caranx latus,CARALA
+74,black jack,CARALU,Caranx lugubris,CARALU
+76,comad,CARAN,Seriola rivoliana,CARARI
+77,round scad,CARAPU,Decapterus punctatus,CARAPU
+78,almaco jack,CARARI,Seriola rivoliana,CARARI
+92,bar jack,CARARU,Caranx ruber,CARARU
+95,cottonmouth jack,CARASC,Uraspis secunda,CARASC
+96,atlantic moonfish,CARAST,Selene setapinnis,CARAST
+97,lookdown,CARAVO,Selene vomer,CARAVO
+99,lemon shark,CARCBE,Negaprion brevirostris,CARCBE
+100,tiger shark,CARCCU,Galeocerdo cuvier,CARCCU
+102,blacktip shark,CARCLI,Carcharhinus limbatus,CARCLI
+103,oceanic whitetip shark,CARCLO,Carcharhinus longimanus,CARCLO
+104,sandbar shark,CARCMI,Carcharhinus plumbeus,CARCMI
+105,caribbean reef shark,CARCPE,Carcharhinus perezii,CARCPE
+106,caribbean sharpnose shark,CARCPO,Rhizoprionodon porosus,CARCPO
+107,caribbean reef shark,CARCSP,Carcharhinus perezii,CARCPE
+108,sand tiger shark,CARCTA,Charcharias taurus,CARCTA
+109,black jack,CARRAFU,Caranx lugubris,CARALU
+110,snooks,CENT,Centropomidae,CENT
+111,butterflyfishes,CHAE,Chaetodontidae,CHAE
+112,foureye butterflyfish,CHAECA,Chaetodon capistratus,CHAECA
+113,spotfin butterflyfish,CHAEOC,Chaetodon ocellatus,CHAEOC
+114,banded butterflyfish,CHAEST,Chaetodon striatus,CHAEST
+115,turtles,CHEL,Cheloniidae,CHEL
+116,hawksbill turtle,CHELIM,Eretmochelys imbricata,CHELIM
+117,Atl green seaturtle,CHELMY,Chelonia mydas mydas,CHELMY
+118,peacock bass,CICHOC,Cichla ocellaris,CICHOC
+127,herrings,CLUP,Clupeidae,CLUP
+128,conger eel,CONG,Conger oceanicus,CONGOC
+129,"eel,conger",CONGOC,Conger oceanicus,CONGOC
+130,manytooth conger,CONGTR,Conger triporiceps,CONGTR
+134,dolphinfish,CORY,Coryphaena hippurus,CORYHI
+136,dolphinfish,CORYHI,Coryphaena hippurus,CORYHI
+137,flying gurnard,DACTVO,Dactylopterus volitans,DACTVO
+138,stingrays,DASY,Dasyatidae,DASY
+141,remora,ECHEMA,Echeneidae,ECHEMA
+140,sharksucker,ECHENA,Echeneis naucrates,ECHENA
+141,sharksucker,ECHERE,Echeneis naucrates,ECHENA
+142,tarpon,ELOPAT,Megalops atlanticus,ELOPAT
+144,Atlantic spadefish,EPHIFA,Chaetodipterus faber,EPHIFA
+145,flyingfishes,EXOC,Exocoetidae,EXOC
+146,monacanthidae,FILLET,Monacanthidae,FILLET
+147,"jenny,silver",GERRGU,Eucinostomus gula,GERRGU
+148,soapfishes,GRAM,Grammistidae,GRAM
+149,caesar grunt,HACMCA,Haemulon carbonarium,HAEMCA
+150,caesar grunt,HAECA,Haemulon carbonarium,HAEMCA
+151,caesar grunt,HAELCA,Haemulon carbonarium,HAEMCA
+152,grunts,HAEM,Haemulidae,HAEM
+153,margate,HAEMAL,Haemulon album,HAEMAL
+511,white margate,HAEMAL,Haemulon album,HAEMAL
+156,black grunt,HAEMBO,Haemulon bonariense,HAEMBO
+162,caesar grunt,HAEMCA,Haemulon carbonarium,HAEMCA
+164,smalltooth grunt,HAEMCR,Haemulon chrysargyreum,HAEMCR
+165,margate,HAEMEL,Haemulon album,HAEMAL
+166,french grunt,HAEMF,Haemulon flavolineatum,HAEMFL
+169,margate,HAEMFL,Haemulon album,HAEMAL
+167,french grunt,HAEMFL,Haemulon flavolineatum,HAEMFL
+170,sailors choice,HAEMFL,Haemulon parrai,HAEMPA
+171,rock beauty,HAEMJA,Holacanthus tricolor,PCANTR
+172,spanish grunt,HAEMMA,Haemulon macrostomum,HAEMMA
+173,cottonwick,HAEMME,Haemulon melanurum,HAEMME
+498,cottonwick,HAEMME,Haemulon melanurum,HAEMME
+174,barred grunt,HAEMNO,Conodon nobilis,HAEMNO
+175,classic grunt,HAEMOA,Hamemulidae,HAEM
+176,sailors choice,HAEMPA,Haemulon parrai,HAEMPA
+177,"grunt,white",HAEMPL,Haemulon plumieri,HAEMPL
+178,blue striped grunt,HAEMSC,Haemulon sciurus,HAEMSC
+179,"grunt,striped",HAEMST,Haemulon striatum,HAEMST
+181,black margate,HAEMSU,Anisotremus surinamensis,HAEMSU
+184,porkfish,HAEMVI,Anisotremus virginicus,HAEMVI
+176,french grunt,HAEMVL,Hamemulidae,HAEMFL
+186,french grunt,HEAMFL,Haemulon flavolineatum,HAEMFL
+187,caesar grunt,HEMCA,Haemulon carbonarium,HAEMCA
+188,balao,HEMIBA,Hemiramphus balao,HEMIBA
+189,ballyhoo,HEMIBR,Hemiramphus brasiliensis,HEMIBR
+191,squirrelfishes,HOLO,Holocentridae,HOLO
+195,squirrelfish,HOLOAD,Holocentrus adscensionis,HOLOAD
+196,"soldierfish,blackbar",HOLOJA,Myripristis jacobus,HOLOJA
+197,"squirrelfish,longspine",HOLORU,Holocentrus rufus,HOLORU
+198,marlins,ISTI,Istiophoridae,ISTI
+199,white marlin,ISTIAB,Kajikia albida,ISTIAB
+200,blue marlin,ISTINI,Makaira nigricans,ISTINI
+202,sailfish,ISTIPL,Istiophorus platypterus,ISTIPL
+203,bermuda chub,KYPHSE,Kyphosus sectatrix,KYPHSE
+206,spanish hogfish,LABBRU,Bodianus rufus,LABBRU
+207,wrasses,LABR,Labridae,LABR
+208,spanish hogfish,LABRAU,Bodianus rufus,LABBRU
+209,spanish hogfish,LABRIU,Bodianus rufus,LABBRU
+210,spanish hogfish,LABRIU,Bodianus rufus,LABBRU
+211,hogfish,LABRMX,Lachnolaimus maximus,LABRMX
+212,creole wrasse,LABRPA,Clepticus parrae,LABRPA
+216,spotfin hogfish,LABRPU,Bodianus pulchellus,LABRPU
+217,puddingwife,LABRRA,Halichoeres radiatus,LABRRA
+219,"hogfish,spanish",LABRRU,Bodianus rufus,LABBRU
+222,squid,LOLI,Loliginidae,LOLI
+223,snapper,LUTJ,Lutjanidae,LUTJ
+225,vermillion snapper,LUTJAM,Rhomboplites aurorubens,LUTJAU
+226,mahogany snapper,LUTJAMA,Lutjanus mahogoni,LUTJMA
+227,mutton snapper,LUTJAN,Lutjanus analis,LUTJAN
+231, schoolmaster snapper,LUTJAP,Lutjanus apodus,LUTJAP
+232,wenchman,LUTJAQ,Pristipomoides aquilonaris,LUTJAQ
+234,vermilion snapper,LUTJAU,Rhomboplites aurorubens,LUTJAU
+237,blackfin snapper,LUTJBU,Lutjanus buccanella,LUTJBU
+240,red snapper,LUTJCA,Lutjanus campechanus,LUTJCA
+243,yellowtail snapper,LUTJCH,Ocyurus chrysurus,LUTJCH
+245,cubera snapper,LUTJCY,Lutjanus cyanopterus,LUTJCY
+246,black snapper,LUTJDE,Apsilus dentatus,LUTJDE
+248,gray snapper,LUTJGR,Lutjanus griseus,LUTJGR
+253,dog snapper,LUTJJJO,Lutjanus jocu,LUTJJO
+253,dog snapper,LUTJJO,Lutjanus jocu,LUTJJO
+254,snapper,LUTJL,Lutjanidae,LUTJ
+255,mahogany snapper,LUTJMA,Lutjanus mahogoni,LUTJMA
+261,queen snapper,LUTJOC,Etelis oculatus,LUTJOC
+253,dog snapper,LUTJOC,Lutjanus jocu,LUTJJO
+262,southern red snapper,LUTJPU,Lutjanus purpureus,LUTJPU
+263,yellowtail snapper,LUTJSCH,Ocyurus chrysurus,LUTJCH
+267,lane snapper,LUTJSY,Lutjanus synagris,LUTJSY
+269,silk snapper,LUTJVI,Lutjanus vivanus,LUTJVI
+271,gray snapper or uku,LUTJVS,Aprion virescens,LUTJVS
+272,lane snapper,LUTJVSY,Lutjanus synagris,LUTJSY
+500,lane snapper,LUTSY,Lutjanus synagris,LUTJSY
+273,dog snapper,LUTTJO,Lutjanus jocu,LUTJJO
+274,silk snapper,LUTVI,Lutjanus vivanus,LUTJVI
+275,sand tilefish,MALAPL,Malacanthus plumieri,MALAPL
+276,white spotted tilefish,MANAMA,Cantherhines macrocerus,MONAMA
+277,indian crown conch,MELOME,Melongena melongena,MELOME
+278,white spotted tilefish,MONAMA,Cantherhines macrocerus,MONAMA
+280,orangespot filefish,MONAPU,Cantherhines pullus,MONAPU
+281,orange filefish,MONASC,Aluterus schoepfii,MONASC
+282,scrawled filefish,MONASR,Aluterus scriptus,MONASR
+286,scrawled filefish,MONESR,Aluterus scriptus,MONASR
+287,scrawled filefish,MONOSR,Aluterus scriptus,MONASR
+288,mullets,MUGI,Mugilidae,MUGI
+289,"mullet,white",MUGICU,Mugil curema,MUGICU
+291,goatfish,MULL,Mullidae,MULL
+294,yellow goatfish,MULLMA,Mulloidichthys martinicu,MULLMA
+293,spotted goatfish,MULLMC,Pseudupeneus maculatus,MULLMC
+296,dwarf goatfish,MULLPA,Upeneus parvus,MULLPA
+297,morays,MURA,Muraenidae,MURA
+298,green moray,MURAFU,Gymnothorax funebris,MURAFU
+300,spotted moray,MURAMO,Gymnothorax moringa,MURAMO
+302,staut moray,MURARO,Muraena robusta,MURARO
+303,purplemouth moray,MURAVI,Gymnothorax vicinus,MURAVI
+1,mixed fish,NA,NA,NA
+304,NA,NA,NA,NA
+499,NA,NA,NA,NA
+501,no catch,NA,NA,NA
+502,no catch ,NA,NA,NA
+503,no catch - came back in because current was too strong,NA,NA,NA
+504,no catch due to strong current,NA,NA,NA
+505,no data,NA,NA,NA
+506,no data ,NA,NA,NA
+507,no data collected,NA,NA,NA
+508,none,NA,NA,NA
+510,unknown,NA,NA,NA
+307,NA,NO CATCH,NA,NO CATCH
+308,dolphinfish,NO DATA,NA,NO DATA
+309,no data collected,NO DATA COLLECTED,NA,NO DATA
+310,no fish caught,NOFISH,NA,NO CATCH
+311,carib reef octopus,OCTOBR,Octopus briareus,OCTOBR
+312,octopus,OCTOO,Octopus spp,OCTOO
+313,common octopus,OCTOVU,Octopus vulgaris,OCTOVU
+314,batfishes,OGCO,Ogcocephalidae,OGCO
+315,nurse shark,ORECCI,Ginglymostoma cirratum,ORECCI
+317,spotted trunkfish,OSTRBI,Lactophrys bicaudalis,OSTRBI
+318,honeycomb cowfish,OSTRPO,Acanthostracion polygonius,OSTRPO
+321,trunkfish,OSTRPR,Lactophrys trigonus,OSTRTR
+322,scrawled cowfish,OSTRQU,Acanthostracion quadricornis,OSTRQU
+323,smooth trunkfish,OSTRTI,Lactophrys triqueter,OSTRTI
+324,trunkfish,OSTRTR,Lactophrys trigonus,OSTRTR
+325,honeycomb cowfish,OSTRYO,Acanthostracion polygonius,OSTRPO
+326,honeycomb cowfish,OTSRPO,Acanthostracion polygonius,OSTRPO
+327,rock beauty,PACANTR,Holacanthus tricolor,PCANTR
+328,spiny lobster,PALI,Palinuridae,PALI
+330,caribbean spiny lobster,PALIAR,Panulirus argus,PALIAR
+331,spiny lobster,PALICAN,Palinuridae,PALI
+332,spotted spiny lobster,PALIGU,Panulirus guttatus,PALIGU
+333,angelfishes,PCAN,Pomachanthidae,PCAN
+334,gray angelfish,PCANAR,Pomacanthus arcuatus,PCANAR
+337,blue angelfish,PCANBE,Holacanthus bermudensis,PCANBE
+338,queen angelfish,PCANCI,Holacanthus ciliaris,PCANCI
+341,gray angelfish,PCANCR,Pomacanthus arcuatus,PCANAR
+342,french angelfish,PCANPA,Pomacanthus paru,PCANPA
+347,rock beauty,PCANTR,Holacanthus tricolor,PCANTR
+351,butterfishes,PEPR,Stromateidae,PEPR
+352,butterfish,PEPRTR,Peprilus triacanthus,PEPRTR
+353,caribbean spiny lobster,PLAIAR,Panulirus argus,PALIAR
+354,damselfishes,POMC,Pomacentridae,POMC
+355,yellowtail damselfish,POMCCH,Microspathodon chrysurus,POMCCH
+356,sergeant major,POMCSA,Abudefduf saxatilis,POMCSA
+357,"sergeant,night",POMCTA,Abudefduf taurus,POMCTA
+358,"crab,speckled swimmin",PORTCR,Arenaeus cribrarius,PORTCR
+119,pot fish,POT,unknown,POT
+120,robin (sprat),POT,unknown,POT
+121,sprat,POT,unknown,POT
+122,rockfish,POT,unknown,POT
+124,mixed fish,POT,unknown,POT
+125,snit,POT,unknown,POT
+359,bungi (atlantic bigeye),PRIA,Priacanthus arenatus,PRIAAR
+360,bungi (atlantic bigeye),PRIAAR,Priacanthus arenatus,PRIAAR
+369,glasseye snapper,PRIACR,Heteropriacanthus cruentatus,PRIACR
+370,glasseye snapper,PRIAR,Priacanthus cruentatus,PRIACR
+371,queen angelfish,PSCANCI,Holacanthus ciliaris,PCANCI
+372,lionfish,PTERVO,Pterois volitans,PTERVO
+374,parrotfishes,SCAR,Scaridae,SCAR
+376,redband parrotfish,SCARAU,Sparisoma aurofrenatum,SCARAU
+378,blue parrotfish,SCARCCO,Scarus coeruleus,SCARCO
+379,midnight parrotfish,SCARCE,Scarus coelestinus,SCARCE
+380,redtail parrotfish,SCARCH,Sparisoma chrysopterum,SCARCH
+384,blue parrotfish,SCARCO,Scarus coeruleus,SCARCO
+385,striped parrotfish,SCARCR,Scarus iseri,SCARCR
+386,rainbow parrotfish,SCARGU,Scarus guacamaia,SCARGU
+387,blue parrotfish,SCARRO,Scarus coeruleus,SCARCO
+388,redfin parrotfish,SCARRU,Sparisoma rubripinne,SCARRU
+389,princess parrotfish,SCARTA,Scarus taeniopterus,SCARTA
+390,queen parrtofish,SCARVE,Scarus vetula,SCARVE
+392,stoplight parrotfish,SCARVI,Sparisoma viride,SCARVI
+394,drums,SCIA,Sciaenidae,SCIA
+395,jackknife-fish,SCIALA,Equetus lanceolatus,SCIALA
+398,gulf kingfish,SCIALI,Menticirrhus littoralis,SCIALI
+399,gulf kingfish,SCIALU,Menticirrhus littoralis,SCIALI
+400,spotted drum,SCIAPU,Equetus punctatus,SCIAPU
+401,striped croaker,SCIASA,Corvula sanctaeluciae,SCIASA
+402,mackerels & tunas,SCOM,Scombridae,SCOM
+509,tuna,SCOM,Scombridae,SCOM
+403,albacore tuna,SCOMAA,Thunnus alalunga,SCOMAA
+404,yellowfin tuna,SCOMAB,Thunnus albacares,SCOMAB
+405,little tunny,SCOMAL,Euthynnus alletteratus,SCOMAL
+406,blackfin tuna,SCOMAT,Thunnus atlanticus,SCOMAT
+407,tuna,SCOMBI,Thunnus sp.,SCOMT
+408,spanish mackeral,SCOMBR,Scomberomorus maculatus,SCOMBR
+409,king mackeral,SCOMCA,Scomberomorus cavalla,SCOMCA
+410,tuna,SCOMF,Thunnus sp.,SCOMT
+411,spanish mackerel,SCOMMA,Scomberomorus maculatus,SCOMMA
+413,skipjack tuna,SCOMPE,Katsuwonus pelamis,SCOMPE
+414,ceco makeral,SCOMRE,Scomberomorus regalis,SCOMRE
+422,atlantic bonito,SCOMSA,Sarda sarda,SCOMSA
+423,wahoo,SCOMSO,Acanthocybium solandri,SCOMSO
+425,tuna,SCOMT,Thunnus sp.,SCOMT
+428,bluefin tuna,SCOMTH,Thunnus thynnus,SCOMTH
+429,slipper lobster,SCYL,Scyllaridae,SCYL
+430,sculp slipper,SCYLAN,Parribacus antarcticus,SCYLAN
+431,coney,SERFFU,Cephalopholis fulva,SERRFU
+433,sea basses,SERR,Serranidae,SERR
+434,rock hind,SERRAD,Epinephelus adscensionis,SERRAD
+436,black grouper,SERRBO,Mycteroperca bonaci,SERRBO
+438,graysby,SERRCR,Cephalopholis cruentata,SERRCR
+442,groupers g:dermatolep,SERRD,Dermatolepis  spp,SERRD
+443,"groupers,g:epin.",SERRE,Epinephelus  spp,SERRE
+445,red hind,SERRFGU,Epinephelus guttatus,SERRGU
+446,coney,SERRFI,Cephalopholis fulva,SERRFU
+447,creole fish,SERRFR,Paranthias furcifer,SERRFR
+,coney,SERRFU,Cephalopholis fulva,SERRFU
+,red hind,SERRGU,Epinephelus guttatus,SERRGU
+458,red grouper,SERRMO,Epinephelus morio,SERRMO
+460,nassau grouper,SERRSF,Epinephelus striatus,SERRST
+462,nassau grouper,SERRST,Epinephelus striatus,SERRST
+466,tiger grouper,SERRTI,Mycteroperca tigris,SERRTI
+467,yellowfin grouper,SERRVE,Mycteroperca venenosa,SERRVE
+468,yellowfin grouper,SERVE,Mycteroperca venenosa,SERRVE
+469,jolthead porgy,SPARBA,Calamus bajonado,SPARBA
+477,"porgy,g:calamus",SPARC,Calamus spp,SPARC
+478,saucereye porgy,SPARCA,Calamus calamus,SPARCA
+479,sea bream,SPARCH,Archosargus rhomboidalis,SPARRH
+480,sea bream,SPAROCH,Archosargus rhomboidalis,SPARRH
+481,pluma porgy,SPARPN,Calamus pennatula,SPARPN
+483,sea bream,SPARRH,Archosargus rhomboidalis,SPARRH
+484,pinfish,SPARRO,Lagodon rhomboides,SPARRO
+485,scaloped hammerhead shark,SPHRLE,Sphyrna lewini,SPHRLE
+486,great hammerhead shark,SPHRMO,Sphyrna mokarran,SPHRMO
+487,barracuda,SPHY,Sphyraenidae,SPHY
+489,great barracuda,SPHYBA,Sphyraena barracuda,SPHYBA
+490,"sennet,southern",SPHYPI,Sphyraena picudilla,SPHYPI
+495,"sharks,unclassified",SQUA,Squalidade,SQUA
+496,queen conch,STROGI,Strombus gigas,STROGI
+497,lizardfishes,SYNO,Synodontidae,SYNO
+512,NA,,NA,NA
+513,NA,,NA,NA
+514,NA,,NA,NA
+515,NA,,NA,NA
