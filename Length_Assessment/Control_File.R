@@ -14,7 +14,7 @@ if (basename(getwd())!='Montserrat-Fisheries-Assessment'){
   print("Set working directory to home folder: Montserrat-Fisheries-Assessment")
 }
 
-pkgs <- c('plyr','readr', 'ggplot2','tidyr', 'R2admb', 'dplyr', 'animation')
+pkgs <- c('plyr','readr', 'ggplot2','tidyr', 'R2admb', 'dplyr', 'animation','zoo')
 
 #This will install necessary packages on local machine
 load.packages = function(a){
@@ -33,7 +33,7 @@ source("./Length_Assessment/Functions/SubFunctions.R") #Pull in helper functions
 ############High Level Assessment Controls############
 
 #Assessments to run with this control file
-Assessments <- c('LBAR')
+Assessments <- c('LBAR','LBSPR')
 
 Counter<- 0
 
@@ -59,6 +59,7 @@ MinSampleSize <- 110
 ############################Load and summarize length data######################
  LengthDataAll <- read.csv("./Length_Assessment/all_length_dates.csv", stringsAsFactors = FALSE, strip.white = TRUE)
 
+CatchDataAll<-read.csv("./Length_Assessment/all_catch_data.csv", stringsAsFactors = FALSE)
 #Filter out Species with a FISHERY DEPENDENT sample size < MinSampleSize 
 
 LengthDataFiltered<- SelectForLengthSampleSize(LengthDataAll)
@@ -68,6 +69,11 @@ names(LengthDataFiltered)
 #Prints Species to be included in the analysis (those with sufficient sample size)
 LBar_sp<- unique(LengthDataFiltered$Species.ID)
 print(LBar_sp)
+
+CatchData_sp<-CatchDataAll %>%
+  filter(id10 %in% LBar_sp) %>%
+  arrange(id10)
+
 
 #Prints gears represented in the selected sample
 print(unique(LengthDataFiltered$Gear.Type))
@@ -98,15 +104,18 @@ StoreAssess <- as.data.frame(matrix(NA,nrow=length(LBar_sp),ncol=12))
 for (i in 1:length(LBar_sp)){
 LengthData<-filter(LengthDataFiltered, Species.ID==LBar_sp[i]) 
 
-
+CatchData<-filter(CatchData_sp,id10==LBar_sp[i]) %>%
+  group_by(year,id10) %>%
+  summarise(Catch = sum(weight_kgs,na.rm=TRUE)) %>%
+  rename(Year = year)
 #######################Life History#############################################
 
  Fish<-read.csv("./Length_Assessment/MNI_LH_spread.csv", stringsAsFactors = FALSE, strip.white = TRUE) %>%
    filter(sp_id==LBar_sp[i]) 
 
 
- Fish$AgeMat50<- NA
- Fish$AgeMatSource<- NA
+# Fish$AgeMat50<- NA
+ #Fish$AgeMatSource<- NA
 
  Fish$MaxAge <- ceiling(-log(0.05)/Fish$M)
 
@@ -154,7 +163,9 @@ Counter<- Counter+i
  
 #Checks for sufficient sample size with Years of species       
 SampleCheck<- CheckLengthSampleSize(LengthData)        
-#           
+LengthQuantile<- quantile(SampleCheck$ParedData$Length,na.rm=T)
+
+        
 #           if (SampleCheck$YearsWithEnoughData>0)
 #           {
 
@@ -164,6 +175,7 @@ Temp[i,]<- LBAR(SampleCheck$ParedData,LagLength=1,Weight=1,IncludeMPA=0,ReserveY
 
 StoreAssess[i,]<- data.frame(Fishes,Sites[s],Assessments[a],Temp[i,],stringsAsFactors=F) 
 
+Temp2[i,]<- CatchMSY(CatchData,1000,0.05,0,0,1,0,0,1,NA,c(0.75,0.99),NA,NA,c(0.25,0.65))
 }
 
 colnames(StoreAssess) <- c("Species", "Site",	"Assessment","	Year",	"Method",	"SampleSize",	"Value",	"LowerCI","UpperCI",	"SD",	"Metric",	"Flag")
