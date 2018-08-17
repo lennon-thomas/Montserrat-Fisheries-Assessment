@@ -1,0 +1,2507 @@
+---
+title: "Preliminary Report for Cuba Project"
+author: "Produced by Ocean Analytics"
+date: "May 30, 2017"
+output:
+  html_document:
+    fig_height: 10
+    fig_width: 9
+    number_sections: yes
+    theme: spacelab
+    toc: yes
+  pdf_document:
+    number_sections: yes
+    toc: yes
+  word_document: default
+pandoc_args:
+- +RTS
+- -K64m
+- -RTS
+---
+
+```{r, echo=FALSE, error = FALSE, message = FALSE, warning = FALSE, results='asis'}
+## Set working directory
+# setwd("~/Dropbox/Tracey's EcoA Work/Cuba/2017 Documents/Cuba_model_update/Markdown")
+setwd("~/Desktop/R Workshop")
+
+## Read in libraries
+library(ggplot2)
+library(reshape2)
+library(dplyr)
+library(gridExtra)
+library(pander)
+library(knitr)
+library(rmarkdown)
+library(tidyr)
+library(gtable)
+
+#cat(knit_child("textInputFiles/introduction.Rmd",quiet=TRUE))
+```
+  
+# Fishery Reports  
+This section contains reports for each fishery.  
+
+```{r, echo=FALSE, error=FALSE, message=FALSE, warning = FALSE, results='asis'}
+## Read in data input file
+# dataInput = read.csv("cuba_sp_inputs_trial_noIF_1f_0414.csv", header=TRUE,stringsAsFactors=FALSE)
+dataInput = read.csv("cuba_biajaiba_lobster_inputs_June_2017.csv", header = TRUE, stringsAsFactors = FALSE)
+
+## Read in parameter text descriptions
+parameterText = read.csv("parameterTextCuba.csv", header=TRUE,stringsAsFactors=FALSE,check.names=FALSE)
+
+## Read in functions file
+source("functionsCuba_update.R")
+
+################################################
+#### Set up model run
+## Enter management scenarios to loop over - select 1 through 5
+scenarios = c(1,2,3,4,5,6)
+## Enter whether or not to loop over catch share cost and price scalars - put "yes" or "no"
+catchShareLoop = "yes"
+## Enter whether or not to loop over eliminating illegal fishing - put "yes" or "no"
+illegalLoop = "yes"
+
+################################################
+################################################
+### Implementation vector
+# delayVec <- c(2:20)
+delayVec <- c(2)
+
+
+counterTable = 1
+counterFigure = 1
+
+##################################################
+
+## Loop over all fisheries
+# for (i in 1:1)
+for (i in 1:nrow(dataInput))
+{
+    outputs = projectionModel(dataInput[i,],scenarios,catchShareLoop,illegalLoop)
+    
+    masterOutputi = cbind(rep(dataInput[i,]$Fishery,nrow(melt(outputs$BProjections))),
+                          rep(dataInput[i,]$Species,nrow(melt(outputs$BProjections))),
+                          melt(outputs$BProjections),
+                          melt(outputs$HInt1Projections)$value,
+                          melt(outputs$HInt2Projections)$value,
+                          melt(outputs$HNonIntProjections)$value,
+                          melt(outputs$profit1Projections)$value,
+                          melt(outputs$profit2Projections)$value,
+                          melt(outputs$bProjections)$value,
+                          melt(outputs$fInt1Projections)$value,
+                          melt(outputs$fInt2Projections)$value,
+                          melt(outputs$fNonIntProjections)$value,
+                          melt(outputs$fTotalProjections)$value)
+    
+    colnames(masterOutputi) = c("fishery", "species","management","MC", "catchShare","illegalFishing",
+                                "implementYear", "time","biomass", "harvest1", "harvest2", "harvest_ill_for",
+                                "profit1","profit2", "BvBMSY","FvFMSY1", "FvFMSY2", "FvFMSYill", "FvFMSYtotal")
+    
+    if (i == 1) {
+        masterOutput = masterOutputi
+    } else {
+        masterOutput = rbind(masterOutput,masterOutputi)
+    }
+    
+    masterOutput$management[masterOutput$management == 1] = "SQ"
+    masterOutput$management[masterOutput$management == 2] = "FMSY"
+    masterOutput$management[masterOutput$management == 3] = "minRec"
+    masterOutput$management[masterOutput$management == 4] = "econOpt"
+    masterOutput$management[masterOutput$management == 5] = "close"
+    masterOutput$management[masterOutput$management == 6] = "openA"
+    masterOutput$catchShare[masterOutput$catchShare == 1] = "no_CS"
+    masterOutput$catchShare[masterOutput$catchShare == 2] = "CS"
+    masterOutput$illegalFishing[masterOutput$illegalFishing == 1] = "illegal_fishing"
+    masterOutput$illegalFishing[masterOutput$illegalFishing == 2] = "no_illegal_fishing"
+
+    recoveryOutputi = cbind(rep(dataInput[i,]$Fishery,nrow(melt(outputs$timeToRecovery))),
+                            rep(dataInput[i,]$Species,nrow(melt(outputs$timeToRecovery))),
+                            melt(outputs$timeToRecovery))
+    
+    colnames(recoveryOutputi) = c("fishery", "species", "management", "MC", "catchShare", "illegalFishing", "implementYear", "recTime")
+    
+    if (i == 1) {
+      recoveryOutput = recoveryOutputi
+    } else {
+      recoveryOutput = rbind(recoveryOutput,recoveryOutputi)
+    }
+    
+    recoveryOutput$management[recoveryOutput$management == 1] = "SQ"
+    recoveryOutput$management[recoveryOutput$management == 2] = "FMSY"
+    recoveryOutput$management[recoveryOutput$management == 3] = "minRec"
+    recoveryOutput$management[recoveryOutput$management == 4] = "econOpt"
+    recoveryOutput$management[recoveryOutput$management == 5] = "close"
+    recoveryOutput$management[recoveryOutput$management == 6] = "openA"
+    recoveryOutput$catchShare[recoveryOutput$catchShare == 1] = "no_CS"
+    recoveryOutput$catchShare[recoveryOutput$catchShare == 2] = "CS"
+    recoveryOutput$illegalFishing[recoveryOutput$illegalFishing == 1] = "illegal_fishing"
+    recoveryOutput$illegalFishing[recoveryOutput$illegalFishing == 2] = "no_illegal_fishing"
+
+    npvOutputi = cbind(rep(dataInput[i,]$Fishery,nrow(melt(outputs$npv1))),
+                       rep(dataInput[i,]$Species,nrow(melt(outputs$npv1))),
+                            melt(outputs$npv1),
+                            melt(outputs$npv2)$value)
+    
+    colnames(npvOutputi) = c("fishery", "species", "management", "MC", "catchShare", "illegalFishing", "implementYear", "npv1", "npv2")
+    
+    if (i == 1) {
+      npvOutput = npvOutputi
+    } else {
+      npvOutput = rbind(npvOutput,npvOutputi)
+    }
+    
+    npvOutput$management[npvOutput$management == 1] = "SQ"
+    npvOutput$management[npvOutput$management == 2] = "FMSY"
+    npvOutput$management[npvOutput$management == 3] = "minRec"
+    npvOutput$management[npvOutput$management == 4] = "econOpt"
+    npvOutput$management[npvOutput$management == 5] = "close"
+    npvOutput$management[npvOutput$management == 6] = "openA"
+    npvOutput$catchShare[npvOutput$catchShare == 1] = "no_CS"
+    npvOutput$catchShare[npvOutput$catchShare == 2] = "CS"
+    npvOutput$illegalFishing[npvOutput$illegalFishing == 1] = "illegal_fishing"
+    npvOutput$illegalFishing[npvOutput$illegalFishing == 2] = "no_illegal_fishing"
+    
+
+# masterOutput$implementYear = (masterOutput$implementYear + 1)
+masterOutput$implementYear <- delayVec[1]
+write.csv(masterOutput,file="workshop_0613_mo_opt.csv")
+
+# recoveryOutput$implementYear = (recoveryOutput$implementYear + 1)
+recoveryOutput$implementYear <- delayVec[1]
+write.csv(recoveryOutput,file="workshop_0613_recovery_opt.csv")
+
+# npvOutput$implementYear = (npvOutput$implementYear + 1)
+npvOutput$implementYear <- delayVec[1]
+write.csv(npvOutput,file="workshop_0613_npv_opt.csv")
+
+## opt at the end of csv names indicates results from model with policy that is optimized once at beginning
+
+}
+```
+    
+
+```{r, echo=FALSE, error=FALSE, message=FALSE, warning = FALSE, results='asis'}
+## Grab legend from ggplot
+g_legend<-function(a.gplot){
+  tmp <- ggplot_gtable(ggplot_build(a.gplot))
+  leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
+  legend <- tmp$grobs[[leg]]
+  legend
+}
+
+fisheryNumber <- length(unique(masterOutput$fishery))
+fisheryNames <- as.vector(unique(masterOutput$fishery))
+# fisheryNames2 <- c("Machuelo hebra atlantico Zone-A", "Pargo biajaiba Zone-A", "Mero colorado Zone-A", 
+#                    "Carite lucio Zone-A", "Lisa blanca Zone-A", "Lebranche Zone-A", "Tarpon Zone-A", "Doncella de pluma Zone-A")
+
+lineSize <- 1.5
+
+# for (i in 1:1)
+for (i in fisheryNames)
+  
+{
+  dataInputsub <- dataInput %>%
+    filter(Fishery == i)
+  
+  maxF = (dataInput[1,9] + 1) / dataInputsub[1,9]
+  maxb = (dataInput[1,9] + 1) ^ (1 / dataInputsub[1,9])
+  
+  cat(" \n")
+  cat(" \n")
+  # cat(paste("##",dataInput[i,]$Country,"-",dataInput[i,]$Site,"-",dataInput[i,]$Species))
+  cat(paste("##",dataInputsub[1,2],"-",dataInputsub[1,3],"-",dataInputsub[1,4]))
+  cat("  \n")
+  cat("**Model Inputs**")
+  cat("  \n")
+  cat("  \n")
+  # cat(paste("**Table",counterTable,": Input Parameters -",dataInput[i,]$Country,"-",dataInput[i,]$Site,"-",dataInput[i,]$Species,"**",sep=" "))
+  cat(paste("**Table",counterTable,": Input Parameters -",dataInputsub[1,2],"-",dataInputsub[1,3],"-",dataInputsub[1,4],"**",sep=" "))
+  counterTable = counterTable+1
+  cat("  \n")
+  # table = rbind(dataInput[i,],parameterText)
+  table = rbind(dataInputsub[1,],parameterText)
+  rownames(table) = c("Value","Units","Description")
+  pandoc.table(t(table),split.cells=c(1,2,10,1))
+  cat("  \n")
+  cat("**Model Outputs**")
+  cat("  \n")
+  cat("  \n")
+  
+  ## Make Output Plots
+  SnamesAll = c("Status Quo","Maximize Food Production","Minimize Recovery Time","Economically Optimal", "Closure", "Open Access")
+  legendLabels = SnamesAll[scenarios]
+  legendName = "Management Scenario"
+  legendName1 = "Fishery"
+  legendName2 = "Fishery (Coastal sp.)"
+  legendName3 = "Fishery (Other sp.)"
+  
+  csNames <- c("no_CS") # Not testing catch shares, so only show results for no CSs
+  # csNames <- c("no_CS", "CS")
+  illegalNames <- c("illegal_fishing")
+  # illegalNames <- c("illegal_fishing", "no_illegal_fishing")
+  
+  ## Loop over implementYears
+  for (j in delayVec){
+  
+   ## Loop over catch shares
+   for (l in csNames){
+     
+     ## Loop over illegal harvest elimination
+     for (m in illegalNames){
+      
+        datadf <- masterOutput %>%
+        filter(fishery == i,
+               illegalFishing == m,
+               catchShare == l,
+               implementYear == j)
+        
+      datadf2 <- datadf %>%
+        group_by(management, time) %>%
+        summarise(meanb = mean(biomass),
+                  sdb = sd(biomass),
+                  meanBvBMSY = mean(BvBMSY),
+                  sdBvBMSY = sd(BvBMSY),
+                  meanFvFMSY1 =  mean(FvFMSY1),
+                  sdFvFMSY1 = sd(FvFMSY1),
+                  meanFvFMSY2 = mean(FvFMSY2),
+                  sdFvFMSY2 = sd(FvFMSY2),
+                  meanFvFMSYill = mean(FvFMSYill),
+                  sdFvFMSYill = sd(FvFMSYill),
+                  meanFvFMSYtotal = mean(FvFMSYtotal),
+                  sdFvFMSYtotal = sd(FvFMSYtotal))
+      
+      ## biomass plots
+      
+      brelplot = ggplot(datadf2, aes(x = time, y = meanBvBMSY, group = management, colour = management, fill = management)) +
+        # geom_ribbon(aes(ymin = meanBvBMSY - 2 * sdBvBMSY, ymax = meanBvBMSY + 2 * sdBvBMSY)) +
+        geom_line(size = lineSize) +
+        geom_hline(yintercept=0, lty=1, colour="black", size=0.25, alpha=0.8) +
+        geom_hline(yintercept=0.8, lty=2, colour="black", size=0.5, alpha=0.8) +
+        xlab("Time") +
+        ylab("Biomass [B/BMSY]") +
+        # scale_fill_manual(guide = "none",
+        #                  labels = c("SQ" = "Status Quo", 
+        #                             "openA" = "Open Access", 
+        #                             "minRec" = "Minimize Recovery Time", 
+        #                             "FMSY" = "Maximize Food Production (FMSY)", 
+        #                             "econOpt" = "Economically Optimal", 
+        #                             "close" = "Closure"),
+        #                  values = c("SQ" = "#D55E00", 
+        #                             "openA" = "#0072B2", 
+        #                             "minRec" = "#56B4E9", 
+        #                             "FMSY" = "#009E73", 
+        #                             "econOpt" = "#E69F00", 
+        #                             "close" = "#CC79A7")) +
+        scale_colour_manual(name=legendName, 
+                            labels = c("SQ" = "Status Quo", 
+                                       "openA" = "Open Access", 
+                                       "minRec" = "Minimize Recovery Time", 
+                                       "FMSY" = "Maximize Food Production (FMSY)", 
+                                       "econOpt" = "Economically Optimal", 
+                                       "close" = "Closure"),
+                            values = c("SQ" = "#D55E00", 
+                                       "openA" = "#0072B2", 
+                                       "minRec" = "#56B4E9", 
+                                       "FMSY" = "#009E73", 
+                                       "econOpt" = "#E69F00", 
+                                       "close" = "#CC79A7")) +
+        theme_bw() +
+        theme(legend.position="none")
+      
+      bplot = ggplot(datadf2, aes(x = time, y = meanb, group = management, colour = management, fill = management)) +
+        # geom_ribbon(aes(ymin = meanb - 2 * sdb, ymax = meanb + 2 * sdb)) +
+        geom_line(size = lineSize) +
+        geom_hline(yintercept=0, lty=1, colour="black", size=0.25, alpha=0.8) +
+        xlab("Time") +
+        ylab("Biomass [MT]") +
+        # scale_fill_manual(guide = "none",
+        #                  labels = c("SQ" = "Status Quo", 
+        #                             "openA" = "Open Access", 
+        #                             "minRec" = "Minimize Recovery Time",
+        #                             "FMSY" = "Maximize Food Production (FMSY)", 
+        #                             "econOpt" = "Economically Optimal", 
+        #                             "close" = "Closure"),
+        #                  values = c("SQ" = "#D55E00", 
+        #                             "openA" = "#0072B2",
+        #                             "minRec" = "#56B4E9", 
+        #                             "FMSY" = "#009E73", 
+        #                             "econOpt" = "#E69F00", 
+        #                             "close" = "#CC79A7")) +
+        scale_colour_manual(name=legendName, 
+                            labels = c("SQ" = "Status Quo", 
+                                       "openA" = "Open Access", 
+                                       "minRec" = "Minimize Recovery Time", 
+                                       "FMSY" = "Maximize Food Production (FMSY)", 
+                                       "econOpt" = "Economically Optimal", 
+                                       "close" = "Closure"),
+                            values = c("SQ" = "#D55E00", 
+                                       "openA" = "#0072B2", 
+                                       "minRec" = "#56B4E9", 
+                                       "FMSY" = "#009E73", 
+                                       "econOpt" = "#E69F00", 
+                                       "close" = "#CC79A7")) +
+        theme_bw() +
+        theme(legend.position="none")
+      
+### NPV plot
+      
+      npvdf <- npvOutput %>%
+        filter(fishery == i,
+               illegalFishing == m,
+               catchShare == l,
+               implementYear == j) %>%
+        mutate(npvTotal = npv1 + npv2)
+
+      npvdf2 <- gather(npvdf, fleet, npv, npv1:npvTotal)
+       
+      npvdf3 <- npvdf2 %>%
+        group_by(fishery, management, fleet) %>%
+        summarise(meannpv = mean(npv),
+                  sdnpv = sd(npv)) %>%
+        mutate(scenario = paste(management, fleet, sep = "_"))
+      
+      npvdf4 <- npvdf3 %>%
+        filter(fleet %in% c("npvTotal"))
+
+    npvplot = ggplot(npvdf, aes(x = reorder(management, npvTotal), y = npvTotal, fill = management)) +
+        geom_bar(stat = "identity") +
+        geom_hline(yintercept=0, lty=1, colour="black", size=0.25, alpha=0.8) +
+        xlab("Management") +
+        ylab("Total NPV [USD]") +
+        scale_fill_manual(name=legendName, 
+                          labels = c("SQ" = "Status Quo", 
+                                     "openA" = "Open Access", 
+                                     "minRec" = "Minimize Recovery Time",
+                                     "FMSY" = "Maximize Food Production (FMSY)", 
+                                     "econOpt" = "Economically Optimal", 
+                                     "close" = "Closure"),
+                          values = c("SQ" = "#D55E00", 
+                                     "openA" = "#0072B2", 
+                                     "minRec" = "#56B4E9",
+                                     "FMSY" = "#009E73", 
+                                     "econOpt" = "#E69F00", 
+                                     "close" = "#CC79A7")) +
+        theme_bw() +
+        theme(legend.position="none")
+
+    ## Profit plot
+
+      pdata <- datadf %>%
+        select(fishery:time, profit1, profit2) %>%
+        mutate(ptotal = profit1 + profit2)
+
+      pdata2 <- gather(pdata, fleet, profit, profit1:ptotal)
+     
+      pdata3 <- pdata2 %>%
+        group_by(fishery, management, implementYear, fleet, time) %>%
+        summarise(meanp = mean(profit),
+                  sdp = sd(profit)) %>%
+        mutate(scenario = paste(management,fleet, sep = "_"))
+    
+      pplot = ggplot(pdata3, aes(x = time, y = meanp, colour = management, fill = management, group = scenario, lty = fleet)) +
+        # geom_ribbon(aes(ymin = meanp - 2 * sdp, ymax = meanp + 2 * sdp)) +
+        geom_line(size = lineSize) +
+        geom_hline(yintercept=0, lty=1, colour="black", size=0.25, alpha=0.8) +
+        xlab("Time") +
+        ylab("Profit [USD]") +
+        # scale_fill_manual(guide = "none",
+        #                  labels = c("SQ" = "Status Quo", 
+        #                             "openA" = "Open Access", 
+        #                             "minRec" = "Minimize Recovery Time",
+        #                             "FMSY" = "Maximize Food Production (FMSY)", 
+        #                             "econOpt" = "Economically Optimal", 
+        #                             "close" = "Closure"),
+        #                  values = c("SQ" = "#D55E00", 
+        #                             "openA" = "#0072B2", 
+        #                             "minRec" = "#56B4E9", 
+        #                             "FMSY" = "#009E73", 
+        #                             "econOpt" = "#E69F00", 
+        #                             "close" = "#CC79A7")) +
+        scale_colour_manual(name=legendName, 
+                            labels = c("SQ" = "Status Quo", 
+                                       "openA" = "Open Access", 
+                                       "minRec" = "Minimize Recovery Time", 
+                                       "FMSY" = "Maximize Food Production (FMSY)",
+                                       "econOpt" = "Economically Optimal", 
+                                       "close" = "Closure"),
+                            values = c("SQ" = "#D55E00", 
+                                       "openA" = "#0072B2", 
+                                       "minRec" = "#56B4E9", 
+                                       "FMSY" = "#009E73", 
+                                       "econOpt" = "#E69F00", 
+                                       "close" = "#CC79A7")) +
+        scale_linetype_manual(values = c("profit1" = 5, 
+                                         "profit2" = 3,
+                                         "ptotal" = 1),
+                              labels = c("profit1" = "Fleet 1", 
+                                         "profit2" = "Fleet 2", 
+                                         "ptotal" = "Total Legal")) +
+        theme_bw() +
+        theme(legend.position="none")
+
+    ### Harvest plot
+
+      hdata <- datadf %>%
+        select(fishery:time, harvest1, harvest2, harvest_ill_for) %>%
+        mutate(htotalleg = harvest1 + harvest2)
+
+      hdata2 <- gather(hdata, fleet, harvest, harvest1:htotalleg)
+
+      hdata3 <- hdata2 %>%
+        group_by(fishery, management, implementYear, fleet, time) %>%
+        summarise(meanh = mean(harvest),
+                  sdh = sd(harvest)) %>%
+        mutate(scenario = paste(management,fleet, sep = "_"))
+    
+      hplot = ggplot(hdata3, aes(x = time, y = meanh, colour = management, fill = management, group = scenario, lty = fleet)) +
+        # geom_ribbon(aes(ymin = meanh - 2 * sdh, ymax = meanh + 2 * sdh)) +
+        geom_line(size = lineSize) +
+        geom_hline(yintercept=0, lty=1, colour="black", size=0.25, alpha=0.8) +
+        xlab("Time") +
+        ylab("Harvest [MT]") +
+        theme_bw() +
+        # scale_fill_manual(guide = "none",
+        #                  labels = c("SQ" = "Status Quo", 
+        #                             "openA" = "Open Access",
+        #                             "minRec" = "Minimize Recovery Time", 
+        #                             "FMSY" = "Maximize Food Production (FMSY)", 
+        #                             "econOpt" = "Economically Optimal", 
+        #                             "close" = "Closure"),
+        #                  values = c("SQ" = "#D55E00", 
+        #                             "openA" = "#0072B2", 
+        #                             "minRec" = "#56B4E9", 
+        #                             "FMSY" = "#009E73", 
+        #                             "econOpt" = "#E69F00", 
+        #                             "close" = "#CC79A7")) +
+        scale_colour_manual(name=legendName, 
+                            labels = c("SQ" = "Status Quo", 
+                                       "openA" = "Open Access",
+                                       "minRec" = "Minimize Recovery Time", 
+                                       "FMSY" = "Maximize Food Production (FMSY)", 
+                                       "econOpt" = "Economically Optimal", 
+                                       "close" = "Closure"),
+                            values = c("SQ" = "#D55E00", 
+                                       "openA" = "#0072B2", 
+                                       "minRec" = "#56B4E9", 
+                                       "FMSY" = "#009E73", 
+                                       "econOpt" = "#E69F00", 
+                                       "close" = "#CC79A7")) +
+        scale_linetype_manual(values = c("harvest1" = 5, 
+                                         "harvest2" = 3, 
+                                         "htotalleg" = 1, 
+                                         "harvest_ill_for" = 6),
+                              labels = c("harvest1" = 
+                                           "Fleet 1", 
+                                         "harvest2" = "Fleet 2",
+                                         "htotalleg" = "Total Legal", 
+                                         "harvest_ill_for" = "Illegal")) +
+        theme(legend.position="none")
+     
+   lineLegend = ggplot(hdata3, aes(x = time, y = meanh, colour = management, fill = management, group = scenario, lty = fleet)) +
+        # geom_ribbon(aes(ymin = meanh - 2 * sdh, ymax = meanh + 2 * sdh)) +
+        geom_line(size = lineSize) +
+        geom_hline(yintercept=0, lty=1, colour="black", size=0.25, alpha=0.8) +
+        xlab("Time") +
+        ylab("Harvest [MT]") +
+        # scale_fill_manual(guide = "none") +
+        scale_colour_manual(guide = "none",
+                         labels = c("SQ" = "Status Quo",
+                                    "openA" = "Open Access",
+                                    "minRec" = "Minimize Recovery Time",
+                                    "FMSY" = "Maximize Food Production (FMSY)",
+                                    "econOpt" = "Economically Optimal",
+                                    "close" = "Closure"),
+                         values = c("SQ" = "#D55E00",
+                                    "openA" = "#0072B2",
+                                    "minRec" = "#56B4E9",
+                                    "FMSY" = "#009E73",
+                                    "econOpt" = "#E69F00",
+                                    "close" = "#CC79A7")) +
+        scale_linetype_manual(name = "Fleet",
+                              values = c("harvest1" = 5, 
+                                         "harvest2" = 3, 
+                                         "htotalleg" = 1, 
+                                         "harvest_ill_for" = 6),
+                              labels = c("harvest1" = "Fleet 1", 
+                                         "harvest2" = "Fleet 2", 
+                                         "htotalleg" = "Total Legal",
+                                         "harvest_ill_for" = "Illegal")) +
+        theme_bw() +
+        theme(legend.key = element_rect(colour = "transparent", fill = "white"),
+              legend.key.width = unit(5, "line"))
+   
+   colorLegend = ggplot(hdata3, aes(x = time, y = meanh, colour = management, fill = management, group = scenario, lty = fleet)) +
+        # geom_ribbon(aes(ymin = meanh - 2 * sdh, ymax = meanh + 2 * sdh)) +
+        geom_line(size = lineSize) +
+        geom_hline(yintercept=0, lty=1, colour="black", size=0.25, alpha=0.8) +
+        xlab("Time") +
+        ylab("Harvest [MT]") +
+        # scale_fill_manual(guide = "none") +
+        scale_colour_manual(name=legendName, 
+                            labels = c("SQ" = "Status Quo", 
+                                       "openA" = "Open Access", 
+                                       "minRec" = "Minimize Recovery Time", 
+                                       "FMSY" = "Maximize Food Production (FMSY)",
+                                       "econOpt" = "Economically Optimal", 
+                                       "close" = "Closure"),
+                            values = c("SQ" = "#D55E00", 
+                                       "openA" = "#0072B2", 
+                                       "minRec" = "#56B4E9", 
+                                       "FMSY" = "#009E73", 
+                                       "econOpt" = "#E69F00", 
+                                       "close" = "#CC79A7")) +
+        scale_linetype_manual(values = c("harvest1" = 5, "harvest2" = 3, "htotalleg" = 1, "harvest_ill_for" = 6),
+                              labels = c("harvest1" = "Fleet 1", 
+                                         "harvest2" = "Fleet 2", 
+                                         "htotalleg" = "Total Legal", 
+                                         "harvest_ill_for" = "Illegal"),
+                              guide = F) +
+        theme_bw() +
+        theme(legend.key = element_rect(colour = "transparent", fill = "white"),
+              legend.key.width = unit(5, "line"))
+        
+  ## Kobe plot
+   
+      kobeData <- datadf %>%
+        filter(time == 1 | time == dataInputsub[1,6])
+
+      kobe = ggplot(kobeData, aes(x = BvBMSY, y = FvFMSYtotal, colour = management, group =  management, shape = as.factor(time))) +
+        geom_point(size=7) +
+        geom_hline(yintercept=1) +
+        geom_vline(xintercept=1) +
+        xlim(0,maxb) +
+        ylim(0,maxF) +
+        labs(shape="Year", colour=legendName) +
+        xlab("Biomass [B/BMSY]") +
+        ylab("Total Fishing Mortality \n All Fleets [F/FMSY]") +
+        scale_colour_manual(name=legendName, 
+                            labels = c("SQ" = "Status Quo", 
+                                       "openA" = "Open Access", 
+                                       "minRec" = "Minimize Recovery Time", 
+                                       "FMSY" = "Maximize Food Production (FMSY)", 
+                                       "econOpt" = "Economically Optimal", 
+                                       "close" = "Closure"),
+                             values = c("SQ" = "#D55E00", 
+                                        "openA" = "#0072B2", 
+                                        "minRec" = "#56B4E9", 
+                                        "FMSY" = "#009E73", 
+                                        "econOpt" = "#E69F00", 
+                                        "close" = "#CC79A7")) +
+        theme_bw() +
+        ggtitle("Before/After Kobe Plot \n Year 1 (Circles) and Final Year (Triangles)") +
+        theme(plot.title = element_text(hjust = 0.5), 
+              legend.position="none")
+    
+      
+  ## Rec time plot    
+      
+      rectimedf <- recoveryOutput %>%
+        filter(fishery == i,
+               illegalFishing == m,
+               catchShare == l,
+               implementYear == j)
+      
+    rectime = ggplot(rectimedf, aes(x = reorder(management, recTime), y = recTime, colour = management, group =  management)) +
+        geom_point(size=7, shape = 8) +
+        ylim(0,25) +
+        xlab("Management") +
+        ylab("Recovery Year") +
+        scale_colour_manual(name=legendName, 
+                            labels = c("SQ" = "Status Quo", 
+                                       "openA" = "Open Access", 
+                                       "minRec" = "Minimize Recovery Time", 
+                                       "FMSY" = "Maximize Food Production (FMSY)", 
+                                       "econOpt" = "Economically Optimal", 
+                                       "close" = "Closure"),
+                             values = c("SQ" = "#D55E00", 
+                                        "openA" = "#0072B2", 
+                                        "minRec" = "#56B4E9", 
+                                        "FMSY" = "#009E73", 
+                                        "econOpt" = "#E69F00", 
+                                        "close" = "#CC79A7")) +
+        theme_bw() +
+        ggtitle("Year of Recovery") +
+        theme(plot.title = element_text(hjust = 0.5), 
+              legend.position="none")  
+      
+      cat(" \n")
+      cat(" \n")
+      cat(paste("**Figure",counterFigure,": Results for",i," - ",l," - ",m," - ", "Implementation Year = ",j,"**"))
+      cat(" \n")
+      grid.arrange(g_legend(lineLegend),
+                         g_legend(colorLegend),
+                         kobe,
+                         bplot,
+                         brelplot,
+                         hplot,
+                         pplot,
+                         npvplot,
+                         rectime,
+                         ncol=2)
+      counterFigure = counterFigure+1
+      cat(" \n")
+      cat(" \n")
+      
+  
+   ### Plots for saving
+  
+      brelplot2 = ggplot(datadf2, aes(x = time, y = meanBvBMSY, group = management, colour = management, fill = management)) +
+        # geom_ribbon(aes(ymin = meanBvBMSY - 2 * sdBvBMSY, ymax = meanBvBMSY + 2 * sdBvBMSY)) +
+        geom_line(size = lineSize) +
+        geom_hline(yintercept=0, lty=1, colour="black", size=0.25, alpha=0.8) +
+        geom_hline(yintercept=0.8, lty=2, colour="black", size=0.5, alpha=0.8) +
+        ggtitle(paste("B/BMSY",i,m,l,j,sep = " - ")) +
+        xlab("Time") +
+        ylab("Biomass [B/BMSY]") +
+        # scale_fill_manual(guide = "none",
+        #                  labels = c("SQ" = "Status Quo", 
+        #                             "openA" = "Open Access", 
+        #                             "minRec" = "Minimize Recovery Time", 
+        #                             "FMSY" = "Maximize Food Production (FMSY)", 
+        #                             "econOpt" = "Economically Optimal", 
+        #                             "close" = "Closure"),
+        #                  values = c("SQ" = "#D55E00", 
+        #                             "openA" = "#0072B2", 
+        #                             "minRec" = "#56B4E9", 
+        #                             "FMSY" = "#009E73", 
+        #                             "econOpt" = "#E69F00", 
+        #                             "close" = "#CC79A7")) +
+        scale_colour_manual(name=legendName, 
+                            labels = c("SQ" = "Status Quo", 
+                                       "openA" = "Open Access", 
+                                       "minRec" = "Minimize Recovery Time", 
+                                       "FMSY" = "Maximize Food Production (FMSY)", 
+                                       "econOpt" = "Economically Optimal", 
+                                       "close" = "Closure"),
+                            values = c("SQ" = "#D55E00", 
+                                       "openA" = "#0072B2", 
+                                       "minRec" = "#56B4E9", 
+                                       "FMSY" = "#009E73", 
+                                       "econOpt" = "#E69F00", 
+                                       "close" = "#CC79A7")) +
+        theme_bw() +
+        theme(legend.position="none")
+      
+      
+      bplot2 = ggplot(datadf2, aes(x = time, y = meanb, group = management, colour = management, fill = management)) +
+        # geom_ribbon(aes(ymin = meanb - 2 * sdb, ymax = meanb + 2 * sdb)) +
+        geom_line(size = lineSize) +
+        geom_hline(yintercept=0, lty=1, colour="black", size=0.25, alpha=0.8) +
+        xlab("Time") +
+        ylab("Biomass [MT]") +
+        ggtitle(paste("BMSY",i,m,l,j,sep = " - ")) +
+        # scale_fill_manual(guide = "none",
+        #                  labels = c("SQ" = "Status Quo", 
+        #                             "openA" = "Open Access", 
+        #                             "minRec" = "Minimize Recovery Time",
+        #                             "FMSY" = "Maximize Food Production (FMSY)", 
+        #                             "econOpt" = "Economically Optimal", 
+        #                             "close" = "Closure"),
+        #                  values = c("SQ" = "#D55E00", 
+        #                             "openA" = "#0072B2",
+        #                             "minRec" = "#56B4E9", 
+        #                             "FMSY" = "#009E73", 
+        #                             "econOpt" = "#E69F00", 
+        #                             "close" = "#CC79A7")) +
+        scale_colour_manual(name=legendName, 
+                            labels = c("SQ" = "Status Quo", 
+                                       "openA" = "Open Access", 
+                                       "minRec" = "Minimize Recovery Time", 
+                                       "FMSY" = "Maximize Food Production (FMSY)", 
+                                       "econOpt" = "Economically Optimal", 
+                                       "close" = "Closure"),
+                            values = c("SQ" = "#D55E00", 
+                                       "openA" = "#0072B2", 
+                                       "minRec" = "#56B4E9", 
+                                       "FMSY" = "#009E73", 
+                                       "econOpt" = "#E69F00", 
+                                       "close" = "#CC79A7")) +
+        theme_bw() +
+        theme(legend.position="none")
+      
+      
+      npvplot2 = ggplot(npvdf, aes(x = reorder(management, npvTotal), y = npvTotal, fill = management)) +
+        geom_bar(stat = "identity") +
+        geom_hline(yintercept=0, lty=1, colour="black", size=0.25, alpha=0.8) +
+        xlab("Management") +
+        ylab("Total NPV [USD]") +
+        ggtitle(paste("Total NPV",i,m,l,j,sep = " - ")) +
+        scale_fill_manual(name=legendName, 
+                          labels = c("SQ" = "Status Quo", 
+                                     "openA" = "Open Access", 
+                                     "minRec" = "Minimize Recovery Time",
+                                     "FMSY" = "Maximize Food Production (FMSY)", 
+                                     "econOpt" = "Economically Optimal", 
+                                     "close" = "Closure"),
+                          values = c("SQ" = "#D55E00", 
+                                     "openA" = "#0072B2", 
+                                     "minRec" = "#56B4E9",
+                                     "FMSY" = "#009E73", 
+                                     "econOpt" = "#E69F00", 
+                                     "close" = "#CC79A7")) +
+        theme_bw() +
+        theme(legend.position="none")
+      
+      
+    pplot2 = ggplot(pdata3, aes(x = time, y = meanp, colour = management, fill = management, group = scenario, lty = fleet)) +
+        # geom_ribbon(aes(ymin = meanp - 2 * sdp, ymax = meanp + 2 * sdp)) +
+        geom_line(size = lineSize) +
+        geom_hline(yintercept=0, lty=1, colour="black", size=0.25, alpha=0.8) +
+        xlab("Time") +
+        ylab("Profit [USD]") +
+        ggtitle(paste("Profit",i,m,l,j,sep = " - ")) +
+        # scale_fill_manual(guide = "none",
+        #                  labels = c("SQ" = "Status Quo", 
+        #                             "openA" = "Open Access", 
+        #                             "minRec" = "Minimize Recovery Time",
+        #                             "FMSY" = "Maximize Food Production (FMSY)", 
+        #                             "econOpt" = "Economically Optimal", 
+        #                             "close" = "Closure"),
+        #                  values = c("SQ" = "#D55E00", 
+        #                             "openA" = "#0072B2", 
+        #                             "minRec" = "#56B4E9", 
+        #                             "FMSY" = "#009E73", 
+        #                             "econOpt" = "#E69F00", 
+        #                             "close" = "#CC79A7")) +
+        scale_colour_manual(name=legendName, 
+                            labels = c("SQ" = "Status Quo", 
+                                       "openA" = "Open Access", 
+                                       "minRec" = "Minimize Recovery Time", 
+                                       "FMSY" = "Maximize Food Production (FMSY)",
+                                       "econOpt" = "Economically Optimal", 
+                                       "close" = "Closure"),
+                            values = c("SQ" = "#D55E00", 
+                                       "openA" = "#0072B2", 
+                                       "minRec" = "#56B4E9", 
+                                       "FMSY" = "#009E73", 
+                                       "econOpt" = "#E69F00", 
+                                       "close" = "#CC79A7")) +
+        scale_linetype_manual(values = c("profit1" = 5, 
+                                         "profit2" = 3,
+                                         "ptotal" = 1),
+                              labels = c("profit1" = "Fleet 1", 
+                                         "profit2" = "Fleet 2", 
+                                         "ptotal" = "Total Legal")) +
+        theme_bw() +
+        theme(legend.position="none")
+   
+    
+    hplot2 = ggplot(hdata3, aes(x = time, y = meanh, colour = management, fill = management, group = scenario, lty = fleet)) +
+        # geom_ribbon(aes(ymin = meanh - 2 * sdh, ymax = meanh + 2 * sdh)) +
+        geom_line(size = lineSize) +
+        geom_hline(yintercept=0, lty=1, colour="black", size=0.25, alpha=0.8) +
+        xlab("Time") +
+        ylab("Harvest [MT]") +
+        ggtitle(paste("Harvest",i,m,l,j,sep = " - ")) +
+        theme_bw() +
+        # scale_fill_manual(guide = "none",
+        #                  labels = c("SQ" = "Status Quo", 
+        #                             "openA" = "Open Access",
+        #                             "minRec" = "Minimize Recovery Time", 
+        #                             "FMSY" = "Maximize Food Production (FMSY)", 
+        #                             "econOpt" = "Economically Optimal", 
+        #                             "close" = "Closure"),
+        #                  values = c("SQ" = "#D55E00", 
+        #                             "openA" = "#0072B2", 
+        #                             "minRec" = "#56B4E9", 
+        #                             "FMSY" = "#009E73", 
+        #                             "econOpt" = "#E69F00", 
+        #                             "close" = "#CC79A7")) +
+        scale_colour_manual(name=legendName, 
+                            labels = c("SQ" = "Status Quo", 
+                                       "openA" = "Open Access",
+                                       "minRec" = "Minimize Recovery Time", 
+                                       "FMSY" = "Maximize Food Production (FMSY)", 
+                                       "econOpt" = "Economically Optimal", 
+                                       "close" = "Closure"),
+                            values = c("SQ" = "#D55E00", 
+                                       "openA" = "#0072B2", 
+                                       "minRec" = "#56B4E9", 
+                                       "FMSY" = "#009E73", 
+                                       "econOpt" = "#E69F00", 
+                                       "close" = "#CC79A7")) +
+        scale_linetype_manual(values = c("harvest1" = 5, 
+                                         "harvest2" = 3, 
+                                         "htotalleg" = 1, 
+                                         "harvest_ill_for" = 6),
+                              labels = c("harvest1" = 
+                                           "Fleet 1", 
+                                         "harvest2" = "Fleet 2",
+                                         "htotalleg" = "Total Legal", 
+                                         "harvest_ill_for" = "Illegal")) +
+        theme(legend.position="none")
+    
+   
+    kobe2 = ggplot(kobeData, aes(x = BvBMSY, y = FvFMSYtotal, colour = management, group =  management, shape = as.factor(time))) +
+        geom_point(size=7) +
+        geom_hline(yintercept=1) +
+        geom_vline(xintercept=1) +
+        xlim(0,maxb) +
+        ylim(0,maxF) +
+        labs(shape="Year", colour=legendName) +
+        xlab("Biomass [B/BMSY]") +
+        ylab("Total Fishing Mortality \n All Fleets [F/FMSY]") +
+        scale_colour_manual(name=legendName, 
+                            labels = c("SQ" = "Status Quo", 
+                                       "openA" = "Open Access", 
+                                       "minRec" = "Minimize Recovery Time", 
+                                       "FMSY" = "Maximize Food Production (FMSY)", 
+                                       "econOpt" = "Economically Optimal", 
+                                       "close" = "Closure"),
+                             values = c("SQ" = "#D55E00", 
+                                        "openA" = "#0072B2", 
+                                        "minRec" = "#56B4E9", 
+                                        "FMSY" = "#009E73", 
+                                        "econOpt" = "#E69F00", 
+                                        "close" = "#CC79A7")) +
+        theme_bw() +
+        ggtitle(paste("Before/After Kobe Plot \n Year 1 (Circles) and Final Year (Triangles)\n",i,m,l,j,sep = " - ")) +
+        theme(plot.title = element_text(hjust = 0.5), 
+              legend.position="none")
+    
+    rectime2 = ggplot(rectimedf, aes(x = reorder(management, recTime), y = recTime, colour = management, group =  management)) +
+        geom_point(size=7, shape = 8) +
+        ylim(0,25) +
+        xlab("Management") +
+        ylab("Recovery Year") +
+        scale_colour_manual(name=legendName, 
+                            labels = c("SQ" = "Status Quo", 
+                                       "openA" = "Open Access", 
+                                       "minRec" = "Minimize Recovery Time", 
+                                       "FMSY" = "Maximize Food Production (FMSY)", 
+                                       "econOpt" = "Economically Optimal", 
+                                       "close" = "Closure"),
+                             values = c("SQ" = "#D55E00", 
+                                        "openA" = "#0072B2", 
+                                        "minRec" = "#56B4E9", 
+                                        "FMSY" = "#009E73", 
+                                        "econOpt" = "#E69F00", 
+                                        "close" = "#CC79A7")) +
+        theme_bw() +
+        ggtitle(paste("Year of Recovery\n",i,m,l,j,sep = " - ")) +
+        theme(plot.title = element_text(hjust = 0.5), 
+              legend.position="none")   
+       
+   ### Save images
+   # ggsave(kobe2, filename = paste("kobe",i,m,l,j,".png",sep="_"))
+   # ggsave(g_legend(lineLegend), filename = "lineLegend.png")
+   # ggsave(g_legend(colorLegend), filename = "colorLegend.png")
+   # ggsave(bplot2, filename = paste("Bplot",i,m,l,j,".png",sep="_"))
+   # ggsave(brelplot2, filename = paste("bRelplot",i,m,l,j,".png",sep="_"))
+   # ggsave(hplot2, filename = paste("hplot",i,m,l,j,".png",sep="_"))
+   # ggsave(pplot2, filename = paste("pplot",i,m,l,j,".png",sep="_"))
+   # ggsave(npvplot2, filename = paste("npvplot",i,m,l,j,".png",sep="_"))
+   # ggsave(rectime2, filename = paste("rectime",i,m,l,j,".png",sep="_"))
+      
+      } ## End loop over illegal harvest elimination
+    } ## End Loop over catch shares
+  } ## End loop over implement years
+} ## End loop over fisheries
+
+
+  ## Make summary tables
+  
+
+```
+
+# Scenario Comparisons  
+This section contains reports for each management scenario. This section is broken down into three sub-sections.
+
+
+```{r, echo=FALSE, error=FALSE, message = F, warning=F, results='asis'}
+
+hcrNames <- as.vector(unique(masterOutput$management))
+
+# for (i in 1:1){
+for (q in hcrNames){
+  
+ phi <- 0.188
+  
+   maxF <- (phi + 1) / phi
+   maxb <- (phi + 1) ^ (1 / phi)
+  
+  cat(" \n")
+  cat(" \n")
+  cat(paste("##",q))
+  cat("  \n")
+  
+  # coastal1 <- as.vector(c("Pargo criollo Zona-A", "Biajaiba Zona-A", "Rubia Zona-A", "Cabrilla Zona-A", "Cherna criolla Zona-A", "Yellow fin mojarra Zona-A", "Liseta Zona-A", "Lisa Zona-A"))
+  # 
+  # coastal2 <- as.vector(c("Chopa amarilla Zona-A", "Ronco amarillo Zona-A", "Caji Zona-A", "Caballerote Zona-A", "Cubera Zona-A", "Bajonao Zona-A", "Robalo Zona-A", "Sabalo Zona-A", "Pez perro Zona-A"))
+  # 
+  # othercat <- as.vector(c("Machuelo Zona-A", "Sardina de ley Zona-A", "Sardina escamuda Zona-A", "Sierra Zona-A", "Chicharro Zona-A", "Jiguagua Zona-A", "Cib Zona-A", "Gallego Zona-A", "Palometa Zona-A"))
+  
+  specnames <- as.vector(c("Biajaiba", "Lobster"))
+  
+  
+  mo_categories <- masterOutput %>%
+    mutate(speciesCat = ifelse(species %in% specnames, "workshop", "workshop"))
+  
+  ## Loop over implementYears
+  for (j in delayVec){
+  
+   ## Loop over catch shares
+   for (l in csNames){
+     
+     ## Loop over illegal harvest elimination
+     for (m in illegalNames){
+      
+        hcrdatadf <- mo_categories %>%
+        filter(management == q,
+               illegalFishing == m,
+               catchShare == l,
+               implementYear == j)
+        
+        hcrdatadf2 <- hcrdatadf %>%
+        group_by(fishery, time) %>%
+        summarise(meanb = mean(biomass),
+                  sdb = sd(biomass),
+                  meanBvBMSY = mean(BvBMSY),
+                  sdBvBMSY = sd(BvBMSY),
+                  meanFvFMSY1 =  mean(FvFMSY1),
+                  sdFvFMSY1 = sd(FvFMSY1),
+                  meanFvFMSY2 = mean(FvFMSY2),
+                  sdFvFMSY2 = sd(FvFMSY2),
+                  meanFvFMSYill = mean(FvFMSYill),
+                  sdFvFMSYill = sd(FvFMSYill),
+                  meanFvFMSYtotal = mean(FvFMSYtotal),
+                  sdFvFMSYtotal = sd(FvFMSYtotal))
+        
+        write.csv(hcrdatadf2,file="0504_test.csv")
+        
+    ## biomass plots, by HCR
+    ## 1 for each spec category (3 categories)
+      
+      brelplothcr = ggplot(hcrdatadf2, aes(x = time, y = meanBvBMSY, group = fishery, colour = fishery, fill = fishery), size = lineSize) +
+        geom_line(size = lineSize) +
+        # geom_ribbon(aes(ymin = meanBvBMSY - 2 * sdBvBMSY, ymax = meanBvBMSY + 2 * sdBvBMSY)) +
+        geom_hline(yintercept=0, lty=1, colour="black", size=0.25, alpha=0.8) +
+        geom_hline(yintercept=0.8, lty=2, colour="black", size=0.5, alpha=0.8) +
+        xlab("Time") +
+        ylab("Biomass [B/BMSY]") +
+        # scale_fill_manual(guide = "none",
+        #                   values = c(# Biajaiba Zona-A" = "#0072B2",
+                                       # "Lobster Cuba-1" = "#56B4E9",
+                                       # "Lobster Cuba-2" = "#009E73",
+                                       # "Lobster Cuba-3" = "#F0E442",
+                                       # "Lobster Cuba-4" = "#CC79A7",
+                                       # "upside-Cuba_lobster" = "#E69F00")) +
+        scale_colour_manual(name=legendName1,
+                            values = c("Biajaiba Zona-A" = "#0072B2",
+                                       "Lobster Cuba-1" = "#56B4E9",
+                                       "Lobster Cuba-2" = "#009E73",
+                                       "Lobster Cuba-3" = "#F0E442",
+                                       "Lobster Cuba-4" = "#CC79A7",
+                                       "upside-Cuba_lobster" = "#E69F00")) +
+        theme_bw() +
+        theme(legend.position="none")
+      
+      
+      ### Legend 1
+      fisheryLegend1 = ggplot(hcrdatadf2, aes(x = time, y = meanBvBMSY, group = fishery, colour = fishery, fill = fishery), size = lineSize) +
+        geom_line(size = lineSize) +
+        # geom_ribbon(aes(ymin = meanBvBMSY - 2 * sdBvBMSY, ymax = meanBvBMSY + 2 * sdBvBMSY)) +
+        geom_hline(yintercept=0, lty=1, colour="black", size=0.25, alpha=0.8) +
+        geom_hline(yintercept=0.8, lty=2, colour="black", size=0.5, alpha=0.8) +
+        xlab("Time") +
+        ylab("Biomass [B/BMSY]") +
+        # scale_fill_manual(guide = "none",
+        #                   values = c(# Biajaiba Zona-A" = "#0072B2",
+                                       # "Lobster Cuba-1" = "#56B4E9",
+                                       # "Lobster Cuba-2" = "#009E73",
+                                       # "Lobster Cuba-3" = "#F0E442",
+                                       # "Lobster Cuba-4" = "#CC79A7",
+                                       # "upside-Cuba_lobster" = "#E69F00")) +
+        scale_colour_manual(name=legendName1,
+                            values = c("Biajaiba Zona-A" = "#0072B2",
+                                       "Lobster Cuba-1" = "#56B4E9",
+                                       "Lobster Cuba-2" = "#009E73",
+                                       "Lobster Cuba-3" = "#F0E442",
+                                       "Lobster Cuba-4" = "#CC79A7",
+                                       "upside-Cuba_lobster" = "#E69F00")) +
+        theme_bw() +
+        theme(legend.key = element_rect(colour = "transparent", fill = "white"),
+              legend.key.width = unit(5, "line"))
+      
+  
+  ########################
+  ###### Biomass plots
+       
+      bplot1hcr = ggplot(hcrdatadf2, aes(x = time, y = meanb, group = fishery, colour = fishery, fill = fishery), size = lineSize) +
+        geom_line(size = lineSize) +
+        # geom_ribbon(aes(ymin = meanb - 2 * sdb, ymax = meanb + 2 * sdb)) +
+        geom_hline(yintercept=0, lty=1, colour="black", size=0.25, alpha=0.8) +
+        xlab("Time") +
+        ylab("Biomass [MT]") +
+        # scale_fill_manual(guide = "none",
+        #                   values = c(# Biajaiba Zona-A" = "#0072B2",
+                                       # "Lobster Cuba-1" = "#56B4E9",
+                                       # "Lobster Cuba-2" = "#009E73",
+                                       # "Lobster Cuba-3" = "#F0E442",
+                                       # "Lobster Cuba-4" = "#CC79A7",
+                                       # "upside-Cuba_lobster" = "#E69F00")) +
+        scale_colour_manual(name=legendName1,
+                            values = c("Biajaiba Zona-A" = "#0072B2",
+                                       "Lobster Cuba-1" = "#56B4E9",
+                                       "Lobster Cuba-2" = "#009E73",
+                                       "Lobster Cuba-3" = "#F0E442",
+                                       "Lobster Cuba-4" = "#CC79A7",
+                                       "upside-Cuba_lobster" = "#E69F00")) +
+        theme_bw() +
+        theme(legend.position="none")
+      
+ 
+  ### NPV plot
+      
+      hcrnpvdf <- npvOutput %>%
+        filter(management == q,
+               illegalFishing == m,
+               catchShare == l,
+               implementYear == j) %>%
+        mutate(npvTotal = npv1 + npv2)
+
+      hcrnpvdf2 <- gather(hcrnpvdf, fleet, npv, npv1:npvTotal)
+       
+      hcrnpvdf3 <- hcrnpvdf2 %>%
+        group_by(fishery, management, fleet) %>%
+        summarise(meannpv = mean(npv),
+                  sdnpv = sd(npv)) %>%
+        mutate(scenario = paste(fishery, fleet, sep = "_"))
+      
+      hcrnpvdf4 <- hcrnpvdf3 %>%
+        filter(fleet %in% c("npvTotal"))
+
+    npvplothcr = ggplot(hcrnpvdf, (aes(x = reorder(fishery, npvTotal), y = npvTotal, fill = fishery))) +
+        geom_bar(stat = "identity") +
+        geom_hline(yintercept=0, lty=1, colour="black", size=0.25, alpha=0.8) +
+        xlab("Fishery") +
+        ylab("Total NPV [USD]") +
+        scale_fill_manual(name=legendName1, 
+                          values = c("Biajaiba Zona-A" = "#0072B2",
+                                       "Lobster Cuba-1" = "#56B4E9",
+                                       "Lobster Cuba-2" = "#009E73",
+                                       "Lobster Cuba-3" = "#F0E442",
+                                       "Lobster Cuba-4" = "#CC79A7",
+                                       "upside-Cuba_lobster" = "#E69F00")) +
+        theme(legend.position="none",
+              axis.text.x = element_text(angle = 45, hjust = 1),
+              axis.title.x=element_blank())
+  
+
+    ## Profit plot
+
+      hcrpdata <- hcrdatadf %>%
+        select(fishery:time, profit1, profit2) %>%
+        mutate(ptotal = profit1 + profit2)
+
+      hcrpdata2 <- gather(hcrpdata, fleet, profit, profit1:ptotal)
+     
+      hcrpdata3 <- hcrpdata2 %>%
+        group_by(fishery, management, implementYear, fleet, time) %>%
+        summarise(meanp = mean(profit),
+                  sdp = sd(profit)) %>%
+        mutate(scenario = paste(fishery,fleet, sep = "_"))
+    
+      ## 1
+      pplot1hcr = ggplot(hcrpdata3, aes(x = time, y = meanp, colour = fishery, fill = fishery, group = scenario, lty = fleet), size = lineSize) +
+        geom_line(size = lineSize) +
+        # geom_ribbon(aes(ymin = meanp - 2 * sdp, ymax = meanp + 2 * sdp)) +
+        geom_hline(yintercept=0, lty=1, colour="black", size=0.25, alpha=0.8) +
+        xlab("Time") +
+        ylab("Profit [USD]") +
+        # scale_fill_manual(guide = "none",
+        #                   values = c(# Biajaiba Zona-A" = "#0072B2",
+                                       # "Lobster Cuba-1" = "#56B4E9",
+                                       # "Lobster Cuba-2" = "#009E73",
+                                       # "Lobster Cuba-3" = "#F0E442",
+                                       # "Lobster Cuba-4" = "#CC79A7",
+                                       # "upside-Cuba_lobster" = "#E69F00")) +
+        scale_colour_manual(name=legendName1,
+                            values = c("Biajaiba Zona-A" = "#0072B2",
+                                       "Lobster Cuba-1" = "#56B4E9",
+                                       "Lobster Cuba-2" = "#009E73",
+                                       "Lobster Cuba-3" = "#F0E442",
+                                       "Lobster Cuba-4" = "#CC79A7",
+                                       "upside-Cuba_lobster" = "#E69F00")) +
+        scale_linetype_manual(values = c("profit1" = 5, 
+                                         "profit2" = 3,
+                                         "ptotal" = 1),
+                              labels = c("profit1" = "Fleet 1", 
+                                         "profit2" = "Fleet 2", 
+                                         "ptotal" = "Total Legal")) +
+        theme_bw() +
+        theme(legend.position="none")
+      
+      
+   ### Harvest plot
+
+      hcrhdata <- hcrdatadf %>%
+        select(fishery:time, harvest1, harvest2, harvest_ill_for) %>%
+        mutate(htotalleg = harvest1 + harvest2)
+
+      hcrhdata2 <- gather(hcrhdata, fleet, harvest, harvest1:htotalleg)
+
+      hcrhdata3 <- hcrhdata2 %>%
+        group_by(fishery, management, implementYear, fleet, time) %>%
+        summarise(meanh = mean(harvest),
+                  sdh = sd(harvest)) %>%
+        mutate(scenario = paste(fishery,fleet, sep = "_"))
+    
+      hplot1hcr =  ggplot(hcrhdata3, aes(x = time, y = meanh, colour = fishery, fill = fishery, group = scenario, lty = fleet), size = lineSize) +
+        geom_line(size = lineSize) +
+        # geom_ribbon(aes(ymin = meanh - 2 * sdh, ymax = meanh + 2 * sdh)) +
+        geom_hline(yintercept=0, lty=1, colour="black", size=0.25, alpha=0.8) +
+        xlab("Time") +
+        ylab("Harvest [MT]") +
+        theme_bw() +
+        # scale_fill_manual(guide = "none",
+        #                   values = c(# Biajaiba Zona-A" = "#0072B2",
+                                       # "Lobster Cuba-1" = "#56B4E9",
+                                       # "Lobster Cuba-2" = "#009E73",
+                                       # "Lobster Cuba-3" = "#F0E442",
+                                       # "Lobster Cuba-4" = "#CC79A7",
+                                       # "upside-Cuba_lobster" = "#E69F00")) +
+        scale_colour_manual(name=legendName1,
+                            values = c("Biajaiba Zona-A" = "#0072B2",
+                                       "Lobster Cuba-1" = "#56B4E9",
+                                       "Lobster Cuba-2" = "#009E73",
+                                       "Lobster Cuba-3" = "#F0E442",
+                                       "Lobster Cuba-4" = "#CC79A7",
+                                       "upside-Cuba_lobster" = "#E69F00")) +
+        scale_linetype_manual(values = c("harvest1" = 5, 
+                                         "harvest2" = 3, 
+                                         "htotalleg" = 1, 
+                                         "harvest_ill_for" = 6),
+                              labels = c("harvest1" = "Fleet 1", 
+                                         "harvest2" = "Fleet 2",
+                                         "htotalleg" = "Total Legal", 
+                                         "harvest_ill_for" = "Illegal")) +
+        theme(legend.position="none")
+      
+ 
+      # hcrlineLegend = ggplot(hcrhdata3, aes(x = time, y = meanh, colour = fishery, fill = fishery, group = scenario, lty = fleet)) +
+      #   # geom_ribbon(aes(ymin = meanh - 2 * sdh, ymax = meanh + 2 * sdh)) +
+      #   geom_line(size = lineSize) +
+      #   geom_hline(yintercept=0, lty=1, colour="black", size=0.25, alpha=0.8) +
+      #   xlab("Time") +
+      #   ylab("Harvest [MT]") +
+      #   # scale_fill_manual(guide = "none") +
+      #   scale_colour_manual(guide = "none",
+      #                       name = "Fishery",
+      #                       values = c("Machuelo Zone-A" = "#D55E00", 
+      #                                  "Biajaiba Zone-A" = "#0072B2", 
+      #                                  "Cabrilla Zone-A" = "#56B4E9", 
+      #                                  "Sierra Zone-A" = "#009E73", 
+      #                                  "Liseta Zone-A" = "#F0E442", 
+      #                                  "Lisa Zone-A" = "#CC79A7",
+      #                                  "Sabalo Zone-A" = "#E69F00",
+      #                                  "Pez perro Zone-A" = "#00d5c9",
+      #                                  "Chopa amarilla Zona-A" = "#00cc00",
+      #                                  "Bajonao Zona-A" = "#00ccff",
+      #                                  "Jiguagua Zona-A" = "#330099",
+      #                                  "Gallego Zona-A" = "#33cccc",
+      #                                  "Cib Zona-A" = "#990000",
+      #                                  "Robalo Zona-A" = "#990099",
+      #                                  "Cherna criolla Zona-A" = "#996600",
+      #                                  "Yellow fin mojarra Zona-A" = "#669999",
+      #                                  "Ronco amarillo Zona-A" = "#99ffcc",
+      #                                  "Sardina escamuda Zona-A" = "#cc0066",
+      #                                  "Sardina de ley Zona-A" = "#cc33ff",
+      #                                  "Pargo criollo Zona-A" = "#cccc00",
+      #                                  "Caji Zona-A" = "#cccccc",
+      #                                  "Cubera Zona-A" = "#ff9900",
+      #                                  "Caballerote Zona-A" = "#ff9999",
+      #                                  "Rubia Zona-A" = "#ffcc00",
+      #                                  "Chicharro Zona-A" = "#330000",
+      #                                  "Palometa Zona-A" = "#ff0000")) +
+      #   scale_linetype_manual(name = "Fleet",
+      #                         values = c("harvest1" = 5, 
+      #                                    "harvest2" = 3, 
+      #                                    "htotalleg" = 1, 
+      #                                    "harvest_ill_for" = 6),
+      #                         labels = c("harvest1" = "Fleet 1", 
+      #                                    "harvest2" = "Fleet 2", 
+      #                                    "htotalleg" = "Total Legal",
+      #                                    "harvest_ill_for" = "Illegal")) +
+      #   theme_bw() +
+      #   theme(legend.key = element_rect(colour = "transparent", fill = "white"),
+      #         legend.key.width = unit(5, "line"))
+      # 
+   
+   
+   ## Kobe plot
+   
+      kobeDatahcr <- hcrdatadf %>%
+        filter(time == 1 | time == dataInput[1,6])
+
+      hcrkobe = ggplot(kobeDatahcr, aes(x = BvBMSY, y = FvFMSYtotal, colour = fishery, group =  fishery, shape = as.factor(time))) +
+        geom_point(size=7) +
+        geom_hline(yintercept=1) +
+        geom_vline(xintercept=1) +
+        xlim(0,maxb) +
+        ylim(0,maxF) +
+        labs(shape="Year", colour=legendName) +
+        xlab("Biomass [B/BMSY]") +
+        ylab("Total Fishing Mortality \n All Fleets [F/FMSY]") +
+        scale_colour_manual(name=legendName1,
+                            values = c("Biajaiba Zona-A" = "#0072B2",
+                                       "Lobster Cuba-1" = "#56B4E9",
+                                       "Lobster Cuba-2" = "#009E73",
+                                       "Lobster Cuba-3" = "#F0E442",
+                                       "Lobster Cuba-4" = "#CC79A7",
+                                       "upside-Cuba_lobster" = "#E69F00")) +
+        theme_bw() +
+        ggtitle("Before/After Kobe Plot \n Year 1 (Circles) and Final Year (Triangles)") +
+        theme(plot.title = element_text(hjust = 0.5), 
+              legend.position="none")
+    
+      
+  ## Rec time plot    
+      
+    hcrrectimedf <- recoveryOutput %>%
+        filter(management == q,
+               illegalFishing == m,
+               catchShare == l,
+               implementYear == j)
+      
+    hcrrectime = ggplot(hcrrectimedf, aes(x = reorder(fishery, recTime), y = recTime, colour = fishery, group =  fishery)) +
+        geom_point(size=7, shape = 19) +
+        ylim(0,25) +
+        xlab("Fishery") +
+        ylab("Recovery Year") +
+        scale_colour_manual(name=legendName1,
+                            values = c("Biajaiba Zona-A" = "#0072B2",
+                                       "Lobster Cuba-1" = "#56B4E9",
+                                       "Lobster Cuba-2" = "#009E73",
+                                       "Lobster Cuba-3" = "#F0E442",
+                                       "Lobster Cuba-4" = "#CC79A7",
+                                       "upside-Cuba_lobster" = "#E69F00")) +
+        theme_bw() +
+        ggtitle("Year of Recovery") +
+        theme(plot.title = element_text(hjust = 0.5),
+              axis.text.x = element_text(angle = 45, hjust = 1),
+              axis.title.x=element_blank(),
+              legend.position="none")  
+    
+      cat(" \n")
+      cat(" \n")
+      cat(paste("**Figure",counterFigure,": Results for",q," - ",l," - ",m," - ", "Implementation Year = ",j,"**"))
+      cat(" \n")
+      
+     # grid.arrange(g_legend(fisheryLegend1),
+     #              g_legend(fisheryLegend2),
+     #              g_legend(fisheryLegend3),
+     #              ncol=3)
+      
+      grid.arrange(g_legend(fisheryLegend1),
+                   brelplothcr,
+                   bplot1hcr,
+                   hplot1hcr,
+                   pplot1hcr,
+                   ncol=2)
+      print(hcrkobe)
+      print(npvplothcr)
+      print(hcrrectime)
+      counterFigure = counterFigure+1
+      cat(" \n")
+      cat(" \n")
+      
+      # #### Plots to save
+      # 
+      # brelplothcr2 = ggplot(hcrdatadf2, aes(x = time, y = meanBvBMSY, group = fishery, colour = fishery, fill = fishery)) +
+      #   # geom_ribbon(aes(ymin = meanBvBMSY - 2 * sdBvBMSY, ymax = meanBvBMSY + 2 * sdBvBMSY)) +
+      #   geom_line(size = lineSize) +
+      #   geom_hline(yintercept=0, lty=1, colour="black", size=0.25, alpha=0.8) +
+      #   geom_hline(yintercept=0.8, lty=2, colour="black", size=0.5, alpha=0.8) +
+      #   xlab("Time") +
+      #   ylab("Biomass [B/BMSY]") +
+      #   ggtitle(paste("B/BMSY",q,l,m,j,paste = " - ")) +
+      #   # scale_fill_manual(guide = "none",
+      #   #                   values = c("Machuelo Zone-A" = "#D55E00", 
+      #   #                                "Biajaiba Zone-A" = "#0072B2", 
+      #   #                                "Cabrilla Zone-A" = "#56B4E9", 
+      #   #                                "Sierra Zone-A" = "#009E73", 
+      #   #                                "Liseta Zone-A" = "#F0E442", 
+      #   #                                "Lisa Zone-A" = "#CC79A7",
+      #   #                                "Sabalo Zone-A" = "#E69F00",
+      #   #                                "Pez perro Zone-A" = "#00d5c9",
+      #   #                                "Two Fleets: Machuelo Zone-A = "#999999",
+      #   #                                "Illegal Fishing: Machuelo Zone-A" = "#000000",  
+      #   #                                "Two Fleets & Illegal Fishing: Machuelo Zone-A" = "#bdbdbd")) +
+      #   scale_colour_manual(name=legendName1, 
+      #                       values = c("Machuelo Zone-A" = "#D55E00", 
+      #                                  "Biajaiba Zone-A" = "#0072B2", 
+      #                                  "Cabrilla Zone-A" = "#56B4E9", 
+      #                                  "Sierra Zone-A" = "#009E73", 
+      #                                  "Liseta Zone-A" = "#F0E442", 
+      #                                  "Lisa Zone-A" = "#CC79A7",
+      #                                  "Sabalo Zone-A" = "#E69F00",
+      #                                  "Pez perro Zone-A" = "#00d5c9",
+      #                                  "Chopa amarilla Zona-A" = "#00cc00",
+      #                                  "Bajonao Zona-A" = "#00ccff",
+      #                                  "Jiguagua Zona-A" = "#330099",
+      #                                  "Gallego Zona-A" = "#33cccc",
+      #                                  "Cib Zona-A" = "#990000",
+      #                                  "Robalo Zona-A" = "#990099",
+      #                                  "Cherna criolla Zona-A" = "#996600",
+      #                                  "Yellow fin mojarra Zona-A" = "#669999",
+      #                                  "Ronco amarillo Zona-A" = "#99ffcc",
+      #                                  "Sardina escamuda Zona-A" = "#cc0066",
+      #                                  "Sardina de ley Zona-A" = "#cc33ff",
+      #                                  "Pargo criollo Zona-A" = "#cccc00",
+      #                                  "Caji Zona-A" = "#cccccc",
+      #                                  "Cubera Zona-A" = "#ff9900",
+      #                                  "Caballerote Zona-A" = "#ff9999",
+      #                                  "Rubia Zona-A" = "#ffcc00",
+      #                                  "Chicharro Zona-A" = "#330000",
+      #                                  "Palometa Zona-A" = "#ff0000")) +
+      #   theme_bw() +
+      #   theme(legend.position="none")
+      # 
+      # bplothcr2 = ggplot(hcrdatadf2, aes(x = time, y = meanb, group = fishery, colour = fishery, fill = fishery)) +
+      #   # geom_ribbon(aes(ymin = meanb - 2 * sdb, ymax = meanb + 2 * sdb)) +
+      #   geom_line(size = lineSize) +
+      #   geom_hline(yintercept=0, lty=1, colour="black", size=0.25, alpha=0.8) +
+      #   xlab("Time") +
+      #   ylab("Biomass [MT]") +
+      #   ggtitle(paste("BMSY",q,l,m,j,paste = " - ")) +
+      #   # scale_fill_manual(guide = "none",
+      #   #                   values = c("Machuelo Zone-A" = "#D55E00", 
+      #   #                                "Biajaiba Zone-A" = "#0072B2", 
+      #   #                                "Cabrilla Zone-A" = "#56B4E9", 
+      #   #                                "Sierra Zone-A" = "#009E73", 
+      #   #                                "Liseta Zone-A" = "#F0E442", 
+      #   #                                "Lisa Zone-A" = "#CC79A7",
+      #   #                                "Sabalo Zone-A" = "#E69F00",
+      #   #                                "Pez perro Zone-A" = "#00d5c9",
+      #   #                                "Two Fleets: Machuelo Zone-A" = "#999999",
+      #   #                                "Illegal Fishing: Machuelo Zone-A" = "#000000",  
+      #   #                                "Two Fleets & Illegal Fishing: Machuelo Zone-A" = "#bdbdbd")) +
+      #   scale_colour_manual(name=legendName1, 
+      #                       values = c("Machuelo Zone-A" = "#D55E00", 
+      #                                  "Biajaiba Zone-A" = "#0072B2", 
+      #                                  "Cabrilla Zone-A" = "#56B4E9", 
+      #                                  "Sierra Zone-A" = "#009E73", 
+      #                                  "Liseta Zone-A" = "#F0E442", 
+      #                                  "Lisa Zone-A" = "#CC79A7",
+      #                                  "Sabalo Zone-A" = "#E69F00",
+      #                                  "Pez perro Zone-A" = "#00d5c9",
+      #                                  "Chopa amarilla Zona-A" = "#00cc00",
+      #                                  "Bajonao Zona-A" = "#00ccff",
+      #                                  "Jiguagua Zona-A" = "#330099",
+      #                                  "Gallego Zona-A" = "#33cccc",
+      #                                  "Cib Zona-A" = "#990000",
+      #                                  "Robalo Zona-A" = "#990099",
+      #                                  "Cherna criolla Zona-A" = "#996600",
+      #                                  "Yellow fin mojarra Zona-A" = "#669999",
+      #                                  "Ronco amarillo Zona-A" = "#99ffcc",
+      #                                  "Sardina escamuda Zona-A" = "#cc0066",
+      #                                  "Sardina de ley Zona-A" = "#cc33ff",
+      #                                  "Pargo criollo Zona-A" = "#cccc00",
+      #                                  "Caji Zona-A" = "#cccccc",
+      #                                  "Cubera Zona-A" = "#ff9900",
+      #                                  "Caballerote Zona-A" = "#ff9999",
+      #                                  "Rubia Zona-A" = "#ffcc00",
+      #                                  "Chicharro Zona-A" = "#330000",
+      #                                  "Palometa Zona-A" = "#ff0000")) +
+      #   theme_bw() +
+      #   theme(legend.position="none")
+      # 
+      # 
+      # hcrnpvplot2 = ggplot(hcrnpvdf, aes(x = reorder(fishery, npvTotal), y = npvTotal, fill = fishery)) +
+      #   geom_bar(stat = "identity") +
+      #   geom_hline(yintercept=0, lty=1, colour="black", size=0.25, alpha=0.8) +
+      #   xlab("Fishery") +
+      #   ylab("Total NPV [USD]") +
+      #   ggtitle(paste("NPV",q,l,m,j,paste = " - ")) +
+      #   scale_fill_manual(name=legendName1, 
+      #                     values = c("Machuelo Zone-A" = "#D55E00", 
+      #                                  "Biajaiba Zone-A" = "#0072B2", 
+      #                                  "Cabrilla Zone-A" = "#56B4E9", 
+      #                                  "Sierra Zone-A" = "#009E73", 
+      #                                  "Liseta Zone-A" = "#F0E442", 
+      #                                  "Lisa Zone-A" = "#CC79A7",
+      #                                  "Sabalo Zone-A" = "#E69F00",
+      #                                  "Pez perro Zone-A" = "#00d5c9",
+      #                                  "Chopa amarilla Zona-A" = "#00cc00",
+      #                                  "Bajonao Zona-A" = "#00ccff",
+      #                                  "Jiguagua Zona-A" = "#330099",
+      #                                  "Gallego Zona-A" = "#33cccc",
+      #                                  "Cib Zona-A" = "#990000",
+      #                                  "Robalo Zona-A" = "#990099",
+      #                                  "Cherna criolla Zona-A" = "#996600",
+      #                                  "Yellow fin mojarra Zona-A" = "#669999",
+      #                                  "Ronco amarillo Zona-A" = "#99ffcc",
+      #                                  "Sardina escamuda Zona-A" = "#cc0066",
+      #                                  "Sardina de ley Zona-A" = "#cc33ff",
+      #                                  "Pargo criollo Zona-A" = "#cccc00",
+      #                                  "Caji Zona-A" = "#cccccc",
+      #                                  "Cubera Zona-A" = "#ff9900",
+      #                                  "Caballerote Zona-A" = "#ff9999",
+      #                                  "Rubia Zona-A" = "#ffcc00",
+      #                                  "Chicharro Zona-A" = "#330000",
+      #                                  "Palometa Zona-A" = "#ff0000")) +
+      #   theme_bw() +
+      #   theme(legend.position="none",
+      #         axis.text.x = element_text(angle = 45, hjust = 1),
+      #         axis.title.x=element_blank())
+      # 
+      # 
+      # hcrpplot = ggplot(hcrpdata3, aes(x = time, y = meanp, colour = fishery, fill = fishery, group = scenario, lty = fleet)) +
+      #   # geom_ribbon(aes(ymin = meanp - 2 * sdp, ymax = meanp + 2 * sdp)) +
+      #   geom_line(size = lineSize) +
+      #   geom_hline(yintercept=0, lty=1, colour="black", size=0.25, alpha=0.8) +
+      #   xlab("Time") +
+      #   ylab("Profit [USD]") +
+      #   ggtitle(paste("Profit",q,l,m,j,paste = " - ")) +
+      #           # scale_fill_manual(guide = "none",
+      #   #                   values = c("Machuelo Zone-A" = "#D55E00", 
+      #   #                                "Biajaiba Zone-A" = "#0072B2", 
+      #   #                                "Cabrilla Zone-A" = "#56B4E9", 
+      #   #                                "Sierra Zone-A" = "#009E73", 
+      #   #                                "Liseta Zone-A" = "#F0E442", 
+      #   #                                "Lisa Zone-A" = "#CC79A7",
+      #   #                                "Sabalo Zone-A" = "#E69F00",
+      #   #                                "Pez perro Zone-A" = "#00d5c9",
+      #   #                                "Two Fleets: Machuelo Zone-A" = "#999999",
+      #   #                                "Illegal Fishing: Machuelo Zone-A" = "#000000",  
+      #   #                                "Two Fleets & Illegal Fishing: Machuelo Zone-A" = "#bdbdbd")) +
+      #   scale_colour_manual(name=legendName1, 
+      #                       values = c("Machuelo Zone-A" = "#D55E00", 
+      #                                  "Biajaiba Zone-A" = "#0072B2", 
+      #                                  "Cabrilla Zone-A" = "#56B4E9", 
+      #                                  "Sierra Zone-A" = "#009E73", 
+      #                                  "Liseta Zone-A" = "#F0E442", 
+      #                                  "Lisa Zone-A" = "#CC79A7",
+      #                                  "Sabalo Zone-A" = "#E69F00",
+      #                                  "Pez perro Zone-A" = "#00d5c9",
+      #                                  "Chopa amarilla Zona-A" = "#00cc00",
+      #                                  "Bajonao Zona-A" = "#00ccff",
+      #                                  "Jiguagua Zona-A" = "#330099",
+      #                                  "Gallego Zona-A" = "#33cccc",
+      #                                  "Cib Zona-A" = "#990000",
+      #                                  "Robalo Zona-A" = "#990099",
+      #                                  "Cherna criolla Zona-A" = "#996600",
+      #                                  "Yellow fin mojarra Zona-A" = "#669999",
+      #                                  "Ronco amarillo Zona-A" = "#99ffcc",
+      #                                  "Sardina escamuda Zona-A" = "#cc0066",
+      #                                  "Sardina de ley Zona-A" = "#cc33ff",
+      #                                  "Pargo criollo Zona-A" = "#cccc00",
+      #                                  "Caji Zona-A" = "#cccccc",
+      #                                  "Cubera Zona-A" = "#ff9900",
+      #                                  "Caballerote Zona-A" = "#ff9999",
+      #                                  "Rubia Zona-A" = "#ffcc00",
+      #                                  "Chicharro Zona-A" = "#330000",
+      #                                  "Palometa Zona-A" = "#ff0000")) +
+      #   scale_linetype_manual(values = c("profit1" = 5, 
+      #                                    "profit2" = 3,
+      #                                    "ptotal" = 1),
+      #                         labels = c("profit1" = "Fleet 1", 
+      #                                    "profit2" = "Fleet 2", 
+      #                                    "ptotal" = "Total Legal")) +
+      #   theme_bw() +
+      #   theme(legend.position="none")
+      # 
+      # 
+      # hcrhplot2 = ggplot(hcrhdata3, aes(x = time, y = meanh, colour = fishery, fill = fishery, group = scenario, lty = fleet)) +
+      #   # geom_ribbon(aes(ymin = meanh - 2 * sdh, ymax = meanh + 2 * sdh)) +
+      #   geom_line(size = lineSize) +
+      #   geom_hline(yintercept=0, lty=1, colour="black", size=0.25, alpha=0.8) +
+      #   xlab("Time") +
+      #   ylab("Harvest [MT]") +
+      #   ggtitle(paste("Harvest",q,l,m,j,paste = " - ")) +
+      #   theme_bw() +
+      #                   # scale_fill_manual(guide = "none",
+      #   #                   values = c("Machuelo Zone-A" = "#D55E00", 
+      #   #                                "Biajaiba Zone-A" = "#0072B2", 
+      #   #                                "Cabrilla Zone-A" = "#56B4E9", 
+      #   #                                "Sierra Zone-A" = "#009E73", 
+      #   #                                "Liseta Zone-A" = "#F0E442", 
+      #   #                                "Lisa Zone-A" = "#CC79A7",
+      #   #                                "Sabalo Zone-A" = "#E69F00",
+      #   #                                "Pez perro Zone-A" = "#00d5c9",
+      #   #                                "Two Fleets: Machuelo Zone-A" = "#999999",
+      #   #                                "Illegal Fishing: Machuelo Zone-A" = "#000000",  
+      #   #                                "Two Fleets & Illegal Fishing: Machuelo Zone-A" = "#bdbdbd")) +
+      #   scale_colour_manual(name=legendName1, 
+      #                       values = c("Machuelo Zone-A" = "#D55E00", 
+      #                                  "Biajaiba Zone-A" = "#0072B2", 
+      #                                  "Cabrilla Zone-A" = "#56B4E9", 
+      #                                  "Sierra Zone-A" = "#009E73", 
+      #                                  "Liseta Zone-A" = "#F0E442", 
+      #                                  "Lisa Zone-A" = "#CC79A7",
+      #                                  "Sabalo Zone-A" = "#E69F00",
+      #                                  "Pez perro Zone-A" = "#00d5c9",
+      #                                  "Chopa amarilla Zona-A" = "#00cc00",
+      #                                  "Bajonao Zona-A" = "#00ccff",
+      #                                  "Jiguagua Zona-A" = "#330099",
+      #                                  "Gallego Zona-A" = "#33cccc",
+      #                                  "Cib Zona-A" = "#990000",
+      #                                  "Robalo Zona-A" = "#990099",
+      #                                  "Cherna criolla Zona-A" = "#996600",
+      #                                  "Yellow fin mojarra Zona-A" = "#669999",
+      #                                  "Ronco amarillo Zona-A" = "#99ffcc",
+      #                                  "Sardina escamuda Zona-A" = "#cc0066",
+      #                                  "Sardina de ley Zona-A" = "#cc33ff",
+      #                                  "Pargo criollo Zona-A" = "#cccc00",
+      #                                  "Caji Zona-A" = "#cccccc",
+      #                                  "Cubera Zona-A" = "#ff9900",
+      #                                  "Caballerote Zona-A" = "#ff9999",
+      #                                  "Rubia Zona-A" = "#ffcc00",
+      #                                  "Chicharro Zona-A" = "#330000",
+      #                                  "Palometa Zona-A" = "#ff0000")) +
+      #   scale_linetype_manual(values = c("harvest1" = 5, 
+      #                                    "harvest2" = 3, 
+      #                                    "htotalleg" = 1, 
+      #                                    "harvest_ill_for" = 6),
+      #                         labels = c("harvest1" = "Fleet 1", 
+      #                                    "harvest2" = "Fleet 2",
+      #                                    "htotalleg" = "Total Legal", 
+      #                                    "harvest_ill_for" = "Illegal")) +
+      #   theme(legend.position="none")
+      # 
+      # 
+      # hcrkobe2 = ggplot(hcrkobeData, aes(x = BvBMSY, y = FvFMSYtotal, colour = fishery, group =  fishery, shape = as.factor(time))) +
+      #   geom_point(size=7) +
+      #   geom_hline(yintercept=1) +
+      #   geom_vline(xintercept=1) +
+      #   xlim(0,maxb) +
+      #   ylim(0,maxF) +
+      #   labs(shape="Year", colour=legendName) +
+      #   xlab("Biomass [B/BMSY]") +
+      #   ylab("Total Fishing Mortality \n All Fleets [F/FMSY]") +
+      #   scale_colour_manual(name=legendName1, 
+      #                       values = c("Machuelo Zone-A" = "#D55E00", 
+      #                                  "Biajaiba Zone-A" = "#0072B2", 
+      #                                  "Cabrilla Zone-A" = "#56B4E9", 
+      #                                  "Sierra Zone-A" = "#009E73", 
+      #                                  "Liseta Zone-A" = "#F0E442", 
+      #                                  "Lisa Zone-A" = "#CC79A7",
+      #                                  "Sabalo Zone-A" = "#E69F00",
+      #                                  "Pez perro Zone-A" = "#00d5c9",
+      #                                  "Chopa amarilla Zona-A" = "#00cc00",
+      #                                  "Bajonao Zona-A" = "#00ccff",
+      #                                  "Jiguagua Zona-A" = "#330099",
+      #                                  "Gallego Zona-A" = "#33cccc",
+      #                                  "Cib Zona-A" = "#990000",
+      #                                  "Robalo Zona-A" = "#990099",
+      #                                  "Cherna criolla Zona-A" = "#996600",
+      #                                  "Yellow fin mojarra Zona-A" = "#669999",
+      #                                  "Ronco amarillo Zona-A" = "#99ffcc",
+      #                                  "Sardina escamuda Zona-A" = "#cc0066",
+      #                                  "Sardina de ley Zona-A" = "#cc33ff",
+      #                                  "Pargo criollo Zona-A" = "#cccc00",
+      #                                  "Caji Zona-A" = "#cccccc",
+      #                                  "Cubera Zona-A" = "#ff9900",
+      #                                  "Caballerote Zona-A" = "#ff9999",
+      #                                  "Rubia Zona-A" = "#ffcc00",
+      #                                  "Chicharro Zona-A" = "#330000",
+      #                                  "Palometa Zona-A" = "#ff0000")) +
+      #   theme_bw() +
+      #   ggtitle(paste("Before/After Kobe Plot \n Year 1 (Circles) and Final Year (Triangles)\n",q,l,m,j,paste = " - ")) +
+      #   theme(plot.title = element_text(hjust = 0.5), 
+      #         legend.position="none")
+      # 
+      # 
+      #   hcrrectime2 = ggplot(hcrrectimedf, aes(x = reorder(fishery, recTime), y = recTime, colour = fishery, group =  fishery)) +
+      #   geom_point(size=7, shape = 19) +
+      #   ylim(0,25) +
+      #   xlab("Fishery") +
+      #   ylab("Recovery Year") +
+      #   scale_colour_manual(name=legendName1, 
+      #                       values = c("Machuelo Zone-A" = "#D55E00", 
+      #                                  "Biajaiba Zone-A" = "#0072B2", 
+      #                                  "Cabrilla Zone-A" = "#56B4E9", 
+      #                                  "Sierra Zone-A" = "#009E73", 
+      #                                  "Liseta Zone-A" = "#F0E442", 
+      #                                  "Lisa Zone-A" = "#CC79A7",
+      #                                  "Sabalo Zone-A" = "#E69F00",
+      #                                  "Pez perro Zone-A" = "#00d5c9",
+      #                                  "Chopa amarilla Zona-A" = "#00cc00",
+      #                                  "Bajonao Zona-A" = "#00ccff",
+      #                                  "Jiguagua Zona-A" = "#330099",
+      #                                  "Gallego Zona-A" = "#33cccc",
+      #                                  "Cib Zona-A" = "#990000",
+      #                                  "Robalo Zona-A" = "#990099",
+      #                                  "Cherna criolla Zona-A" = "#996600",
+      #                                  "Yellow fin mojarra Zona-A" = "#669999",
+      #                                  "Ronco amarillo Zona-A" = "#99ffcc",
+      #                                  "Sardina escamuda Zona-A" = "#cc0066",
+      #                                  "Sardina de ley Zona-A" = "#cc33ff",
+      #                                  "Pargo criollo Zona-A" = "#cccc00",
+      #                                  "Caji Zona-A" = "#cccccc",
+      #                                  "Cubera Zona-A" = "#ff9900",
+      #                                  "Caballerote Zona-A" = "#ff9999",
+      #                                  "Rubia Zona-A" = "#ffcc00",
+      #                                  "Chicharro Zona-A" = "#330000",
+      #                                  "Palometa Zona-A" = "#ff0000")) +
+      #   theme_bw() +
+      #   ggtitle(paste("Year of Recovery\n", q,l,m,j,paste = " - ")) +
+      #   theme(plot.title = element_text(hjust = 0.5),
+      #         axis.text.x = element_text(angle = 45, hjust = 1),
+      #         axis.title.x=element_blank(),
+      #         legend.position="none") 
+      # 
+      ### Save images
+   # ggsave(hcrkobe2, filename = paste("kobe_0414",q,m,l,j,".png",sep="_"))
+   # ggsave(g_legend(hcrlineLegend), filename = "hcrlineLegend.png")
+   # ggsave(g_legend(hcrcolorLegend), filename = "hcrcolorLegend.png")
+   # ggsave(bplothcr2, filename = paste("Bplot_0414",q,m,l,j,".png",sep="_"))
+   # ggsave(brelplothcr2, filename = paste("bRelplot_0414",q,m,l,j,".png",sep="_"))
+   # ggsave(hcrhplot2, filename = paste("hplot_0414",q,m,l,j,".png",sep="_"))
+   # ggsave(hcrpplot, filename = paste("pplot_0414",q,m,l,j,".png",sep="_"))
+   # ggsave(hcrnpvplot2, filename = paste("npvplot_0414",q,m,l,j,".png",sep="_"))
+   # ggsave(hcrrectime2, filename = paste("rectime_0414",q,m,l,j,".png",sep="_"))
+   #      
+        
+         } # End delayVec loop
+      } # End CS loop
+   } # End illegal loop      
+} # End management loop
+
+```
+
+<!-- # Multiple Fleet Examples -- Fishery Reports -->
+<!-- This section contains reports for the Biajaiba fishery under three example scenarios that incorporate more than one fleet. The first example includes two legal fleets and no illegal harvest. The second example includes one legal fleet and illegal harvest. The third example includes two legal fleets and illegal harvest. The "theta_legal_1" and "theta_legal_2" parameters determine how much of the total fishing mortality rate is currently divided among the two legal fleets and illegal pressure. Under the Status Quo scenario, this remains the same. The "split" parameter determines how to divide the legal fishing pressure among the two legal fleets under reform scenarios. -->
+
+```{r, echo=FALSE, error=FALSE, message=FALSE, warning = FALSE, results='asis'}
+## Read in data input file
+# dataInput2 = read.csv("cuba_inputs_fleet_ex.csv", header = TRUE, stringsAsFactors = FALSE)
+# 
+# ## Read in functions file
+# source("functionsCuba_update.R")
+# 
+# ################################################
+# #### Set up model run
+# ## Enter management scenarios to loop over - select 1 through 5
+# scenarios = c(1,2,3,4,5,6)
+# ## Enter whether or not to loop over catch share cost and price scalars - put "yes" or "no"
+# catchShareLoop = "yes"
+# ## Enter whether or not to loop over eliminating illegal fishing - put "yes" or "no"
+# illegalLoop = "yes"
+# 
+# ################################################
+# ################################################
+# ### Implementation vector
+# # delayVec <- c(2:20)
+# delayVec <- c(2)
+# 
+# ##################################################
+# 
+# ## Loop over all example fisheries
+# # for (i in 1:1)
+# for (i in 1:nrow(dataInput2))
+# {
+#     outputs2 = projectionModel(dataInput2[i,],scenarios,catchShareLoop,illegalLoop)
+# 
+#     masterOutput2i = cbind(rep(dataInput2[i,]$Fishery,nrow(melt(outputs2$BProjections))),
+#                           rep(dataInput2[i,]$Species,nrow(melt(outputs2$BProjections))),
+#                           melt(outputs2$BProjections),
+#                           melt(outputs2$HInt1Projections)$value,
+#                           melt(outputs2$HInt2Projections)$value,
+#                           melt(outputs2$HNonIntProjections)$value,
+#                           melt(outputs2$profit1Projections)$value,
+#                           melt(outputs2$profit2Projections)$value,
+#                           melt(outputs2$bProjections)$value,
+#                           melt(outputs2$fInt1Projections)$value,
+#                           melt(outputs2$fInt2Projections)$value,
+#                           melt(outputs2$fNonIntProjections)$value,
+#                           melt(outputs2$fTotalProjections)$value)
+# 
+#     colnames(masterOutput2i) = c("fishery", "species","management","MC", "catchShare","illegalFishing",
+#                                 "implementYear", "time","biomass", "harvest1", "harvest2", "harvest_ill_for",
+#                                 "profit1","profit2", "BvBMSY","FvFMSY1", "FvFMSY2", "FvFMSYill", "FvFMSYtotal")
+# 
+#     if (i == 1) {
+#         masterOutput2 = masterOutput2i
+#     } else {
+#         masterOutput2 = rbind(masterOutput2,masterOutput2i)
+#     }
+# 
+#     masterOutput2$management[masterOutput2$management == 1] = "SQ"
+#     masterOutput2$management[masterOutput2$management == 2] = "FMSY"
+#     masterOutput2$management[masterOutput2$management == 3] = "minRec"
+#     masterOutput2$management[masterOutput2$management == 4] = "econOpt"
+#     masterOutput2$management[masterOutput2$management == 5] = "close"
+#     masterOutput2$management[masterOutput2$management == 6] = "openA"
+#     masterOutput2$catchShare[masterOutput2$catchShare == 1] = "no_CS"
+#     masterOutput2$catchShare[masterOutput2$catchShare == 2] = "CS"
+#     masterOutput2$illegalFishing[masterOutput2$illegalFishing == 1] = "illegal_fishing"
+#     masterOutput2$illegalFishing[masterOutput2$illegalFishing == 2] = "no_illegal_fishing"
+# 
+#     recoveryOutput2i = cbind(rep(dataInput2[i,]$Fishery,nrow(melt(outputs2$timeToRecovery))),
+#                             rep(dataInput2[i,]$Species,nrow(melt(outputs2$timeToRecovery))),
+#                             melt(outputs2$timeToRecovery))
+# 
+#     colnames(recoveryOutput2i) = c("fishery", "species", "management", "MC", "catchShare", "illegalFishing", "implementYear", "recTime")
+# 
+#     if (i == 1) {
+#       recoveryOutput2 = recoveryOutput2i
+#     } else {
+#       recoveryOutput2 = rbind(recoveryOutput2,recoveryOutput2i)
+#     }
+# 
+#     recoveryOutput2$management[recoveryOutput2$management == 1] = "SQ"
+#     recoveryOutput2$management[recoveryOutput2$management == 2] = "FMSY"
+#     recoveryOutput2$management[recoveryOutput2$management == 3] = "minRec"
+#     recoveryOutput2$management[recoveryOutput2$management == 4] = "econOpt"
+#     recoveryOutput2$management[recoveryOutput2$management == 5] = "close"
+#     recoveryOutput2$management[recoveryOutput2$management == 6] = "openA"
+#     recoveryOutput2$catchShare[recoveryOutput2$catchShare == 1] = "no_CS"
+#     recoveryOutput2$catchShare[recoveryOutput2$catchShare == 2] = "CS"
+#     recoveryOutput2$illegalFishing[recoveryOutput2$illegalFishing == 1] = "illegal_fishing"
+#     recoveryOutput2$illegalFishing[recoveryOutput2$illegalFishing == 2] = "no_illegal_fishing"
+# 
+#     npvOutput2i = cbind(rep(dataInput2[i,]$Fishery,nrow(melt(outputs2$npv1))),
+#                        rep(dataInput2[i,]$Species,nrow(melt(outputs2$npv1))),
+#                             melt(outputs2$npv1),
+#                             melt(outputs2$npv2)$value)
+# 
+#     colnames(npvOutput2i) = c("fishery", "species", "management", "MC", "catchShare", "illegalFishing", "implementYear", "npv1", "npv2")
+# 
+#     if (i == 1) {
+#       npvOutput2 = npvOutput2i
+#     } else {
+#       npvOutput2 = rbind(npvOutput2,npvOutput2i)
+#     }
+# 
+#     npvOutput2$management[npvOutput2$management == 1] = "SQ"
+#     npvOutput2$management[npvOutput2$management == 2] = "FMSY"
+#     npvOutput2$management[npvOutput2$management == 3] = "minRec"
+#     npvOutput2$management[npvOutput2$management == 4] = "econOpt"
+#     npvOutput2$management[npvOutput2$management == 5] = "close"
+#     npvOutput2$management[npvOutput2$management == 6] = "openA"
+#     npvOutput2$catchShare[npvOutput2$catchShare == 1] = "no_CS"
+#     npvOutput2$catchShare[npvOutput2$catchShare == 2] = "CS"
+#     npvOutput2$illegalFishing[npvOutput2$illegalFishing == 1] = "illegal_fishing"
+#     npvOutput2$illegalFishing[npvOutput2$illegalFishing == 2] = "no_illegal_fishing"
+# 
+# 
+# # masterOutput2$implementYear = (masterOutput2$implementYear + 1)
+# masterOutput2$implementYear <- delayVec[1]
+# write.csv(masterOutput2,file="cuba_masterOutput2_0531_opt.csv")
+# 
+# # recoveryOutput2$implementYear = (recoveryOutput2$implementYear + 1)
+# recoveryOutput2$implementYear <- delayVec[1]
+# write.csv(recoveryOutput2,file="cuba_recOutput2_0531_opt.csv")
+# 
+# # npvOutput2$implementYear = (npvOutput2$implementYear + 1)
+# npvOutput2$implementYear <- delayVec[1]
+# write.csv(npvOutput2,file="cuba_npvOutput2_0531_opt.csv")
+# 
+# ## opt at the end of csv names indicates results from model with policy that is optimized once at beginning
+# 
+# }
+# ```
+# 
+# ```{r, echo=FALSE, error=FALSE, message=FALSE, warning = FALSE, results='asis'}
+# 
+# #### Filter for scenarios that we want to explore here.
+# masterOutput2 <- masterOutput2 %>%
+#   filter(management %in% c("SQ", "FMSY"))
+# 
+# fisheryNumber2 <- length(unique(masterOutput2$fishery))
+# fisheryNames2 <- as.vector(unique(masterOutput2$fishery))
+# 
+# lineSize <- 1.5
+# 
+# # for (i in 1:1)
+# for (i in fisheryNames2)
+# 
+# {
+#   dataInputsub2 <- dataInput2 %>%
+#     filter(Fishery == i)
+# 
+#   maxF = (dataInput2[1,9] + 1) / dataInputsub2[1,9]
+#   maxb = (dataInput2[1,9] + 1) ^ (1 / dataInputsub2[1,9])
+# 
+#   cat(" \n")
+#   cat(" \n")
+#   # cat(paste("##",dataInput[i,]$Country,"-",dataInput[i,]$Site,"-",dataInput[i,]$Species))
+#   cat(paste("##",dataInputsub2[1,2],"-",dataInputsub2[1,3],"-",dataInputsub2[1,4]))
+#   cat("  \n")
+#   cat("**Model Inputs**")
+#   cat("  \n")
+#   cat("  \n")
+#   # cat(paste("**Table",counterTable,": Input Parameters -",dataInput[i,]$Country,"-",dataInput[i,]$Site,"-",dataInput[i,]$Species,"**",sep=" "))
+#   cat(paste("**Table",counterTable,": Input Parameters -",dataInputsub[1,2],"-",dataInputsub[1,3],"-",dataInputsub[1,4],"**",sep=" "))
+#   counterTable = counterTable+1
+#   cat("  \n")
+#   # table = rbind(dataInput[i,],parameterText)
+#   table = rbind(dataInputsub2[1,],parameterText)
+#   rownames(table) = c("Value","Units","Description")
+#   pandoc.table(t(table),split.cells=c(1,2,10,1))
+#   cat("  \n")
+#   cat("**Model Outputs**")
+#   cat("  \n")
+#   cat("  \n")
+# 
+# 
+#   ### Make output plots
+# 
+# illegalNames2 <- c("illegal_fishing", "no_illegal_fishing")
+# 
+# 
+#   ## Loop over implementYears
+#   for (j in delayVec){
+# 
+#    ## Loop over catch shares
+#    for (l in csNames){
+# 
+#      ## Loop over illegal harvest elimination
+#      for (m in illegalNames2){
+# 
+#         datadft <- masterOutput2 %>%
+#         filter(fishery == i,
+#                illegalFishing == m,
+#                catchShare == l,
+#                implementYear == j)
+# 
+#       datadf2t <- datadft %>%
+#         group_by(management, time) %>%
+#         summarise(meanb = mean(biomass),
+#                   sdb = sd(biomass),
+#                   meanBvBMSY = mean(BvBMSY),
+#                   sdBvBMSY = sd(BvBMSY),
+#                   meanFvFMSY1 =  mean(FvFMSY1),
+#                   sdFvFMSY1 = sd(FvFMSY1),
+#                   meanFvFMSY2 = mean(FvFMSY2),
+#                   sdFvFMSY2 = sd(FvFMSY2),
+#                   meanFvFMSYill = mean(FvFMSYill),
+#                   sdFvFMSYill = sd(FvFMSYill),
+#                   meanFvFMSYtotal = mean(FvFMSYtotal),
+#                   sdFvFMSYtotal = sd(FvFMSYtotal))
+# 
+#       ## biomass plots
+# 
+#       brelplott = ggplot(datadf2t, aes(x = time, y = meanBvBMSY, group = management, colour = management, fill = management)) +
+#         # geom_ribbon(aes(ymin = meanBvBMSY - 2 * sdBvBMSY, ymax = meanBvBMSY + 2 * sdBvBMSY)) +
+#         geom_line(size = lineSize) +
+#         geom_hline(yintercept=0, lty=1, colour="black", size=0.25, alpha=0.8) +
+#         geom_hline(yintercept=0.8, lty=2, colour="black", size=0.5, alpha=0.8) +
+#         xlab("Time") +
+#         ylab("Biomass [B/BMSY]") +
+#         # scale_fill_manual(guide = "none",
+#         #                  labels = c("SQ" = "Status Quo",
+#         #                             "openA" = "Open Access",
+#         #                             "minRec" = "Minimize Recovery Time",
+#         #                             "FMSY" = "Maximize Food Production (FMSY)",
+#         #                             "econOpt" = "Economically Optimal",
+#         #                             "close" = "Closure"),
+#         #                  values = c("SQ" = "#D55E00",
+#         #                             "openA" = "#0072B2",
+#         #                             "minRec" = "#56B4E9",
+#         #                             "FMSY" = "#009E73",
+#         #                             "econOpt" = "#E69F00",
+#         #                             "close" = "#CC79A7")) +
+#         scale_colour_manual(name=legendName,
+#                             labels = c("SQ" = "Status Quo",
+#                                        "openA" = "Open Access",
+#                                        "minRec" = "Minimize Recovery Time",
+#                                        "FMSY" = "Maximize Food Production (FMSY)",
+#                                        "econOpt" = "Economically Optimal",
+#                                        "close" = "Closure"),
+#                             values = c("SQ" = "#D55E00",
+#                                        "openA" = "#0072B2",
+#                                        "minRec" = "#56B4E9",
+#                                        "FMSY" = "#009E73",
+#                                        "econOpt" = "#E69F00",
+#                                        "close" = "#CC79A7")) +
+#         theme_bw() +
+#         theme(legend.position="none")
+# 
+#       bplott = ggplot(datadf2t, aes(x = time, y = meanb, group = management, colour = management, fill = management)) +
+#         # geom_ribbon(aes(ymin = meanb - 2 * sdb, ymax = meanb + 2 * sdb)) +
+#         geom_line(size = lineSize) +
+#         geom_hline(yintercept=0, lty=1, colour="black", size=0.25, alpha=0.8) +
+#         xlab("Time") +
+#         ylab("Biomass [MT]") +
+#         # scale_fill_manual(guide = "none",
+#         #                  labels = c("SQ" = "Status Quo",
+#         #                             "openA" = "Open Access",
+#         #                             "minRec" = "Minimize Recovery Time",
+#         #                             "FMSY" = "Maximize Food Production (FMSY)",
+#         #                             "econOpt" = "Economically Optimal",
+#         #                             "close" = "Closure"),
+#         #                  values = c("SQ" = "#D55E00",
+#         #                             "openA" = "#0072B2",
+#         #                             "minRec" = "#56B4E9",
+#         #                             "FMSY" = "#009E73",
+#         #                             "econOpt" = "#E69F00",
+#         #                             "close" = "#CC79A7")) +
+#         scale_colour_manual(name=legendName,
+#                             labels = c("SQ" = "Status Quo",
+#                                        "openA" = "Open Access",
+#                                        "minRec" = "Minimize Recovery Time",
+#                                        "FMSY" = "Maximize Food Production (FMSY)",
+#                                        "econOpt" = "Economically Optimal",
+#                                        "close" = "Closure"),
+#                             values = c("SQ" = "#D55E00",
+#                                        "openA" = "#0072B2",
+#                                        "minRec" = "#56B4E9",
+#                                        "FMSY" = "#009E73",
+#                                        "econOpt" = "#E69F00",
+#                                        "close" = "#CC79A7")) +
+#         theme_bw() +
+#         theme(legend.position="none")
+# 
+# ### NPV plot
+# 
+#       npvdft <- npvOutput2 %>%
+#         filter(fishery == i,
+#                illegalFishing == m,
+#                catchShare == l,
+#                implementYear == j) %>%
+#         mutate(npvTotal = npv1 + npv2)
+# 
+#       npvdf2t <- gather(npvdft, fleet, npv, npv1:npvTotal)
+# 
+#       npvdf3t <- npvdf2t %>%
+#         group_by(fishery, management, fleet) %>%
+#         summarise(meannpv = mean(npv),
+#                   sdnpv = sd(npv)) %>%
+#         mutate(scenario = paste(management, fleet, sep = "_"))
+# 
+#       npvdf4t <- npvdf3t %>%
+#         filter(fleet %in% c("npvTotal"))
+# 
+#     npvplott = ggplot(npvdft, aes(x = reorder(management, npvTotal), y = npvTotal, fill = management)) +
+#         geom_bar(stat = "identity") +
+#         geom_hline(yintercept=0, lty=1, colour="black", size=0.25, alpha=0.8) +
+#         xlab("Management") +
+#         ylab("Total NPV [USD]") +
+#         scale_fill_manual(name=legendName,
+#                           labels = c("SQ" = "Status Quo",
+#                                      "openA" = "Open Access",
+#                                      "minRec" = "Minimize Recovery Time",
+#                                      "FMSY" = "Maximize Food Production (FMSY)",
+#                                      "econOpt" = "Economically Optimal",
+#                                      "close" = "Closure"),
+#                           values = c("SQ" = "#D55E00",
+#                                      "openA" = "#0072B2",
+#                                      "minRec" = "#56B4E9",
+#                                      "FMSY" = "#009E73",
+#                                      "econOpt" = "#E69F00",
+#                                      "close" = "#CC79A7")) +
+#         theme_bw() +
+#         theme(legend.position="none")
+# 
+#     ## Profit plot
+# 
+#       pdatat <- datadft %>%
+#         select(fishery:time, profit1, profit2) %>%
+#         mutate(ptotal = profit1 + profit2)
+# 
+#       pdata2t <- gather(pdatat, fleet, profit, profit1:ptotal)
+# 
+#       pdata3t <- pdata2t %>%
+#         group_by(fishery, management, implementYear, fleet, time) %>%
+#         summarise(meanp = mean(profit),
+#                   sdp = sd(profit)) %>%
+#         mutate(scenario = paste(management,fleet, sep = "_"))
+# 
+#       pplott = ggplot(pdata3t, aes(x = time, y = meanp, colour = management, fill = management, group = scenario, lty = fleet)) +
+#         # geom_ribbon(aes(ymin = meanp - 2 * sdp, ymax = meanp + 2 * sdp)) +
+#         geom_line(size = lineSize) +
+#         geom_hline(yintercept=0, lty=1, colour="black", size=0.25, alpha=0.8) +
+#         xlab("Time") +
+#         ylab("Profit [USD]") +
+#         # scale_fill_manual(guide = "none",
+#         #                  labels = c("SQ" = "Status Quo",
+#         #                             "openA" = "Open Access",
+#         #                             "minRec" = "Minimize Recovery Time",
+#         #                             "FMSY" = "Maximize Food Production (FMSY)",
+#         #                             "econOpt" = "Economically Optimal",
+#         #                             "close" = "Closure"),
+#         #                  values = c("SQ" = "#D55E00",
+#         #                             "openA" = "#0072B2",
+#         #                             "minRec" = "#56B4E9",
+#         #                             "FMSY" = "#009E73",
+#         #                             "econOpt" = "#E69F00",
+#         #                             "close" = "#CC79A7")) +
+#         scale_colour_manual(name=legendName,
+#                             labels = c("SQ" = "Status Quo",
+#                                        "openA" = "Open Access",
+#                                        "minRec" = "Minimize Recovery Time",
+#                                        "FMSY" = "Maximize Food Production (FMSY)",
+#                                        "econOpt" = "Economically Optimal",
+#                                        "close" = "Closure"),
+#                             values = c("SQ" = "#D55E00",
+#                                        "openA" = "#0072B2",
+#                                        "minRec" = "#56B4E9",
+#                                        "FMSY" = "#009E73",
+#                                        "econOpt" = "#E69F00",
+#                                        "close" = "#CC79A7")) +
+#         scale_linetype_manual(values = c("profit1" = 5,
+#                                          "profit2" = 3,
+#                                          "ptotal" = 1),
+#                               labels = c("profit1" = "Fleet 1",
+#                                          "profit2" = "Fleet 2",
+#                                          "ptotal" = "Total Legal")) +
+#         theme_bw() +
+#         theme(legend.position="none")
+# 
+#     ### Harvest plot
+# 
+#       hdatat <- datadft %>%
+#         select(fishery:time, harvest1, harvest2, harvest_ill_for) %>%
+#         mutate(htotalleg = harvest1 + harvest2)
+# 
+#       hdata2t <- gather(hdatat, fleet, harvest, harvest1:htotalleg)
+# 
+#       hdata3t <- hdata2t %>%
+#         group_by(fishery, management, implementYear, fleet, time) %>%
+#         summarise(meanh = mean(harvest),
+#                   sdh = sd(harvest)) %>%
+#         mutate(scenario = paste(management,fleet, sep = "_"))
+# 
+#       hplott = ggplot(hdata3t, aes(x = time, y = meanh, colour = management, fill = management, group = scenario, lty = fleet)) +
+#         # geom_ribbon(aes(ymin = meanh - 2 * sdh, ymax = meanh + 2 * sdh)) +
+#         geom_line(size = lineSize) +
+#         geom_hline(yintercept=0, lty=1, colour="black", size=0.25, alpha=0.8) +
+#         xlab("Time") +
+#         ylab("Harvest [MT]") +
+#         theme_bw() +
+#         # scale_fill_manual(guide = "none",
+#         #                  labels = c("SQ" = "Status Quo",
+#         #                             "openA" = "Open Access",
+#         #                             "minRec" = "Minimize Recovery Time",
+#         #                             "FMSY" = "Maximize Food Production (FMSY)",
+#         #                             "econOpt" = "Economically Optimal",
+#         #                             "close" = "Closure"),
+#         #                  values = c("SQ" = "#D55E00",
+#         #                             "openA" = "#0072B2",
+#         #                             "minRec" = "#56B4E9",
+#         #                             "FMSY" = "#009E73",
+#         #                             "econOpt" = "#E69F00",
+#         #                             "close" = "#CC79A7")) +
+#         scale_colour_manual(name=legendName,
+#                             labels = c("SQ" = "Status Quo",
+#                                        "openA" = "Open Access",
+#                                        "minRec" = "Minimize Recovery Time",
+#                                        "FMSY" = "Maximize Food Production (FMSY)",
+#                                        "econOpt" = "Economically Optimal",
+#                                        "close" = "Closure"),
+#                             values = c("SQ" = "#D55E00",
+#                                        "openA" = "#0072B2",
+#                                        "minRec" = "#56B4E9",
+#                                        "FMSY" = "#009E73",
+#                                        "econOpt" = "#E69F00",
+#                                        "close" = "#CC79A7")) +
+#         scale_linetype_manual(values = c("harvest1" = 5,
+#                                          "harvest2" = 3,
+#                                          "htotalleg" = 1,
+#                                          "harvest_ill_for" = 6),
+#                               labels = c("harvest1" =
+#                                            "Fleet 1",
+#                                          "harvest2" = "Fleet 2",
+#                                          "htotalleg" = "Total Legal",
+#                                          "harvest_ill_for" = "Illegal")) +
+#         theme(legend.position="none")
+# 
+#    lineLegendt = ggplot(hdata3t, aes(x = time, y = meanh, colour = management, fill = management, group = scenario, lty = fleet)) +
+#         # geom_ribbon(aes(ymin = meanh - 2 * sdh, ymax = meanh + 2 * sdh)) +
+#         geom_line(size = lineSize) +
+#         geom_hline(yintercept=0, lty=1, colour="black", size=0.25, alpha=0.8) +
+#         xlab("Time") +
+#         ylab("Harvest [MT]") +
+#         # scale_fill_manual(guide = "none") +
+#         scale_colour_manual(guide = "none",
+#                          labels = c("SQ" = "Status Quo",
+#                                     "openA" = "Open Access",
+#                                     "minRec" = "Minimize Recovery Time",
+#                                     "FMSY" = "Maximize Food Production (FMSY)",
+#                                     "econOpt" = "Economically Optimal",
+#                                     "close" = "Closure"),
+#                          values = c("SQ" = "#D55E00",
+#                                     "openA" = "#0072B2",
+#                                     "minRec" = "#56B4E9",
+#                                     "FMSY" = "#009E73",
+#                                     "econOpt" = "#E69F00",
+#                                     "close" = "#CC79A7")) +
+#         scale_linetype_manual(name = "Fleet",
+#                               values = c("harvest1" = 5,
+#                                          "harvest2" = 3,
+#                                          "htotalleg" = 1,
+#                                          "harvest_ill_for" = 6),
+#                               labels = c("harvest1" = "Fleet 1",
+#                                          "harvest2" = "Fleet 2",
+#                                          "htotalleg" = "Total Legal",
+#                                          "harvest_ill_for" = "Illegal")) +
+#         theme_bw() +
+#         theme(legend.key = element_rect(colour = "transparent", fill = "white"),
+#               legend.key.width = unit(5, "line"))
+# 
+#    colorLegendt = ggplot(hdata3t, aes(x = time, y = meanh, colour = management, fill = management, group = scenario, lty = fleet)) +
+#         # geom_ribbon(aes(ymin = meanh - 2 * sdh, ymax = meanh + 2 * sdh)) +
+#         geom_line(size = lineSize) +
+#         geom_hline(yintercept=0, lty=1, colour="black", size=0.25, alpha=0.8) +
+#         xlab("Time") +
+#         ylab("Harvest [MT]") +
+#         # scale_fill_manual(guide = "none") +
+#         scale_colour_manual(name=legendName,
+#                             labels = c("SQ" = "Status Quo",
+#                                        "openA" = "Open Access",
+#                                        "minRec" = "Minimize Recovery Time",
+#                                        "FMSY" = "Maximize Food Production (FMSY)",
+#                                        "econOpt" = "Economically Optimal",
+#                                        "close" = "Closure"),
+#                             values = c("SQ" = "#D55E00",
+#                                        "openA" = "#0072B2",
+#                                        "minRec" = "#56B4E9",
+#                                        "FMSY" = "#009E73",
+#                                        "econOpt" = "#E69F00",
+#                                        "close" = "#CC79A7")) +
+#         scale_linetype_manual(values = c("harvest1" = 5, "harvest2" = 3, "htotalleg" = 1, "harvest_ill_for" = 6),
+#                               labels = c("harvest1" = "Fleet 1",
+#                                          "harvest2" = "Fleet 2",
+#                                          "htotalleg" = "Total Legal",
+#                                          "harvest_ill_for" = "Illegal"),
+#                               guide = F) +
+#         theme_bw() +
+#         theme(legend.key = element_rect(colour = "transparent", fill = "white"),
+#               legend.key.width = unit(5, "line"))
+# 
+#   ## Kobe plot
+# 
+#       kobeDatat <- datadft %>%
+#         filter(time == 1 | time == dataInputsub[1,6])
+# 
+#       kobet = ggplot(kobeDatat, aes(x = BvBMSY, y = FvFMSYtotal, colour = management, group =  management, shape = as.factor(time))) +
+#         geom_point(size=7) +
+#         geom_hline(yintercept=1) +
+#         geom_vline(xintercept=1) +
+#         xlim(0,maxb) +
+#         ylim(0,maxF) +
+#         labs(shape="Year", colour=legendName) +
+#         xlab("Biomass [B/BMSY]") +
+#         ylab("Total Fishing Mortality \n All Fleets [F/FMSY]") +
+#         scale_colour_manual(name=legendName,
+#                             labels = c("SQ" = "Status Quo",
+#                                        "openA" = "Open Access",
+#                                        "minRec" = "Minimize Recovery Time",
+#                                        "FMSY" = "Maximize Food Production (FMSY)",
+#                                        "econOpt" = "Economically Optimal",
+#                                        "close" = "Closure"),
+#                              values = c("SQ" = "#D55E00",
+#                                         "openA" = "#0072B2",
+#                                         "minRec" = "#56B4E9",
+#                                         "FMSY" = "#009E73",
+#                                         "econOpt" = "#E69F00",
+#                                         "close" = "#CC79A7")) +
+#         theme_bw() +
+#         ggtitle("Before/After Kobe Plot \n Year 1 (Circles) and Final Year (Triangles)") +
+#         theme(plot.title = element_text(hjust = 0.5),
+#               legend.position="none")
+# 
+# 
+#   ## Rec time plot
+# 
+#       rectimedft <- recoveryOutput2 %>%
+#         filter(fishery == i,
+#                illegalFishing == m,
+#                catchShare == l,
+#                implementYear == j)
+# 
+#     rectimet = ggplot(rectimedft, aes(x = reorder(management, recTime), y = recTime, colour = management, group =  management)) +
+#         geom_point(size=7, shape = 8) +
+#         ylim(0,25) +
+#         xlab("Management") +
+#         ylab("Recovery Year") +
+#         scale_colour_manual(name=legendName,
+#                             labels = c("SQ" = "Status Quo",
+#                                        "openA" = "Open Access",
+#                                        "minRec" = "Minimize Recovery Time",
+#                                        "FMSY" = "Maximize Food Production (FMSY)",
+#                                        "econOpt" = "Economically Optimal",
+#                                        "close" = "Closure"),
+#                              values = c("SQ" = "#D55E00",
+#                                         "openA" = "#0072B2",
+#                                         "minRec" = "#56B4E9",
+#                                         "FMSY" = "#009E73",
+#                                         "econOpt" = "#E69F00",
+#                                         "close" = "#CC79A7")) +
+#         theme_bw() +
+#         ggtitle("Year of Recovery") +
+#         theme(plot.title = element_text(hjust = 0.5),
+#               legend.position="none")
+# 
+#       cat(" \n")
+#       cat(" \n")
+#       cat(paste("**Figure",counterFigure,": Results for",i," - ",l," - ",m," - ", "Implementation Year = ",j,"**"))
+#       cat(" \n")
+#       grid.arrange(g_legend(lineLegendt),
+#                          g_legend(colorLegendt),
+#                          kobet,
+#                          bplott,
+#                          brelplott,
+#                          hplott,
+#                          pplott,
+#                          npvplott,
+#                          rectimet,
+#                          ncol=2)
+#       counterFigure = counterFigure+1
+#       cat(" \n")
+#       cat(" \n")
+# 
+# 
+#    ### Plots for saving
+# 
+#       brelplot2t = ggplot(datadf2t, aes(x = time, y = meanBvBMSY, group = management, colour = management, fill = management)) +
+#         # geom_ribbon(aes(ymin = meanBvBMSY - 2 * sdBvBMSY, ymax = meanBvBMSY + 2 * sdBvBMSY)) +
+#         geom_line(size = lineSize) +
+#         geom_hline(yintercept=0, lty=1, colour="black", size=0.25, alpha=0.8) +
+#         geom_hline(yintercept=0.8, lty=2, colour="black", size=0.5, alpha=0.8) +
+#         ggtitle(paste("B/BMSY",i,m,l,j,sep = " - ")) +
+#         xlab("Time") +
+#         ylab("Biomass [B/BMSY]") +
+#         # scale_fill_manual(guide = "none",
+#         #                  labels = c("SQ" = "Status Quo",
+#         #                             "openA" = "Open Access",
+#         #                             "minRec" = "Minimize Recovery Time",
+#         #                             "FMSY" = "Maximize Food Production (FMSY)",
+#         #                             "econOpt" = "Economically Optimal",
+#         #                             "close" = "Closure"),
+#         #                  values = c("SQ" = "#D55E00",
+#         #                             "openA" = "#0072B2",
+#         #                             "minRec" = "#56B4E9",
+#         #                             "FMSY" = "#009E73",
+#         #                             "econOpt" = "#E69F00",
+#         #                             "close" = "#CC79A7")) +
+#         scale_colour_manual(name=legendName,
+#                             labels = c("SQ" = "Status Quo",
+#                                        "openA" = "Open Access",
+#                                        "minRec" = "Minimize Recovery Time",
+#                                        "FMSY" = "Maximize Food Production (FMSY)",
+#                                        "econOpt" = "Economically Optimal",
+#                                        "close" = "Closure"),
+#                             values = c("SQ" = "#D55E00",
+#                                        "openA" = "#0072B2",
+#                                        "minRec" = "#56B4E9",
+#                                        "FMSY" = "#009E73",
+#                                        "econOpt" = "#E69F00",
+#                                        "close" = "#CC79A7")) +
+#         theme_bw() +
+#         theme(legend.position="none")
+# 
+# 
+#       bplot2t = ggplot(datadf2t, aes(x = time, y = meanb, group = management, colour = management, fill = management)) +
+#         # geom_ribbon(aes(ymin = meanb - 2 * sdb, ymax = meanb + 2 * sdb)) +
+#         geom_line(size = lineSize) +
+#         geom_hline(yintercept=0, lty=1, colour="black", size=0.25, alpha=0.8) +
+#         xlab("Time") +
+#         ylab("Biomass [MT]") +
+#         ggtitle(paste("BMSY",i,m,l,j,sep = " - ")) +
+#         # scale_fill_manual(guide = "none",
+#         #                  labels = c("SQ" = "Status Quo",
+#         #                             "openA" = "Open Access",
+#         #                             "minRec" = "Minimize Recovery Time",
+#         #                             "FMSY" = "Maximize Food Production (FMSY)",
+#         #                             "econOpt" = "Economically Optimal",
+#         #                             "close" = "Closure"),
+#         #                  values = c("SQ" = "#D55E00",
+#         #                             "openA" = "#0072B2",
+#         #                             "minRec" = "#56B4E9",
+#         #                             "FMSY" = "#009E73",
+#         #                             "econOpt" = "#E69F00",
+#         #                             "close" = "#CC79A7")) +
+#         scale_colour_manual(name=legendName,
+#                             labels = c("SQ" = "Status Quo",
+#                                        "openA" = "Open Access",
+#                                        "minRec" = "Minimize Recovery Time",
+#                                        "FMSY" = "Maximize Food Production (FMSY)",
+#                                        "econOpt" = "Economically Optimal",
+#                                        "close" = "Closure"),
+#                             values = c("SQ" = "#D55E00",
+#                                        "openA" = "#0072B2",
+#                                        "minRec" = "#56B4E9",
+#                                        "FMSY" = "#009E73",
+#                                        "econOpt" = "#E69F00",
+#                                        "close" = "#CC79A7")) +
+#         theme_bw() +
+#         theme(legend.position="none")
+# 
+# 
+#       npvplot2t = ggplot(npvdft, aes(x = reorder(management, npvTotal), y = npvTotal, fill = management)) +
+#         geom_bar(stat = "identity") +
+#         geom_hline(yintercept=0, lty=1, colour="black", size=0.25, alpha=0.8) +
+#         xlab("Management") +
+#         ylab("Total NPV [USD]") +
+#         ggtitle(paste("Total NPV",i,m,l,j,sep = " - ")) +
+#         scale_fill_manual(name=legendName,
+#                           labels = c("SQ" = "Status Quo",
+#                                      "openA" = "Open Access",
+#                                      "minRec" = "Minimize Recovery Time",
+#                                      "FMSY" = "Maximize Food Production (FMSY)",
+#                                      "econOpt" = "Economically Optimal",
+#                                      "close" = "Closure"),
+#                           values = c("SQ" = "#D55E00",
+#                                      "openA" = "#0072B2",
+#                                      "minRec" = "#56B4E9",
+#                                      "FMSY" = "#009E73",
+#                                      "econOpt" = "#E69F00",
+#                                      "close" = "#CC79A7")) +
+#         theme_bw() +
+#         theme(legend.position="none")
+# 
+# 
+#     pplot2t = ggplot(pdata3t, aes(x = time, y = meanp, colour = management, fill = management, group = scenario, lty = fleet)) +
+#         # geom_ribbon(aes(ymin = meanp - 2 * sdp, ymax = meanp + 2 * sdp)) +
+#         geom_line(size = lineSize) +
+#         geom_hline(yintercept=0, lty=1, colour="black", size=0.25, alpha=0.8) +
+#         xlab("Time") +
+#         ylab("Profit [USD]") +
+#         ggtitle(paste("Profit",i,m,l,j,sep = " - ")) +
+#         # scale_fill_manual(guide = "none",
+#         #                  labels = c("SQ" = "Status Quo",
+#         #                             "openA" = "Open Access",
+#         #                             "minRec" = "Minimize Recovery Time",
+#         #                             "FMSY" = "Maximize Food Production (FMSY)",
+#         #                             "econOpt" = "Economically Optimal",
+#         #                             "close" = "Closure"),
+#         #                  values = c("SQ" = "#D55E00",
+#         #                             "openA" = "#0072B2",
+#         #                             "minRec" = "#56B4E9",
+#         #                             "FMSY" = "#009E73",
+#         #                             "econOpt" = "#E69F00",
+#         #                             "close" = "#CC79A7")) +
+#         scale_colour_manual(name=legendName,
+#                             labels = c("SQ" = "Status Quo",
+#                                        "openA" = "Open Access",
+#                                        "minRec" = "Minimize Recovery Time",
+#                                        "FMSY" = "Maximize Food Production (FMSY)",
+#                                        "econOpt" = "Economically Optimal",
+#                                        "close" = "Closure"),
+#                             values = c("SQ" = "#D55E00",
+#                                        "openA" = "#0072B2",
+#                                        "minRec" = "#56B4E9",
+#                                        "FMSY" = "#009E73",
+#                                        "econOpt" = "#E69F00",
+#                                        "close" = "#CC79A7")) +
+#         scale_linetype_manual(values = c("profit1" = 5,
+#                                          "profit2" = 3,
+#                                          "ptotal" = 1),
+#                               labels = c("profit1" = "Fleet 1",
+#                                          "profit2" = "Fleet 2",
+#                                          "ptotal" = "Total Legal")) +
+#         theme_bw() +
+#         theme(legend.position="none")
+# 
+# 
+#     hplot2t = ggplot(hdata3t, aes(x = time, y = meanh, colour = management, fill = management, group = scenario, lty = fleet)) +
+#         # geom_ribbon(aes(ymin = meanh - 2 * sdh, ymax = meanh + 2 * sdh)) +
+#         geom_line(size = lineSize) +
+#         geom_hline(yintercept=0, lty=1, colour="black", size=0.25, alpha=0.8) +
+#         xlab("Time") +
+#         ylab("Harvest [MT]") +
+#         ggtitle(paste("Harvest",i,m,l,j,sep = " - ")) +
+#         theme_bw() +
+#         # scale_fill_manual(guide = "none",
+#         #                  labels = c("SQ" = "Status Quo",
+#         #                             "openA" = "Open Access",
+#         #                             "minRec" = "Minimize Recovery Time",
+#         #                             "FMSY" = "Maximize Food Production (FMSY)",
+#         #                             "econOpt" = "Economically Optimal",
+#         #                             "close" = "Closure"),
+#         #                  values = c("SQ" = "#D55E00",
+#         #                             "openA" = "#0072B2",
+#         #                             "minRec" = "#56B4E9",
+#         #                             "FMSY" = "#009E73",
+#         #                             "econOpt" = "#E69F00",
+#         #                             "close" = "#CC79A7")) +
+#         scale_colour_manual(name=legendName,
+#                             labels = c("SQ" = "Status Quo",
+#                                        "openA" = "Open Access",
+#                                        "minRec" = "Minimize Recovery Time",
+#                                        "FMSY" = "Maximize Food Production (FMSY)",
+#                                        "econOpt" = "Economically Optimal",
+#                                        "close" = "Closure"),
+#                             values = c("SQ" = "#D55E00",
+#                                        "openA" = "#0072B2",
+#                                        "minRec" = "#56B4E9",
+#                                        "FMSY" = "#009E73",
+#                                        "econOpt" = "#E69F00",
+#                                        "close" = "#CC79A7")) +
+#         scale_linetype_manual(values = c("harvest1" = 5,
+#                                          "harvest2" = 3,
+#                                          "htotalleg" = 1,
+#                                          "harvest_ill_for" = 6),
+#                               labels = c("harvest1" =
+#                                            "Fleet 1",
+#                                          "harvest2" = "Fleet 2",
+#                                          "htotalleg" = "Total Legal",
+#                                          "harvest_ill_for" = "Illegal")) +
+#         theme(legend.position="none")
+# 
+# 
+#     kobe2t = ggplot(kobeDatat, aes(x = BvBMSY, y = FvFMSYtotal, colour = management, group =  management, shape = as.factor(time))) +
+#         geom_point(size=7) +
+#         geom_hline(yintercept=1) +
+#         geom_vline(xintercept=1) +
+#         xlim(0,maxb) +
+#         ylim(0,maxF) +
+#         labs(shape="Year", colour=legendName) +
+#         xlab("Biomass [B/BMSY]") +
+#         ylab("Total Fishing Mortality \n All Fleets [F/FMSY]") +
+#         scale_colour_manual(name=legendName,
+#                             labels = c("SQ" = "Status Quo",
+#                                        "openA" = "Open Access",
+#                                        "minRec" = "Minimize Recovery Time",
+#                                        "FMSY" = "Maximize Food Production (FMSY)",
+#                                        "econOpt" = "Economically Optimal",
+#                                        "close" = "Closure"),
+#                              values = c("SQ" = "#D55E00",
+#                                         "openA" = "#0072B2",
+#                                         "minRec" = "#56B4E9",
+#                                         "FMSY" = "#009E73",
+#                                         "econOpt" = "#E69F00",
+#                                         "close" = "#CC79A7")) +
+#         theme_bw() +
+#         ggtitle(paste("Before/After Kobe Plot \n Year 1 (Circles) and Final Year (Triangles)\n",i,m,l,j,sep = " - ")) +
+#         theme(plot.title = element_text(hjust = 0.5),
+#               legend.position="none")
+# 
+#     rectime2t = ggplot(rectimedft, aes(x = reorder(management, recTime), y = recTime, colour = management, group =  management)) +
+#         geom_point(size=7, shape = 8) +
+#         ylim(0,25) +
+#         xlab("Management") +
+#         ylab("Recovery Year") +
+#         scale_colour_manual(name=legendName,
+#                             labels = c("SQ" = "Status Quo",
+#                                        "openA" = "Open Access",
+#                                        "minRec" = "Minimize Recovery Time",
+#                                        "FMSY" = "Maximize Food Production (FMSY)",
+#                                        "econOpt" = "Economically Optimal",
+#                                        "close" = "Closure"),
+#                              values = c("SQ" = "#D55E00",
+#                                         "openA" = "#0072B2",
+#                                         "minRec" = "#56B4E9",
+#                                         "FMSY" = "#009E73",
+#                                         "econOpt" = "#E69F00",
+#                                         "close" = "#CC79A7")) +
+#         theme_bw() +
+#         ggtitle(paste("Year of Recovery\n",i,m,l,j,sep = " - ")) +
+#         theme(plot.title = element_text(hjust = 0.5),
+#               legend.position="none")
+# 
+#    ### Save images
+#    # ggsave(kobe2t, filename = paste("kobet",i,m,l,j,".png",sep="_"))
+#    # ggsave(g_legend(lineLegendt), filename = "lineLegendt.png")
+#    # ggsave(g_legend(colorLegendt), filename = "colorLegendt.png")
+#    # ggsave(bplot2t, filename = paste("Bplott",i,m,l,j,".png",sep="_"))
+#    # ggsave(brelplot2t, filename = paste("bRelplott",i,m,l,j,".png",sep="_"))
+#    # ggsave(hplot2t, filename = paste("hplott",i,m,l,j,".png",sep="_"))
+#    # ggsave(pplot2t, filename = paste("pplott",i,m,l,j,".png",sep="_"))
+#    # ggsave(npvplot2t, filename = paste("npvplott",i,m,l,j,".png",sep="_"))
+#    # ggsave(rectime2t, filename = paste("rectimet",i,m,l,j,".png",sep="_"))
+# 
+#       } ## End loop over illegal harvest elimination
+#     } ## End Loop over catch shares
+#   } ## End loop over implement years
+# } ## End loop over fisheries
+# 
+# 
+#   ## Make summary tables
+
+
+```

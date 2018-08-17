@@ -1,0 +1,465 @@
+"","fishery","species","management","MC","catchShare","illegalFishing","implementYear","recTime"
+"1","MNI Fishery","Coryphaena hippurus","BAU",1,"no_CS","illegal_fishing",2,1
+"2","MNI Fishery","Coryphaena hippurus","30% MPA",1,"no_CS","illegal_fishing",2,1
+"3","MNI Fishery","Coryphaena hippurus","BAU",1,"CS","illegal_fishing",2,1
+"4","MNI Fishery","Coryphaena hippurus","30% MPA",1,"CS","illegal_fishing",2,1
+"5","MNI Fishery","Coryphaena hippurus","BAU",1,"no_CS","no_illegal_fishing",2,1
+"6","MNI Fishery","Coryphaena hippurus","30% MPA",1,"no_CS","no_illegal_fishing",2,1
+"7","MNI Fishery","Coryphaena hippurus","BAU",1,"CS","no_illegal_fishing",2,1
+"8","MNI Fishery","Coryphaena hippurus","30% MPA",1,"CS","no_illegal_fishing",2,1
+"9","MNI Fishery","Lutjanus analis","BAU",1,"no_CS","illegal_fishing",2,NA
+"10","MNI Fishery","Lutjanus analis","30% MPA",1,"no_CS","illegal_fishing",2,NA
+"11","MNI Fishery","Lutjanus analis","BAU",1,"CS","illegal_fishing",2,NA
+"12","MNI Fishery","Lutjanus analis","30% MPA",1,"CS","illegal_fishing",2,NA
+"13","MNI Fishery","Lutjanus analis","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"14","MNI Fishery","Lutjanus analis","30% MPA",1,"no_CS","no_illegal_fishing",2,NA
+"15","MNI Fishery","Lutjanus analis","BAU",1,"CS","no_illegal_fishing",2,NA
+"16","MNI Fishery","Lutjanus analis","30% MPA",1,"CS","no_illegal_fishing",2,NA
+"17","MNI Fishery","Sarda sarda","BAU",1,"no_CS","illegal_fishing",2,16
+"18","MNI Fishery","Sarda sarda","30% MPA",1,"no_CS","illegal_fishing",2,16
+"19","MNI Fishery","Sarda sarda","BAU",1,"CS","illegal_fishing",2,16
+"20","MNI Fishery","Sarda sarda","30% MPA",1,"CS","illegal_fishing",2,16
+"21","MNI Fishery","Sarda sarda","BAU",1,"no_CS","no_illegal_fishing",2,16
+"22","MNI Fishery","Sarda sarda","30% MPA",1,"no_CS","no_illegal_fishing",2,16
+"23","MNI Fishery","Sarda sarda","BAU",1,"CS","no_illegal_fishing",2,16
+"24","MNI Fishery","Sarda sarda","30% MPA",1,"CS","no_illegal_fishing",2,16
+"25","MNI Fishery","Acanthocybium solandri","BAU",1,"no_CS","illegal_fishing",2,NA
+"26","MNI Fishery","Acanthocybium solandri","30% MPA",1,"no_CS","illegal_fishing",2,22
+"27","MNI Fishery","Acanthocybium solandri","BAU",1,"CS","illegal_fishing",2,NA
+"28","MNI Fishery","Acanthocybium solandri","30% MPA",1,"CS","illegal_fishing",2,22
+"29","MNI Fishery","Acanthocybium solandri","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"30","MNI Fishery","Acanthocybium solandri","30% MPA",1,"no_CS","no_illegal_fishing",2,22
+"31","MNI Fishery","Acanthocybium solandri","BAU",1,"CS","no_illegal_fishing",2,NA
+"32","MNI Fishery","Acanthocybium solandri","30% MPA",1,"CS","no_illegal_fishing",2,22
+"33","MNI Fishery","Albula vulpes","BAU",1,"no_CS","illegal_fishing",2,NA
+"34","MNI Fishery","Albula vulpes","30% MPA",1,"no_CS","illegal_fishing",2,NA
+"35","MNI Fishery","Albula vulpes","BAU",1,"CS","illegal_fishing",2,NA
+"36","MNI Fishery","Albula vulpes","30% MPA",1,"CS","illegal_fishing",2,NA
+"37","MNI Fishery","Albula vulpes","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"38","MNI Fishery","Albula vulpes","30% MPA",1,"no_CS","no_illegal_fishing",2,NA
+"39","MNI Fishery","Albula vulpes","BAU",1,"CS","no_illegal_fishing",2,NA
+"40","MNI Fishery","Albula vulpes","30% MPA",1,"CS","no_illegal_fishing",2,NA
+"41","MNI Fishery","Epinephelus guttatus","BAU",1,"no_CS","illegal_fishing",2,NA
+"42","MNI Fishery","Epinephelus guttatus","30% MPA",1,"no_CS","illegal_fishing",2,30
+"43","MNI Fishery","Epinephelus guttatus","BAU",1,"CS","illegal_fishing",2,NA
+"44","MNI Fishery","Epinephelus guttatus","30% MPA",1,"CS","illegal_fishing",2,30
+"45","MNI Fishery","Epinephelus guttatus","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"46","MNI Fishery","Epinephelus guttatus","30% MPA",1,"no_CS","no_illegal_fishing",2,30
+"47","MNI Fishery","Epinephelus guttatus","BAU",1,"CS","no_illegal_fishing",2,NA
+"48","MNI Fishery","Epinephelus guttatus","30% MPA",1,"CS","no_illegal_fishing",2,30
+"49","MNI Fishery","Lutjanus synagris","BAU",1,"no_CS","illegal_fishing",2,NA
+"50","MNI Fishery","Lutjanus synagris","30% MPA",1,"no_CS","illegal_fishing",2,NA
+"51","MNI Fishery","Lutjanus synagris","BAU",1,"CS","illegal_fishing",2,NA
+"52","MNI Fishery","Lutjanus synagris","30% MPA",1,"CS","illegal_fishing",2,NA
+"53","MNI Fishery","Lutjanus synagris","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"54","MNI Fishery","Lutjanus synagris","30% MPA",1,"no_CS","no_illegal_fishing",2,NA
+"55","MNI Fishery","Lutjanus synagris","BAU",1,"CS","no_illegal_fishing",2,NA
+"56","MNI Fishery","Lutjanus synagris","30% MPA",1,"CS","no_illegal_fishing",2,NA
+"57","MNI Fishery","Lutjanus vivanus","BAU",1,"no_CS","illegal_fishing",2,NA
+"58","MNI Fishery","Lutjanus vivanus","30% MPA",1,"no_CS","illegal_fishing",2,NA
+"59","MNI Fishery","Lutjanus vivanus","BAU",1,"CS","illegal_fishing",2,NA
+"60","MNI Fishery","Lutjanus vivanus","30% MPA",1,"CS","illegal_fishing",2,NA
+"61","MNI Fishery","Lutjanus vivanus","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"62","MNI Fishery","Lutjanus vivanus","30% MPA",1,"no_CS","no_illegal_fishing",2,NA
+"63","MNI Fishery","Lutjanus vivanus","BAU",1,"CS","no_illegal_fishing",2,NA
+"64","MNI Fishery","Lutjanus vivanus","30% MPA",1,"CS","no_illegal_fishing",2,NA
+"65","MNI Fishery","Ocyurus chrysurus","BAU",1,"no_CS","illegal_fishing",2,NA
+"66","MNI Fishery","Ocyurus chrysurus","30% MPA",1,"no_CS","illegal_fishing",2,NA
+"67","MNI Fishery","Ocyurus chrysurus","BAU",1,"CS","illegal_fishing",2,NA
+"68","MNI Fishery","Ocyurus chrysurus","30% MPA",1,"CS","illegal_fishing",2,NA
+"69","MNI Fishery","Ocyurus chrysurus","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"70","MNI Fishery","Ocyurus chrysurus","30% MPA",1,"no_CS","no_illegal_fishing",2,NA
+"71","MNI Fishery","Ocyurus chrysurus","BAU",1,"CS","no_illegal_fishing",2,NA
+"72","MNI Fishery","Ocyurus chrysurus","30% MPA",1,"CS","no_illegal_fishing",2,NA
+"73","MNI Fishery","Belone belone","BAU",1,"no_CS","illegal_fishing",2,NA
+"74","MNI Fishery","Belone belone","30% MPA",1,"no_CS","illegal_fishing",2,NA
+"75","MNI Fishery","Belone belone","BAU",1,"CS","illegal_fishing",2,NA
+"76","MNI Fishery","Belone belone","30% MPA",1,"CS","illegal_fishing",2,NA
+"77","MNI Fishery","Belone belone","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"78","MNI Fishery","Belone belone","30% MPA",1,"no_CS","no_illegal_fishing",2,NA
+"79","MNI Fishery","Belone belone","BAU",1,"CS","no_illegal_fishing",2,NA
+"80","MNI Fishery","Belone belone","30% MPA",1,"CS","no_illegal_fishing",2,NA
+"81","MNI Fishery","Caranx hippos","BAU",1,"no_CS","illegal_fishing",2,NA
+"82","MNI Fishery","Caranx hippos","30% MPA",1,"no_CS","illegal_fishing",2,NA
+"83","MNI Fishery","Caranx hippos","BAU",1,"CS","illegal_fishing",2,NA
+"84","MNI Fishery","Caranx hippos","30% MPA",1,"CS","illegal_fishing",2,NA
+"85","MNI Fishery","Caranx hippos","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"86","MNI Fishery","Caranx hippos","30% MPA",1,"no_CS","no_illegal_fishing",2,NA
+"87","MNI Fishery","Caranx hippos","BAU",1,"CS","no_illegal_fishing",2,NA
+"88","MNI Fishery","Caranx hippos","30% MPA",1,"CS","no_illegal_fishing",2,NA
+"89","MNI Fishery","Epinephelus striatus","BAU",1,"no_CS","illegal_fishing",2,NA
+"90","MNI Fishery","Epinephelus striatus","30% MPA",1,"no_CS","illegal_fishing",2,NA
+"91","MNI Fishery","Epinephelus striatus","BAU",1,"CS","illegal_fishing",2,NA
+"92","MNI Fishery","Epinephelus striatus","30% MPA",1,"CS","illegal_fishing",2,NA
+"93","MNI Fishery","Epinephelus striatus","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"94","MNI Fishery","Epinephelus striatus","30% MPA",1,"no_CS","no_illegal_fishing",2,NA
+"95","MNI Fishery","Epinephelus striatus","BAU",1,"CS","no_illegal_fishing",2,NA
+"96","MNI Fishery","Epinephelus striatus","30% MPA",1,"CS","no_illegal_fishing",2,NA
+"97","MNI Fishery","Hemiramphus brasiliensis","BAU",1,"no_CS","illegal_fishing",2,NA
+"98","MNI Fishery","Hemiramphus brasiliensis","30% MPA",1,"no_CS","illegal_fishing",2,NA
+"99","MNI Fishery","Hemiramphus brasiliensis","BAU",1,"CS","illegal_fishing",2,NA
+"100","MNI Fishery","Hemiramphus brasiliensis","30% MPA",1,"CS","illegal_fishing",2,NA
+"101","MNI Fishery","Hemiramphus brasiliensis","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"102","MNI Fishery","Hemiramphus brasiliensis","30% MPA",1,"no_CS","no_illegal_fishing",2,NA
+"103","MNI Fishery","Hemiramphus brasiliensis","BAU",1,"CS","no_illegal_fishing",2,NA
+"104","MNI Fishery","Hemiramphus brasiliensis","30% MPA",1,"CS","no_illegal_fishing",2,NA
+"105","MNI Fishery","Lutjanus campechanus","BAU",1,"no_CS","illegal_fishing",2,NA
+"106","MNI Fishery","Lutjanus campechanus","30% MPA",1,"no_CS","illegal_fishing",2,NA
+"107","MNI Fishery","Lutjanus campechanus","BAU",1,"CS","illegal_fishing",2,NA
+"108","MNI Fishery","Lutjanus campechanus","30% MPA",1,"CS","illegal_fishing",2,NA
+"109","MNI Fishery","Lutjanus campechanus","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"110","MNI Fishery","Lutjanus campechanus","30% MPA",1,"no_CS","no_illegal_fishing",2,NA
+"111","MNI Fishery","Lutjanus campechanus","BAU",1,"CS","no_illegal_fishing",2,NA
+"112","MNI Fishery","Lutjanus campechanus","30% MPA",1,"CS","no_illegal_fishing",2,NA
+"113","MNI Fishery","Rhomboplites aurorubens","BAU",1,"no_CS","illegal_fishing",2,12
+"114","MNI Fishery","Rhomboplites aurorubens","30% MPA",1,"no_CS","illegal_fishing",2,11
+"115","MNI Fishery","Rhomboplites aurorubens","BAU",1,"CS","illegal_fishing",2,12
+"116","MNI Fishery","Rhomboplites aurorubens","30% MPA",1,"CS","illegal_fishing",2,11
+"117","MNI Fishery","Rhomboplites aurorubens","BAU",1,"no_CS","no_illegal_fishing",2,12
+"118","MNI Fishery","Rhomboplites aurorubens","30% MPA",1,"no_CS","no_illegal_fishing",2,11
+"119","MNI Fishery","Rhomboplites aurorubens","BAU",1,"CS","no_illegal_fishing",2,12
+"120","MNI Fishery","Rhomboplites aurorubens","30% MPA",1,"CS","no_illegal_fishing",2,11
+"121","MNI Fishery","Scomberomorus regalis","BAU",1,"no_CS","illegal_fishing",2,18
+"122","MNI Fishery","Scomberomorus regalis","30% MPA",1,"no_CS","illegal_fishing",2,17
+"123","MNI Fishery","Scomberomorus regalis","BAU",1,"CS","illegal_fishing",2,18
+"124","MNI Fishery","Scomberomorus regalis","30% MPA",1,"CS","illegal_fishing",2,17
+"125","MNI Fishery","Scomberomorus regalis","BAU",1,"no_CS","no_illegal_fishing",2,18
+"126","MNI Fishery","Scomberomorus regalis","30% MPA",1,"no_CS","no_illegal_fishing",2,17
+"127","MNI Fishery","Scomberomorus regalis","BAU",1,"CS","no_illegal_fishing",2,18
+"128","MNI Fishery","Scomberomorus regalis","30% MPA",1,"CS","no_illegal_fishing",2,17
+"129","MNI Fishery","Acanthostracion polygonius","BAU",1,"no_CS","illegal_fishing",2,15
+"130","MNI Fishery","Acanthostracion polygonius","30% MPA",1,"no_CS","illegal_fishing",2,9
+"131","MNI Fishery","Acanthostracion polygonius","BAU",1,"CS","illegal_fishing",2,15
+"132","MNI Fishery","Acanthostracion polygonius","30% MPA",1,"CS","illegal_fishing",2,9
+"133","MNI Fishery","Acanthostracion polygonius","BAU",1,"no_CS","no_illegal_fishing",2,15
+"134","MNI Fishery","Acanthostracion polygonius","30% MPA",1,"no_CS","no_illegal_fishing",2,9
+"135","MNI Fishery","Acanthostracion polygonius","BAU",1,"CS","no_illegal_fishing",2,15
+"136","MNI Fishery","Acanthostracion polygonius","30% MPA",1,"CS","no_illegal_fishing",2,9
+"137","MNI Fishery","Acanthurus chirurgus","BAU",1,"no_CS","illegal_fishing",2,NA
+"138","MNI Fishery","Acanthurus chirurgus","30% MPA",1,"no_CS","illegal_fishing",2,NA
+"139","MNI Fishery","Acanthurus chirurgus","BAU",1,"CS","illegal_fishing",2,NA
+"140","MNI Fishery","Acanthurus chirurgus","30% MPA",1,"CS","illegal_fishing",2,NA
+"141","MNI Fishery","Acanthurus chirurgus","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"142","MNI Fishery","Acanthurus chirurgus","30% MPA",1,"no_CS","no_illegal_fishing",2,NA
+"143","MNI Fishery","Acanthurus chirurgus","BAU",1,"CS","no_illegal_fishing",2,NA
+"144","MNI Fishery","Acanthurus chirurgus","30% MPA",1,"CS","no_illegal_fishing",2,NA
+"145","MNI Fishery","Acanthurus coeruleus","BAU",1,"no_CS","illegal_fishing",2,NA
+"146","MNI Fishery","Acanthurus coeruleus","30% MPA",1,"no_CS","illegal_fishing",2,NA
+"147","MNI Fishery","Acanthurus coeruleus","BAU",1,"CS","illegal_fishing",2,NA
+"148","MNI Fishery","Acanthurus coeruleus","30% MPA",1,"CS","illegal_fishing",2,NA
+"149","MNI Fishery","Acanthurus coeruleus","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"150","MNI Fishery","Acanthurus coeruleus","30% MPA",1,"no_CS","no_illegal_fishing",2,NA
+"151","MNI Fishery","Acanthurus coeruleus","BAU",1,"CS","no_illegal_fishing",2,NA
+"152","MNI Fishery","Acanthurus coeruleus","30% MPA",1,"CS","no_illegal_fishing",2,NA
+"153","MNI Fishery","Aluterus scriptus","BAU",1,"no_CS","illegal_fishing",2,NA
+"154","MNI Fishery","Aluterus scriptus","30% MPA",1,"no_CS","illegal_fishing",2,NA
+"155","MNI Fishery","Aluterus scriptus","BAU",1,"CS","illegal_fishing",2,NA
+"156","MNI Fishery","Aluterus scriptus","30% MPA",1,"CS","illegal_fishing",2,NA
+"157","MNI Fishery","Aluterus scriptus","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"158","MNI Fishery","Aluterus scriptus","30% MPA",1,"no_CS","no_illegal_fishing",2,NA
+"159","MNI Fishery","Aluterus scriptus","BAU",1,"CS","no_illegal_fishing",2,NA
+"160","MNI Fishery","Aluterus scriptus","30% MPA",1,"CS","no_illegal_fishing",2,NA
+"161","MNI Fishery","Anisotremus surinamensis","BAU",1,"no_CS","illegal_fishing",2,NA
+"162","MNI Fishery","Anisotremus surinamensis","30% MPA",1,"no_CS","illegal_fishing",2,NA
+"163","MNI Fishery","Anisotremus surinamensis","BAU",1,"CS","illegal_fishing",2,NA
+"164","MNI Fishery","Anisotremus surinamensis","30% MPA",1,"CS","illegal_fishing",2,NA
+"165","MNI Fishery","Anisotremus surinamensis","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"166","MNI Fishery","Anisotremus surinamensis","30% MPA",1,"no_CS","no_illegal_fishing",2,NA
+"167","MNI Fishery","Anisotremus surinamensis","BAU",1,"CS","no_illegal_fishing",2,NA
+"168","MNI Fishery","Anisotremus surinamensis","30% MPA",1,"CS","no_illegal_fishing",2,NA
+"169","MNI Fishery","Archosargus rhomboidalis","BAU",1,"no_CS","illegal_fishing",2,12
+"170","MNI Fishery","Archosargus rhomboidalis","30% MPA",1,"no_CS","illegal_fishing",2,8
+"171","MNI Fishery","Archosargus rhomboidalis","BAU",1,"CS","illegal_fishing",2,12
+"172","MNI Fishery","Archosargus rhomboidalis","30% MPA",1,"CS","illegal_fishing",2,8
+"173","MNI Fishery","Archosargus rhomboidalis","BAU",1,"no_CS","no_illegal_fishing",2,12
+"174","MNI Fishery","Archosargus rhomboidalis","30% MPA",1,"no_CS","no_illegal_fishing",2,8
+"175","MNI Fishery","Archosargus rhomboidalis","BAU",1,"CS","no_illegal_fishing",2,12
+"176","MNI Fishery","Archosargus rhomboidalis","30% MPA",1,"CS","no_illegal_fishing",2,8
+"177","MNI Fishery","Balistes vetula","BAU",1,"no_CS","illegal_fishing",2,NA
+"178","MNI Fishery","Balistes vetula","30% MPA",1,"no_CS","illegal_fishing",2,25
+"179","MNI Fishery","Balistes vetula","BAU",1,"CS","illegal_fishing",2,NA
+"180","MNI Fishery","Balistes vetula","30% MPA",1,"CS","illegal_fishing",2,25
+"181","MNI Fishery","Balistes vetula","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"182","MNI Fishery","Balistes vetula","30% MPA",1,"no_CS","no_illegal_fishing",2,25
+"183","MNI Fishery","Balistes vetula","BAU",1,"CS","no_illegal_fishing",2,NA
+"184","MNI Fishery","Balistes vetula","30% MPA",1,"CS","no_illegal_fishing",2,25
+"185","MNI Fishery","Bodianus rufus","BAU",1,"no_CS","illegal_fishing",2,NA
+"186","MNI Fishery","Bodianus rufus","30% MPA",1,"no_CS","illegal_fishing",2,NA
+"187","MNI Fishery","Bodianus rufus","BAU",1,"CS","illegal_fishing",2,NA
+"188","MNI Fishery","Bodianus rufus","30% MPA",1,"CS","illegal_fishing",2,NA
+"189","MNI Fishery","Bodianus rufus","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"190","MNI Fishery","Bodianus rufus","30% MPA",1,"no_CS","no_illegal_fishing",2,NA
+"191","MNI Fishery","Bodianus rufus","BAU",1,"CS","no_illegal_fishing",2,NA
+"192","MNI Fishery","Bodianus rufus","30% MPA",1,"CS","no_illegal_fishing",2,NA
+"193","MNI Fishery","Calamus bajonado","BAU",1,"no_CS","illegal_fishing",2,NA
+"194","MNI Fishery","Calamus bajonado","30% MPA",1,"no_CS","illegal_fishing",2,2
+"195","MNI Fishery","Calamus bajonado","BAU",1,"CS","illegal_fishing",2,NA
+"196","MNI Fishery","Calamus bajonado","30% MPA",1,"CS","illegal_fishing",2,2
+"197","MNI Fishery","Calamus bajonado","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"198","MNI Fishery","Calamus bajonado","30% MPA",1,"no_CS","no_illegal_fishing",2,2
+"199","MNI Fishery","Calamus bajonado","BAU",1,"CS","no_illegal_fishing",2,NA
+"200","MNI Fishery","Calamus bajonado","30% MPA",1,"CS","no_illegal_fishing",2,2
+"201","MNI Fishery","Cantherhines macrocerus","BAU",1,"no_CS","illegal_fishing",2,NA
+"202","MNI Fishery","Cantherhines macrocerus","30% MPA",1,"no_CS","illegal_fishing",2,NA
+"203","MNI Fishery","Cantherhines macrocerus","BAU",1,"CS","illegal_fishing",2,NA
+"204","MNI Fishery","Cantherhines macrocerus","30% MPA",1,"CS","illegal_fishing",2,NA
+"205","MNI Fishery","Cantherhines macrocerus","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"206","MNI Fishery","Cantherhines macrocerus","30% MPA",1,"no_CS","no_illegal_fishing",2,NA
+"207","MNI Fishery","Cantherhines macrocerus","BAU",1,"CS","no_illegal_fishing",2,NA
+"208","MNI Fishery","Cantherhines macrocerus","30% MPA",1,"CS","no_illegal_fishing",2,NA
+"209","MNI Fishery","Canthidermis sufflamen","BAU",1,"no_CS","illegal_fishing",2,NA
+"210","MNI Fishery","Canthidermis sufflamen","30% MPA",1,"no_CS","illegal_fishing",2,NA
+"211","MNI Fishery","Canthidermis sufflamen","BAU",1,"CS","illegal_fishing",2,NA
+"212","MNI Fishery","Canthidermis sufflamen","30% MPA",1,"CS","illegal_fishing",2,NA
+"213","MNI Fishery","Canthidermis sufflamen","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"214","MNI Fishery","Canthidermis sufflamen","30% MPA",1,"no_CS","no_illegal_fishing",2,NA
+"215","MNI Fishery","Canthidermis sufflamen","BAU",1,"CS","no_illegal_fishing",2,NA
+"216","MNI Fishery","Canthidermis sufflamen","30% MPA",1,"CS","no_illegal_fishing",2,NA
+"217","MNI Fishery","Carangoides bartholomaei","BAU",1,"no_CS","illegal_fishing",2,6
+"218","MNI Fishery","Carangoides bartholomaei","30% MPA",1,"no_CS","illegal_fishing",2,6
+"219","MNI Fishery","Carangoides bartholomaei","BAU",1,"CS","illegal_fishing",2,6
+"220","MNI Fishery","Carangoides bartholomaei","30% MPA",1,"CS","illegal_fishing",2,6
+"221","MNI Fishery","Carangoides bartholomaei","BAU",1,"no_CS","no_illegal_fishing",2,6
+"222","MNI Fishery","Carangoides bartholomaei","30% MPA",1,"no_CS","no_illegal_fishing",2,6
+"223","MNI Fishery","Carangoides bartholomaei","BAU",1,"CS","no_illegal_fishing",2,6
+"224","MNI Fishery","Carangoides bartholomaei","30% MPA",1,"CS","no_illegal_fishing",2,6
+"225","MNI Fishery","Caranx latus","BAU",1,"no_CS","illegal_fishing",2,NA
+"226","MNI Fishery","Caranx latus","30% MPA",1,"no_CS","illegal_fishing",2,NA
+"227","MNI Fishery","Caranx latus","BAU",1,"CS","illegal_fishing",2,NA
+"228","MNI Fishery","Caranx latus","30% MPA",1,"CS","illegal_fishing",2,NA
+"229","MNI Fishery","Caranx latus","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"230","MNI Fishery","Caranx latus","30% MPA",1,"no_CS","no_illegal_fishing",2,NA
+"231","MNI Fishery","Caranx latus","BAU",1,"CS","no_illegal_fishing",2,NA
+"232","MNI Fishery","Caranx latus","30% MPA",1,"CS","no_illegal_fishing",2,NA
+"233","MNI Fishery","Caranx ruber","BAU",1,"no_CS","illegal_fishing",2,NA
+"234","MNI Fishery","Caranx ruber","30% MPA",1,"no_CS","illegal_fishing",2,17
+"235","MNI Fishery","Caranx ruber","BAU",1,"CS","illegal_fishing",2,NA
+"236","MNI Fishery","Caranx ruber","30% MPA",1,"CS","illegal_fishing",2,17
+"237","MNI Fishery","Caranx ruber","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"238","MNI Fishery","Caranx ruber","30% MPA",1,"no_CS","no_illegal_fishing",2,17
+"239","MNI Fishery","Caranx ruber","BAU",1,"CS","no_illegal_fishing",2,NA
+"240","MNI Fishery","Caranx ruber","30% MPA",1,"CS","no_illegal_fishing",2,17
+"241","MNI Fishery","Cephalopholis cruentata","BAU",1,"no_CS","illegal_fishing",2,30
+"242","MNI Fishery","Cephalopholis cruentata","30% MPA",1,"no_CS","illegal_fishing",2,24
+"243","MNI Fishery","Cephalopholis cruentata","BAU",1,"CS","illegal_fishing",2,30
+"244","MNI Fishery","Cephalopholis cruentata","30% MPA",1,"CS","illegal_fishing",2,24
+"245","MNI Fishery","Cephalopholis cruentata","BAU",1,"no_CS","no_illegal_fishing",2,30
+"246","MNI Fishery","Cephalopholis cruentata","30% MPA",1,"no_CS","no_illegal_fishing",2,24
+"247","MNI Fishery","Cephalopholis cruentata","BAU",1,"CS","no_illegal_fishing",2,30
+"248","MNI Fishery","Cephalopholis cruentata","30% MPA",1,"CS","no_illegal_fishing",2,24
+"249","MNI Fishery","Cephalopholis fulva","BAU",1,"no_CS","illegal_fishing",2,NA
+"250","MNI Fishery","Cephalopholis fulva","30% MPA",1,"no_CS","illegal_fishing",2,NA
+"251","MNI Fishery","Cephalopholis fulva","BAU",1,"CS","illegal_fishing",2,NA
+"252","MNI Fishery","Cephalopholis fulva","30% MPA",1,"CS","illegal_fishing",2,NA
+"253","MNI Fishery","Cephalopholis fulva","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"254","MNI Fishery","Cephalopholis fulva","30% MPA",1,"no_CS","no_illegal_fishing",2,NA
+"255","MNI Fishery","Cephalopholis fulva","BAU",1,"CS","no_illegal_fishing",2,NA
+"256","MNI Fishery","Cephalopholis fulva","30% MPA",1,"CS","no_illegal_fishing",2,NA
+"257","MNI Fishery","Epinephelus adscensionis","BAU",1,"no_CS","illegal_fishing",2,NA
+"258","MNI Fishery","Epinephelus adscensionis","30% MPA",1,"no_CS","illegal_fishing",2,NA
+"259","MNI Fishery","Epinephelus adscensionis","BAU",1,"CS","illegal_fishing",2,NA
+"260","MNI Fishery","Epinephelus adscensionis","30% MPA",1,"CS","illegal_fishing",2,NA
+"261","MNI Fishery","Epinephelus adscensionis","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"262","MNI Fishery","Epinephelus adscensionis","30% MPA",1,"no_CS","no_illegal_fishing",2,NA
+"263","MNI Fishery","Epinephelus adscensionis","BAU",1,"CS","no_illegal_fishing",2,NA
+"264","MNI Fishery","Epinephelus adscensionis","30% MPA",1,"CS","no_illegal_fishing",2,NA
+"265","MNI Fishery","Haemulon album","BAU",1,"no_CS","illegal_fishing",2,26
+"266","MNI Fishery","Haemulon album","30% MPA",1,"no_CS","illegal_fishing",2,21
+"267","MNI Fishery","Haemulon album","BAU",1,"CS","illegal_fishing",2,26
+"268","MNI Fishery","Haemulon album","30% MPA",1,"CS","illegal_fishing",2,21
+"269","MNI Fishery","Haemulon album","BAU",1,"no_CS","no_illegal_fishing",2,26
+"270","MNI Fishery","Haemulon album","30% MPA",1,"no_CS","no_illegal_fishing",2,21
+"271","MNI Fishery","Haemulon album","BAU",1,"CS","no_illegal_fishing",2,26
+"272","MNI Fishery","Haemulon album","30% MPA",1,"CS","no_illegal_fishing",2,21
+"273","MNI Fishery","Haemulon carbonarium","BAU",1,"no_CS","illegal_fishing",2,NA
+"274","MNI Fishery","Haemulon carbonarium","30% MPA",1,"no_CS","illegal_fishing",2,NA
+"275","MNI Fishery","Haemulon carbonarium","BAU",1,"CS","illegal_fishing",2,NA
+"276","MNI Fishery","Haemulon carbonarium","30% MPA",1,"CS","illegal_fishing",2,NA
+"277","MNI Fishery","Haemulon carbonarium","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"278","MNI Fishery","Haemulon carbonarium","30% MPA",1,"no_CS","no_illegal_fishing",2,NA
+"279","MNI Fishery","Haemulon carbonarium","BAU",1,"CS","no_illegal_fishing",2,NA
+"280","MNI Fishery","Haemulon carbonarium","30% MPA",1,"CS","no_illegal_fishing",2,NA
+"281","MNI Fishery","Haemulon flavolineatum","BAU",1,"no_CS","illegal_fishing",2,23
+"282","MNI Fishery","Haemulon flavolineatum","30% MPA",1,"no_CS","illegal_fishing",2,19
+"283","MNI Fishery","Haemulon flavolineatum","BAU",1,"CS","illegal_fishing",2,23
+"284","MNI Fishery","Haemulon flavolineatum","30% MPA",1,"CS","illegal_fishing",2,19
+"285","MNI Fishery","Haemulon flavolineatum","BAU",1,"no_CS","no_illegal_fishing",2,23
+"286","MNI Fishery","Haemulon flavolineatum","30% MPA",1,"no_CS","no_illegal_fishing",2,19
+"287","MNI Fishery","Haemulon flavolineatum","BAU",1,"CS","no_illegal_fishing",2,23
+"288","MNI Fishery","Haemulon flavolineatum","30% MPA",1,"CS","no_illegal_fishing",2,19
+"289","MNI Fishery","Haemulon parrai","BAU",1,"no_CS","illegal_fishing",2,22
+"290","MNI Fishery","Haemulon parrai","30% MPA",1,"no_CS","illegal_fishing",2,18
+"291","MNI Fishery","Haemulon parrai","BAU",1,"CS","illegal_fishing",2,22
+"292","MNI Fishery","Haemulon parrai","30% MPA",1,"CS","illegal_fishing",2,18
+"293","MNI Fishery","Haemulon parrai","BAU",1,"no_CS","no_illegal_fishing",2,22
+"294","MNI Fishery","Haemulon parrai","30% MPA",1,"no_CS","no_illegal_fishing",2,18
+"295","MNI Fishery","Haemulon parrai","BAU",1,"CS","no_illegal_fishing",2,22
+"296","MNI Fishery","Haemulon parrai","30% MPA",1,"CS","no_illegal_fishing",2,18
+"297","MNI Fishery","Heteropriacanthus cruentatus","BAU",1,"no_CS","illegal_fishing",2,9
+"298","MNI Fishery","Heteropriacanthus cruentatus","30% MPA",1,"no_CS","illegal_fishing",2,9
+"299","MNI Fishery","Heteropriacanthus cruentatus","BAU",1,"CS","illegal_fishing",2,9
+"300","MNI Fishery","Heteropriacanthus cruentatus","30% MPA",1,"CS","illegal_fishing",2,9
+"301","MNI Fishery","Heteropriacanthus cruentatus","BAU",1,"no_CS","no_illegal_fishing",2,9
+"302","MNI Fishery","Heteropriacanthus cruentatus","30% MPA",1,"no_CS","no_illegal_fishing",2,9
+"303","MNI Fishery","Heteropriacanthus cruentatus","BAU",1,"CS","no_illegal_fishing",2,9
+"304","MNI Fishery","Heteropriacanthus cruentatus","30% MPA",1,"CS","no_illegal_fishing",2,9
+"305","MNI Fishery","Holacanthus ciliaris","BAU",1,"no_CS","illegal_fishing",2,NA
+"306","MNI Fishery","Holacanthus ciliaris","30% MPA",1,"no_CS","illegal_fishing",2,NA
+"307","MNI Fishery","Holacanthus ciliaris","BAU",1,"CS","illegal_fishing",2,NA
+"308","MNI Fishery","Holacanthus ciliaris","30% MPA",1,"CS","illegal_fishing",2,NA
+"309","MNI Fishery","Holacanthus ciliaris","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"310","MNI Fishery","Holacanthus ciliaris","30% MPA",1,"no_CS","no_illegal_fishing",2,NA
+"311","MNI Fishery","Holacanthus ciliaris","BAU",1,"CS","no_illegal_fishing",2,NA
+"312","MNI Fishery","Holacanthus ciliaris","30% MPA",1,"CS","no_illegal_fishing",2,NA
+"313","MNI Fishery","Holacanthus tricolor","BAU",1,"no_CS","illegal_fishing",2,NA
+"314","MNI Fishery","Holacanthus tricolor","30% MPA",1,"no_CS","illegal_fishing",2,NA
+"315","MNI Fishery","Holacanthus tricolor","BAU",1,"CS","illegal_fishing",2,NA
+"316","MNI Fishery","Holacanthus tricolor","30% MPA",1,"CS","illegal_fishing",2,NA
+"317","MNI Fishery","Holacanthus tricolor","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"318","MNI Fishery","Holacanthus tricolor","30% MPA",1,"no_CS","no_illegal_fishing",2,NA
+"319","MNI Fishery","Holacanthus tricolor","BAU",1,"CS","no_illegal_fishing",2,NA
+"320","MNI Fishery","Holacanthus tricolor","30% MPA",1,"CS","no_illegal_fishing",2,NA
+"321","MNI Fishery","Holocentrus adscensionis","BAU",1,"no_CS","illegal_fishing",2,NA
+"322","MNI Fishery","Holocentrus adscensionis","30% MPA",1,"no_CS","illegal_fishing",2,NA
+"323","MNI Fishery","Holocentrus adscensionis","BAU",1,"CS","illegal_fishing",2,NA
+"324","MNI Fishery","Holocentrus adscensionis","30% MPA",1,"CS","illegal_fishing",2,NA
+"325","MNI Fishery","Holocentrus adscensionis","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"326","MNI Fishery","Holocentrus adscensionis","30% MPA",1,"no_CS","no_illegal_fishing",2,NA
+"327","MNI Fishery","Holocentrus adscensionis","BAU",1,"CS","no_illegal_fishing",2,NA
+"328","MNI Fishery","Holocentrus adscensionis","30% MPA",1,"CS","no_illegal_fishing",2,NA
+"329","MNI Fishery","Kyphosus sectatrix","BAU",1,"no_CS","illegal_fishing",2,NA
+"330","MNI Fishery","Kyphosus sectatrix","30% MPA",1,"no_CS","illegal_fishing",2,NA
+"331","MNI Fishery","Kyphosus sectatrix","BAU",1,"CS","illegal_fishing",2,NA
+"332","MNI Fishery","Kyphosus sectatrix","30% MPA",1,"CS","illegal_fishing",2,NA
+"333","MNI Fishery","Kyphosus sectatrix","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"334","MNI Fishery","Kyphosus sectatrix","30% MPA",1,"no_CS","no_illegal_fishing",2,NA
+"335","MNI Fishery","Kyphosus sectatrix","BAU",1,"CS","no_illegal_fishing",2,NA
+"336","MNI Fishery","Kyphosus sectatrix","30% MPA",1,"CS","no_illegal_fishing",2,NA
+"337","MNI Fishery","Lutjanidae","BAU",1,"no_CS","illegal_fishing",2,NA
+"338","MNI Fishery","Lutjanidae","30% MPA",1,"no_CS","illegal_fishing",2,NA
+"339","MNI Fishery","Lutjanidae","BAU",1,"CS","illegal_fishing",2,NA
+"340","MNI Fishery","Lutjanidae","30% MPA",1,"CS","illegal_fishing",2,NA
+"341","MNI Fishery","Lutjanidae","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"342","MNI Fishery","Lutjanidae","30% MPA",1,"no_CS","no_illegal_fishing",2,NA
+"343","MNI Fishery","Lutjanidae","BAU",1,"CS","no_illegal_fishing",2,NA
+"344","MNI Fishery","Lutjanidae","30% MPA",1,"CS","no_illegal_fishing",2,NA
+"345","MNI Fishery","Lutjanus griseus","BAU",1,"no_CS","illegal_fishing",2,18
+"346","MNI Fishery","Lutjanus griseus","30% MPA",1,"no_CS","illegal_fishing",2,18
+"347","MNI Fishery","Lutjanus griseus","BAU",1,"CS","illegal_fishing",2,18
+"348","MNI Fishery","Lutjanus griseus","30% MPA",1,"CS","illegal_fishing",2,18
+"349","MNI Fishery","Lutjanus griseus","BAU",1,"no_CS","no_illegal_fishing",2,18
+"350","MNI Fishery","Lutjanus griseus","30% MPA",1,"no_CS","no_illegal_fishing",2,18
+"351","MNI Fishery","Lutjanus griseus","BAU",1,"CS","no_illegal_fishing",2,18
+"352","MNI Fishery","Lutjanus griseus","30% MPA",1,"CS","no_illegal_fishing",2,18
+"353","MNI Fishery","Lutjanus jocu","BAU",1,"no_CS","illegal_fishing",2,NA
+"354","MNI Fishery","Lutjanus jocu","30% MPA",1,"no_CS","illegal_fishing",2,NA
+"355","MNI Fishery","Lutjanus jocu","BAU",1,"CS","illegal_fishing",2,NA
+"356","MNI Fishery","Lutjanus jocu","30% MPA",1,"CS","illegal_fishing",2,NA
+"357","MNI Fishery","Lutjanus jocu","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"358","MNI Fishery","Lutjanus jocu","30% MPA",1,"no_CS","no_illegal_fishing",2,NA
+"359","MNI Fishery","Lutjanus jocu","BAU",1,"CS","no_illegal_fishing",2,NA
+"360","MNI Fishery","Lutjanus jocu","30% MPA",1,"CS","no_illegal_fishing",2,NA
+"361","MNI Fishery","Melichthys niger","BAU",1,"no_CS","illegal_fishing",2,NA
+"362","MNI Fishery","Melichthys niger","30% MPA",1,"no_CS","illegal_fishing",2,NA
+"363","MNI Fishery","Melichthys niger","BAU",1,"CS","illegal_fishing",2,NA
+"364","MNI Fishery","Melichthys niger","30% MPA",1,"CS","illegal_fishing",2,NA
+"365","MNI Fishery","Melichthys niger","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"366","MNI Fishery","Melichthys niger","30% MPA",1,"no_CS","no_illegal_fishing",2,NA
+"367","MNI Fishery","Melichthys niger","BAU",1,"CS","no_illegal_fishing",2,NA
+"368","MNI Fishery","Melichthys niger","30% MPA",1,"CS","no_illegal_fishing",2,NA
+"369","MNI Fishery","Menticirrhus littoralis","BAU",1,"no_CS","illegal_fishing",2,19
+"370","MNI Fishery","Menticirrhus littoralis","30% MPA",1,"no_CS","illegal_fishing",2,16
+"371","MNI Fishery","Menticirrhus littoralis","BAU",1,"CS","illegal_fishing",2,19
+"372","MNI Fishery","Menticirrhus littoralis","30% MPA",1,"CS","illegal_fishing",2,16
+"373","MNI Fishery","Menticirrhus littoralis","BAU",1,"no_CS","no_illegal_fishing",2,19
+"374","MNI Fishery","Menticirrhus littoralis","30% MPA",1,"no_CS","no_illegal_fishing",2,16
+"375","MNI Fishery","Menticirrhus littoralis","BAU",1,"CS","no_illegal_fishing",2,19
+"376","MNI Fishery","Menticirrhus littoralis","30% MPA",1,"CS","no_illegal_fishing",2,16
+"377","MNI Fishery","Mullidae","BAU",1,"no_CS","illegal_fishing",2,NA
+"378","MNI Fishery","Mullidae","30% MPA",1,"no_CS","illegal_fishing",2,25
+"379","MNI Fishery","Mullidae","BAU",1,"CS","illegal_fishing",2,NA
+"380","MNI Fishery","Mullidae","30% MPA",1,"CS","illegal_fishing",2,25
+"381","MNI Fishery","Mullidae","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"382","MNI Fishery","Mullidae","30% MPA",1,"no_CS","no_illegal_fishing",2,25
+"383","MNI Fishery","Mullidae","BAU",1,"CS","no_illegal_fishing",2,NA
+"384","MNI Fishery","Mullidae","30% MPA",1,"CS","no_illegal_fishing",2,25
+"385","MNI Fishery","Panulirus argus","BAU",1,"no_CS","illegal_fishing",2,NA
+"386","MNI Fishery","Panulirus argus","30% MPA",1,"no_CS","illegal_fishing",2,NA
+"387","MNI Fishery","Panulirus argus","BAU",1,"CS","illegal_fishing",2,NA
+"388","MNI Fishery","Panulirus argus","30% MPA",1,"CS","illegal_fishing",2,NA
+"389","MNI Fishery","Panulirus argus","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"390","MNI Fishery","Panulirus argus","30% MPA",1,"no_CS","no_illegal_fishing",2,NA
+"391","MNI Fishery","Panulirus argus","BAU",1,"CS","no_illegal_fishing",2,NA
+"392","MNI Fishery","Panulirus argus","30% MPA",1,"CS","no_illegal_fishing",2,NA
+"393","MNI Fishery","Pomacanthus arcuatus","BAU",1,"no_CS","illegal_fishing",2,NA
+"394","MNI Fishery","Pomacanthus arcuatus","30% MPA",1,"no_CS","illegal_fishing",2,NA
+"395","MNI Fishery","Pomacanthus arcuatus","BAU",1,"CS","illegal_fishing",2,NA
+"396","MNI Fishery","Pomacanthus arcuatus","30% MPA",1,"CS","illegal_fishing",2,NA
+"397","MNI Fishery","Pomacanthus arcuatus","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"398","MNI Fishery","Pomacanthus arcuatus","30% MPA",1,"no_CS","no_illegal_fishing",2,NA
+"399","MNI Fishery","Pomacanthus arcuatus","BAU",1,"CS","no_illegal_fishing",2,NA
+"400","MNI Fishery","Pomacanthus arcuatus","30% MPA",1,"CS","no_illegal_fishing",2,NA
+"401","MNI Fishery","Pomacanthus paru","BAU",1,"no_CS","illegal_fishing",2,NA
+"402","MNI Fishery","Pomacanthus paru","30% MPA",1,"no_CS","illegal_fishing",2,NA
+"403","MNI Fishery","Pomacanthus paru","BAU",1,"CS","illegal_fishing",2,NA
+"404","MNI Fishery","Pomacanthus paru","30% MPA",1,"CS","illegal_fishing",2,NA
+"405","MNI Fishery","Pomacanthus paru","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"406","MNI Fishery","Pomacanthus paru","30% MPA",1,"no_CS","no_illegal_fishing",2,NA
+"407","MNI Fishery","Pomacanthus paru","BAU",1,"CS","no_illegal_fishing",2,NA
+"408","MNI Fishery","Pomacanthus paru","30% MPA",1,"CS","no_illegal_fishing",2,NA
+"409","MNI Fishery","Priacanthus arenatus","BAU",1,"no_CS","illegal_fishing",2,NA
+"410","MNI Fishery","Priacanthus arenatus","30% MPA",1,"no_CS","illegal_fishing",2,10
+"411","MNI Fishery","Priacanthus arenatus","BAU",1,"CS","illegal_fishing",2,NA
+"412","MNI Fishery","Priacanthus arenatus","30% MPA",1,"CS","illegal_fishing",2,10
+"413","MNI Fishery","Priacanthus arenatus","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"414","MNI Fishery","Priacanthus arenatus","30% MPA",1,"no_CS","no_illegal_fishing",2,10
+"415","MNI Fishery","Priacanthus arenatus","BAU",1,"CS","no_illegal_fishing",2,NA
+"416","MNI Fishery","Priacanthus arenatus","30% MPA",1,"CS","no_illegal_fishing",2,10
+"417","MNI Fishery","Scaridae","BAU",1,"no_CS","illegal_fishing",2,NA
+"418","MNI Fishery","Scaridae","30% MPA",1,"no_CS","illegal_fishing",2,NA
+"419","MNI Fishery","Scaridae","BAU",1,"CS","illegal_fishing",2,NA
+"420","MNI Fishery","Scaridae","30% MPA",1,"CS","illegal_fishing",2,NA
+"421","MNI Fishery","Scaridae","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"422","MNI Fishery","Scaridae","30% MPA",1,"no_CS","no_illegal_fishing",2,NA
+"423","MNI Fishery","Scaridae","BAU",1,"CS","no_illegal_fishing",2,NA
+"424","MNI Fishery","Scaridae","30% MPA",1,"CS","no_illegal_fishing",2,NA
+"425","MNI Fishery","Scarus coeruleus","BAU",1,"no_CS","illegal_fishing",2,NA
+"426","MNI Fishery","Scarus coeruleus","30% MPA",1,"no_CS","illegal_fishing",2,NA
+"427","MNI Fishery","Scarus coeruleus","BAU",1,"CS","illegal_fishing",2,NA
+"428","MNI Fishery","Scarus coeruleus","30% MPA",1,"CS","illegal_fishing",2,NA
+"429","MNI Fishery","Scarus coeruleus","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"430","MNI Fishery","Scarus coeruleus","30% MPA",1,"no_CS","no_illegal_fishing",2,NA
+"431","MNI Fishery","Scarus coeruleus","BAU",1,"CS","no_illegal_fishing",2,NA
+"432","MNI Fishery","Scarus coeruleus","30% MPA",1,"CS","no_illegal_fishing",2,NA
+"433","MNI Fishery","Sparisoma viride","BAU",1,"no_CS","illegal_fishing",2,NA
+"434","MNI Fishery","Sparisoma viride","30% MPA",1,"no_CS","illegal_fishing",2,27
+"435","MNI Fishery","Sparisoma viride","BAU",1,"CS","illegal_fishing",2,NA
+"436","MNI Fishery","Sparisoma viride","30% MPA",1,"CS","illegal_fishing",2,27
+"437","MNI Fishery","Sparisoma viride","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"438","MNI Fishery","Sparisoma viride","30% MPA",1,"no_CS","no_illegal_fishing",2,27
+"439","MNI Fishery","Sparisoma viride","BAU",1,"CS","no_illegal_fishing",2,NA
+"440","MNI Fishery","Sparisoma viride","30% MPA",1,"CS","no_illegal_fishing",2,27
+"441","MNI Fishery","Sphyraenidae","BAU",1,"no_CS","illegal_fishing",2,NA
+"442","MNI Fishery","Sphyraenidae","30% MPA",1,"no_CS","illegal_fishing",2,NA
+"443","MNI Fishery","Sphyraenidae","BAU",1,"CS","illegal_fishing",2,NA
+"444","MNI Fishery","Sphyraenidae","30% MPA",1,"CS","illegal_fishing",2,NA
+"445","MNI Fishery","Sphyraenidae","BAU",1,"no_CS","no_illegal_fishing",2,NA
+"446","MNI Fishery","Sphyraenidae","30% MPA",1,"no_CS","no_illegal_fishing",2,NA
+"447","MNI Fishery","Sphyraenidae","BAU",1,"CS","no_illegal_fishing",2,NA
+"448","MNI Fishery","Sphyraenidae","30% MPA",1,"CS","no_illegal_fishing",2,NA
+"449","MNI Fishery","Squalidade","BAU",1,"no_CS","illegal_fishing",2,19
+"450","MNI Fishery","Squalidade","30% MPA",1,"no_CS","illegal_fishing",2,17
+"451","MNI Fishery","Squalidade","BAU",1,"CS","illegal_fishing",2,19
+"452","MNI Fishery","Squalidade","30% MPA",1,"CS","illegal_fishing",2,17
+"453","MNI Fishery","Squalidade","BAU",1,"no_CS","no_illegal_fishing",2,19
+"454","MNI Fishery","Squalidade","30% MPA",1,"no_CS","no_illegal_fishing",2,17
+"455","MNI Fishery","Squalidade","BAU",1,"CS","no_illegal_fishing",2,19
+"456","MNI Fishery","Squalidade","30% MPA",1,"CS","no_illegal_fishing",2,17
+"457","MNI Fishery","Thunnus sp.","BAU",1,"no_CS","illegal_fishing",2,11
+"458","MNI Fishery","Thunnus sp.","30% MPA",1,"no_CS","illegal_fishing",2,10
+"459","MNI Fishery","Thunnus sp.","BAU",1,"CS","illegal_fishing",2,11
+"460","MNI Fishery","Thunnus sp.","30% MPA",1,"CS","illegal_fishing",2,10
+"461","MNI Fishery","Thunnus sp.","BAU",1,"no_CS","no_illegal_fishing",2,11
+"462","MNI Fishery","Thunnus sp.","30% MPA",1,"no_CS","no_illegal_fishing",2,10
+"463","MNI Fishery","Thunnus sp.","BAU",1,"CS","no_illegal_fishing",2,11
+"464","MNI Fishery","Thunnus sp.","30% MPA",1,"CS","no_illegal_fishing",2,10
